@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Login: View {
+    
     @State var email = ""
     @State var password = ""
     @ObservedObject var sessionStore = SessionStore()
