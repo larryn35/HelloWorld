@@ -14,6 +14,8 @@
 		5C63614C25534A1200E374B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C63614B25534A1200E374B8 /* Preview Assets.xcassets */; };
 		5C63615525534BD300E374B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C63615425534BD300E374B8 /* GoogleService-Info.plist */; };
 		5C63616A25534EF100E374B8 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63616925534EF100E374B8 /* SessionStore.swift */; };
+		5C6361A325535C7500E374B8 /* ChatList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361A225535C7500E374B8 /* ChatList.swift */; };
+		5C6361A725535C8300E374B8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361A625535C8300E374B8 /* Login.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		5C63614D25534A1200E374B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C63615425534BD300E374B8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5C63616925534EF100E374B8 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		5C6361A225535C7500E374B8 /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
+		5C6361A625535C8300E374B8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A85178BF4B23F9E2D92DAB /* Pods-HelloWorld.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.debug.xcconfig"; sourceTree = "<group>"; };
 		EF598B5F7548DAC41BE23EA0 /* Pods-HelloWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.release.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -63,6 +67,7 @@
 		5C63614325534A0C00E374B8 /* HelloWorld */ = {
 			isa = PBXGroup;
 			children = (
+				5C6361A125535C6300E374B8 /* Views */,
 				5C63614425534A0C00E374B8 /* HelloWorldApp.swift */,
 				5C63616925534EF100E374B8 /* SessionStore.swift */,
 				5C63614625534A0C00E374B8 /* ContentView.swift */,
@@ -80,6 +85,15 @@
 				5C63614B25534A1200E374B8 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5C6361A125535C6300E374B8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C6361A225535C7500E374B8 /* ChatList.swift */,
+				5C6361A625535C8300E374B8 /* Login.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B58AEA4D995FB11CA8989903 /* Frameworks */ = {
@@ -214,6 +228,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C63614725534A0C00E374B8 /* ContentView.swift in Sources */,
+				5C6361A725535C8300E374B8 /* Login.swift in Sources */,
+				5C6361A325535C7500E374B8 /* ChatList.swift in Sources */,
 				5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */,
 				5C63616A25534EF100E374B8 /* SessionStore.swift in Sources */,
 			);
