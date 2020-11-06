@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct Home: View {
     @ObservedObject var sessionStore = SessionStore()
     
     init() {
         sessionStore.listen()
     }
-    
+        
     var body: some View {
         ChatList()
             .fullScreenCover(isPresented: $sessionStore.isAnon, content: {
@@ -24,6 +24,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Home()
     }
 }

@@ -35,20 +35,34 @@ class SessionStore: ObservableObject {
     
     func signIn(email: String, password: String) {
         authRef.signIn(withEmail: email, password: password)
+//        { (result, error) in
+//            guard result != nil, error == nil else {
+//                print("Error signing in with \(email): \(String(describing: error))")
+//                return
+//            }
+//            print("Signed in with: \(email)")
+//        }
     }
     
-    func signUp(email: String, password: String) {
+    func signUp(email: String, password: String, handler: @escaping () -> Void) {
         authRef.createUser(withEmail: email, password: password)
+//        { (result, error) in
+//            guard result != nil, error == nil else {
+//                print("Error signing up with \(email): \(String(describing: error))")
+//                return
+//            }
+//            print("Signed up with \(email)")
+//        }
+        return handler()
     }
     
-    func signOut() -> Bool {
+    func signOut() {
         do {
             try authRef.signOut()
             session = nil
             isAnon = true
-            return true
         } catch {
-            return false
+            print("error signing out: \(error)")
         }
     }
     

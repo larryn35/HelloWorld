@@ -11,29 +11,34 @@ struct Login: View {
     
     @State var email = ""
     @State var password = ""
+    @State private var showRegistration = false
     @ObservedObject var sessionStore = SessionStore()
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 30) {
                 TextField("email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-
+                
                 SecureField("password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-
+                
                 Button(action: {
                     sessionStore.signIn(email: email, password: password)
                 }, label: {
                     Text("Login")
                 })
-                
-                Button(action: {
-                    sessionStore.signUp(email: email, password: password)
-                }, label: {
-                    Text("Sign up")
-                })
+                                
+                Text("Don't have an account? Sign up")
+                    .font(.subheadline)
+                    .padding()
+                    .onTapGesture {
+                        showRegistration.toggle()
+                    }
+                    .sheet(isPresented: $showRegistration, content: {
+                        Register()
 
+                    })
             }
             .navigationTitle("Welcome")
         }

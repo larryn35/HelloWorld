@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatList: View {
     
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
+    @ObservedObject var sessionStore = SessionStore()
     @State var joinModal = false
     
     init() {
@@ -25,17 +26,24 @@ struct ChatList: View {
                         Spacer()
                     }
                 }
-                .navigationBarTitle("Welcome")
-                .navigationBarItems(trailing: Button(action: {
+            }
+            
+            .navigationBarTitle("Welcome")
+            .navigationBarItems(
+                leading: Button(action: {
+                    sessionStore.signOut()
+                }, label: {
+                    Text("Sign out")
+                }),
+                
+                trailing: Button(action: {
                     joinModal = true
                 }, label: {
                     Image(systemName: "plus.circle")
                 }))
-                .sheet(isPresented: $joinModal, content: {
-                    Join(isOpen: $joinModal)
-                })
-                
-            }
+            .sheet(isPresented: $joinModal, content: {
+                Join(isOpen: $joinModal)
+            })
         }
     }
 }

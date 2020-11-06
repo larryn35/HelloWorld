@@ -43,9 +43,10 @@ class ChatroomsViewModel: ObservableObject {
         if (user != nil) {
             db.collection("chatrooms")
                 .addDocument(data: [
-                                "title": title,
-                                "joinCode": Int.random(in: 10000..<999999),
-                                "users": [user!.uid]]) { error in
+                    "title": title,
+                    "joinCode": Int.random(in: 10000..<999999),
+                    "users": [user!.uid]
+                ]) { error in
                     if let error = error {
                         print("error adding document: \(error)")
                     } else {

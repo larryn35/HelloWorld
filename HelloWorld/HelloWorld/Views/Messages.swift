@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct Messages: View {
     
     @State var messageField = ""
     let chatroom: Chatroom
-    @ObservedObject var messagesViewModel = MessagesViewModel()
+    var name = ""
     
+    @ObservedObject var messagesViewModel = MessagesViewModel()
+        
     init(chatroom: Chatroom) {
         self.chatroom = chatroom
         messagesViewModel.fetchData(docId: chatroom.id
@@ -21,12 +24,15 @@ struct Messages: View {
     
     var body: some View {
         VStack {
-            List(messagesViewModel.messages) { message in
-                HStack {
-                    Text(message.content)
-                    Spacer()
+            List(messagesViewModel.messages) { i in
+                if Auth.auth().currentUser?.email == i.name  {
+                    MessageLine(ownMessage: true, message: i.content, sender: i.name)
+                } else {
+                    MessageLine(ownMessage: false, message: i.content, sender: i.name)
+
                 }
             }
+            
             HStack {
                 TextField("Enter message...", text: $messageField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())

@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		168486E52CD55DA53B3D34B8 /* Pods_HelloWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */; };
+		5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B632553DC5F0038B60B /* MessageLine.swift */; };
+		5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */; };
 		5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63614425534A0C00E374B8 /* HelloWorldApp.swift */; };
-		5C63614725534A0C00E374B8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63614625534A0C00E374B8 /* ContentView.swift */; };
+		5C63614725534A0C00E374B8 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63614625534A0C00E374B8 /* Home.swift */; };
 		5C63614925534A1100E374B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C63614825534A1100E374B8 /* Assets.xcassets */; };
 		5C63614C25534A1200E374B8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C63614B25534A1200E374B8 /* Preview Assets.xcassets */; };
 		5C63615525534BD300E374B8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C63615425534BD300E374B8 /* GoogleService-Info.plist */; };
@@ -20,12 +22,15 @@
 		5C6361AF25538B8400E374B8 /* Join.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361AE25538B8400E374B8 /* Join.swift */; };
 		5C6361B2255392DB00E374B8 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */; };
 		5C6361B52553960900E374B8 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361B42553960900E374B8 /* Messages.swift */; };
+		5C728B102554D8A40020B70D /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C728B0F2554D8A40020B70D /* Register.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C5C6B632553DC5F0038B60B /* MessageLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLine.swift; sourceTree = "<group>"; };
+		5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		5C63614125534A0C00E374B8 /* HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C63614425534A0C00E374B8 /* HelloWorldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldApp.swift; sourceTree = "<group>"; };
-		5C63614625534A0C00E374B8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		5C63614625534A0C00E374B8 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		5C63614825534A1100E374B8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C63614B25534A1200E374B8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5C63614D25534A1200E374B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -37,6 +42,7 @@
 		5C6361AE25538B8400E374B8 /* Join.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Join.swift; sourceTree = "<group>"; };
 		5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		5C6361B42553960900E374B8 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
+		5C728B0F2554D8A40020B70D /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A85178BF4B23F9E2D92DAB /* Pods-HelloWorld.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.debug.xcconfig"; sourceTree = "<group>"; };
 		EF598B5F7548DAC41BE23EA0 /* Pods-HelloWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.release.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,10 +81,9 @@
 		5C63614325534A0C00E374B8 /* HelloWorld */ = {
 			isa = PBXGroup;
 			children = (
-				5C6361A125535C6300E374B8 /* Views */,
 				5C63614425534A0C00E374B8 /* HelloWorldApp.swift */,
+				5C6361A125535C6300E374B8 /* Views */,
 				5C6361A925537AF200E374B8 /* Utilities */,
-				5C63614625534A0C00E374B8 /* ContentView.swift */,
 				5C63614825534A1100E374B8 /* Assets.xcassets */,
 				5C63614D25534A1200E374B8 /* Info.plist */,
 				5C63615425534BD300E374B8 /* GoogleService-Info.plist */,
@@ -98,10 +103,13 @@
 		5C6361A125535C6300E374B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C63614625534A0C00E374B8 /* Home.swift */,
 				5C6361A625535C8300E374B8 /* Login.swift */,
+				5C728B0F2554D8A40020B70D /* Register.swift */,
 				5C6361A225535C7500E374B8 /* ChatList.swift */,
 				5C6361AE25538B8400E374B8 /* Join.swift */,
 				5C6361B42553960900E374B8 /* Messages.swift */,
+				5C5C6B632553DC5F0038B60B /* MessageLine.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -112,6 +120,7 @@
 				5C63616925534EF100E374B8 /* SessionStore.swift */,
 				5C6361AB25537B2700E374B8 /* ChatroomsViewModel.swift */,
 				5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */,
+				5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -247,10 +256,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C63614725534A0C00E374B8 /* ContentView.swift in Sources */,
+				5C63614725534A0C00E374B8 /* Home.swift in Sources */,
+				5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */,
 				5C6361B52553960900E374B8 /* Messages.swift in Sources */,
 				5C6361A725535C8300E374B8 /* Login.swift in Sources */,
 				5C6361AF25538B8400E374B8 /* Join.swift in Sources */,
+				5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */,
+				5C728B102554D8A40020B70D /* Register.swift in Sources */,
 				5C6361A325535C7500E374B8 /* ChatList.swift in Sources */,
 				5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */,
 				5C63616A25534EF100E374B8 /* SessionStore.swift in Sources */,
