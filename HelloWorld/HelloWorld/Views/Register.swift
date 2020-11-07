@@ -13,7 +13,7 @@ struct Register: View {
     @State var password = ""
     @State var firstName = ""
     @State var lastName = ""
-    @State var alert = false
+    @State var showAlert = false
     @State var isLoading = false
     
     // TODO: form validation (min characters, no empty fields/spaces)
@@ -27,6 +27,9 @@ struct Register: View {
         NavigationView {
             ZStack {
                 VStack {
+                    
+                    // TODO: add logo
+                    
                     Group {
                         TextField("First Name", text: $firstName)
                         TextField("Last Name", text: $lastName)
@@ -39,11 +42,14 @@ struct Register: View {
                         
                         isLoading.toggle()
                         
-                        sessionStore.signUp(email: email, password: password) {
-                            
-                            userProfile.createProfile(firstName: firstName, lastName: lastName, email: email)
-                            
-                            self.presentationMode.wrappedValue.dismiss()
+                        sessionStore.signUp(email: email, password: password) { success in
+                            if success {
+                                userProfile.createProfile(firstName: firstName, lastName: lastName, email: email)
+                                self.presentationMode.wrappedValue.dismiss()
+                            } else {
+                                showAlert = true
+                                isLoading.toggle()
+                            }
                         }
                         
                     }, label: {
@@ -67,10 +73,9 @@ struct Register: View {
                 }
             }
         }
-        
-        //        .alert(isPresented: $alert) {
-        //            Alert(title: Text("Alert"), message: Text("Message"), dismissButton: .default(Text("OK")))
-        //        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
