@@ -57,11 +57,11 @@ struct MessageLine: View {
     }
 }
 
-struct MessageLine_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            MessageLine(ownMessage: true, message: "Hello world, how are you?", sender: "John")
-            MessageLine(ownMessage: false, message: "This is a very long message that is supposed to take up many lines what do you think abo", sender: "John")
-        }
-    }
-}
+//struct MessageLine_Previews: PreviewProvider {
+//    static var previews: some View {
+//        VStack {
+//            MessageLine(ownMessage: true, message: "Hello world, how are you?", sender: "John")
+//            MessageLine(ownMessage: false, message: "This is a very long message that is supposed to take up many lines what do you think abo", sender: "John")
+//        }
+//    }
+//}

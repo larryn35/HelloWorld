@@ -7,6 +7,7 @@
 
 import Foundation
 import Firebase
+import FirebaseStorage
 
 struct UserProfile: Codable, Identifiable {
     var id = UUID()
@@ -18,7 +19,9 @@ struct UserProfile: Codable, Identifiable {
 class UserProfileViewModel: ObservableObject {
     @Published var userProfiles = [UserProfile]()
     private let db = Firestore.firestore()
+    private let storage = Storage.storage().reference()
     private let user = Auth.auth().currentUser
+    
     
     func fetchProfile() {
         if (user != nil) {
@@ -59,5 +62,38 @@ class UserProfileViewModel: ObservableObject {
                 }
             }
     }
+    
+//    func createProfile(firstName: String, lastName: String, email: String, imageData: Data) {
+//
+//        let uid = Auth.auth().currentUser?.uid
+//
+//        storage.child("profilePictures").child(uid!).putData(imageData, metadata: nil) { (_, error) in
+//            guard error == nil else {
+//                print("userprofileVM putData error: ", error!)
+//                return
+//            }
+//            self.storage.child("profilePictures").child(uid!).downloadURL { (url, err) in
+//                guard let url = url, error == nil else {
+//                    print("userprofileVM downloadURL error: ", error!)
+//                    return
+//                }
+//
+//                self.db.collection("userprofiles")
+//                    .addDocument(data: [
+//                        "firstName": firstName,
+//                        "lastName": lastName,
+//                        "email": email.lowercased(),
+//                        "profilePicture": url.absoluteString
+//                    ]) { error in
+//                        if let error = error {
+//                            print("error adding profile: \(error)")
+//                        } else {
+//                            print("successfuly created profile for \(email)")
+//                        }
+//                    }
+//            }
+//        }
+//    }
+    
 }
 
