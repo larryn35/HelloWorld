@@ -14,7 +14,7 @@ struct Register: View {
     @State var firstName = ""
     @State var lastName = ""
     @State var showAlert = false
-    @State var isLoading = false
+    @State var isLoading = true
     
     // TODO: form validation (min characters, no empty fields/spaces)
     
@@ -68,8 +68,7 @@ struct Register: View {
                 .navigationTitle("Welcome")
                 
                 if isLoading {
-                    LoadingAnimation()
-                        .frame(width: 200, height: 200)
+                    Loading()
                 }
             }
         }
