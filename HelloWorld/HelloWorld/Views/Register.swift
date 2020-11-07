@@ -14,7 +14,9 @@ struct Register: View {
     @State var firstName = ""
     @State var lastName = ""
     @State var showAlert = false
-    @State var isLoading = true
+    @State var isLoading = false
+    @State var showImagePicker = false
+    @State var imageData : Data = .init(count: 0)
     
     // TODO: form validation (min characters, no empty fields/spaces)
     
@@ -28,13 +30,37 @@ struct Register: View {
             ZStack {
                 VStack {
                     
-                    // TODO: add logo
-                    
+                    Button(action: {
+                        showImagePicker = true
+                    }, label: {
+                        if self.imageData.count == 0 {
+                            Image("DefaultProfilePicture")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                                .shadow(radius: 15)
+                                .overlay(Circle().stroke(Color.white, lineWidth: 8))
+                                .frame(width: 150, height: 150)
+                        }
+                        else{
+                            if let image = UIImage(data: imageData) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 15)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 8))
+                                    .frame(width: 150, height: 150)
+                            }
+                        }
+                    })
+                    .padding(.vertical, 30)
+                                        
                     Group {
                         TextField("First Name", text: $firstName)
                         TextField("Last Name", text: $lastName)
-                        TextField("email", text: $email)
-                        SecureField("password", text: $password)
+                        TextField("Enter your email", text: $email)
+                        SecureField("Create a password (6 characters or longer)", text: $password)
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     
@@ -44,8 +70,13 @@ struct Register: View {
                         
                         sessionStore.signUp(email: email, password: password) { success in
                             if success {
-                                userProfile.createProfile(firstName: firstName, lastName: lastName, email: email)
+                                if self.imageData.count == 0 {
+                                    userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: nil)
+                                } else {
+                                    userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: imageData)
+                                }
                                 self.presentationMode.wrappedValue.dismiss()
+                                
                             } else {
                                 showAlert = true
                                 isLoading.toggle()
@@ -65,12 +96,15 @@ struct Register: View {
 
                 }
                 .padding()
-                .navigationTitle("Welcome")
+                .navigationTitle("Register")
                 
                 if isLoading {
                     Loading()
                 }
             }
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(imageData: self.$imageData)
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))

@@ -57,6 +57,7 @@ struct Messages: View {
         .onAppear {
             guard !userProfileVM.userProfiles.isEmpty else { return }
             senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
+            print(userProfileVM.userProfiles[0].profilePicture ?? "no profile picture")
         }
         .navigationBarTitle(chatroom.title)
     }
