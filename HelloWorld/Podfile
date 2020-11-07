@@ -8,6 +8,7 @@ target 'HelloWorld' do
   # Pods for HelloWorld
 
 pod 'Firebase/Auth'
-pod 'Firebase/Firestore'  
+pod 'Firebase/Firestore'
+pod 'Firebase/Storage'
 
 end

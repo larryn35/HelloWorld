@@ -16,7 +16,7 @@ struct MessageLine: View {
     var body: some View {
         
         if ownMessage {
-            HStack(spacing: 20) {
+            HStack {
                 Spacer()
                 Text(message)
                     .padding(.vertical, 10)
@@ -32,7 +32,7 @@ struct MessageLine: View {
 //                    .overlay(Circle().stroke(Color.gray, lineWidth: 3))
             }
         } else {
-            HStack(alignment:.bottom, spacing: 20) {
+            HStack(alignment:.bottom, spacing: 10) {
                 Image(systemName: "person.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -57,11 +57,11 @@ struct MessageLine: View {
     }
 }
 
-//struct MessageLine_Previews: PreviewProvider {
-//    static var previews: some View {
-//        VStack {
-//            MessageLine(ownMessage: true, message: "Hello world, how are you?", sender: "John")
-//            MessageLine(ownMessage: false, message: "This is a very long message that is supposed to take up many lines what do you think abo", sender: "John")
-//        }
-//    }
-//}
+struct MessageLine_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            MessageLine(ownMessage: true, message: "Hello world, how are you?", sender: "John")
+            MessageLine(ownMessage: false, message: "This is a very long message that is supposed to take up many lines what do you think abo", sender: "John")
+        }
+    }
+}

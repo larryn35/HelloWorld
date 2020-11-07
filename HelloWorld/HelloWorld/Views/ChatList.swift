@@ -40,7 +40,8 @@ struct ChatList: View {
                     joinModal = true
                 }, label: {
                     Image(systemName: "plus.circle")
-                }))
+                })
+            )
             .sheet(isPresented: $joinModal, content: {
                 Join(isOpen: $joinModal)
             })
