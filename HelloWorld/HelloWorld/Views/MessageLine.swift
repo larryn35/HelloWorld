@@ -39,18 +39,24 @@ struct MessageLine: View {
                     .frame(width: 40.5, height: 40.5)
                     .overlay(Circle().stroke(Color.gray, lineWidth: 3))
                 
-                Text(message)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 20)
-                    .background(Color.green)
-                    .cornerRadius(20)
-                    .foregroundColor(.white)
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack {
+                        Text(sender)
+                        Spacer()
+                    }
+                    Text(message)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .background(Color.green)
+                        .cornerRadius(20)
+                        .foregroundColor(.white)
+                }
                 Spacer()
             }
         }
     }
 }
-//
+
 //struct MessageLine_Previews: PreviewProvider {
 //    static var previews: some View {
 //        VStack {

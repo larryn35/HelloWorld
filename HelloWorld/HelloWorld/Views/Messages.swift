@@ -11,25 +11,34 @@ import Firebase
 struct Messages: View {
     
     @State var messageField = ""
+    @State var senderName = ""
     let chatroom: Chatroom
-    var name = ""
+    var joinCode = ""
     
     @ObservedObject var messagesViewModel = MessagesViewModel()
-        
+    @ObservedObject var userProfileVM = UserProfileViewModel()
+    
     init(chatroom: Chatroom) {
         self.chatroom = chatroom
-        messagesViewModel.fetchData(docId: chatroom.id
-        )
+        self.joinCode = String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
+        messagesViewModel.fetchData(docId: chatroom.id)
+        userProfileVM.fetchProfile()
     }
     
     var body: some View {
         VStack {
+            HStack {
+                Text("Join code: \(joinCode)")
+                    .font(.footnote)
+                Spacer()
+            }
+            .padding(.horizontal)
+            
             List(messagesViewModel.messages) { i in
-                if Auth.auth().currentUser?.email == i.name  {
+                if Auth.auth().currentUser?.email == i.email  {
                     MessageLine(ownMessage: true, message: i.content, sender: i.name)
                 } else {
                     MessageLine(ownMessage: false, message: i.content, sender: i.name)
-
                 }
             }
             
@@ -37,11 +46,17 @@ struct Messages: View {
                 TextField("Enter message...", text: $messageField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button(action: {
-                    messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id)
+                    messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: senderName)
+                    messageField = ""
                 }, label: {
                     Text("Send")
                 })
             }
+            .padding(.horizontal)
+        }
+        .onAppear {
+            guard !userProfileVM.userProfiles.isEmpty else { return }
+            senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
         }
         .navigationBarTitle(chatroom.title)
     }

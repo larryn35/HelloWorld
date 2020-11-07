@@ -22,7 +22,12 @@ class UserProfileViewModel: ObservableObject {
     
     func fetchProfile() {
         if (user != nil) {
-            db.collection("userprofiles").whereField("id", arrayContains: user!.uid)
+            guard let userEmail = user?.email else {
+                print("error retrieving userEmail")
+                return
+            }
+            
+            db.collection("userprofiles").whereField("email", isEqualTo: userEmail)
                 .addSnapshotListener { (snapshot, error) in
                     guard let documents = snapshot?.documents else {
                         print("no docs returned")
@@ -40,13 +45,12 @@ class UserProfileViewModel: ObservableObject {
         }
     }
     
-    func createProfile(firstName: String, lastName: String, id: String, email: String) {
+    func createProfile(firstName: String, lastName: String, email: String) {
         db.collection("userprofiles")
             .addDocument(data: [
                 "firstName": firstName,
                 "lastName": lastName,
-                "email": email,
-                "id": id
+                "email": email.lowercased(),
             ]) { error in
                 if let error = error {
                     print("error adding profile: \(error)")

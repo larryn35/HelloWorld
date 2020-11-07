@@ -37,7 +37,7 @@ struct Register: View {
                                                             
                     sessionStore.signUp(email: email, password: password) {
                         
-                        userProfile.createProfile(firstName: firstName, lastName: lastName, id: UUID().uuidString, email: email)
+                        userProfile.createProfile(firstName: firstName, lastName: lastName, email: email)
                         
                         self.presentationMode.wrappedValue.dismiss()
 

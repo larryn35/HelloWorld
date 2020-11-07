@@ -12,20 +12,22 @@ struct Message: Codable, Identifiable {
     var id: String?
     var content: String
     var name: String
+    var email: String
 }
 
 class MessagesViewModel: ObservableObject {
     @Published var messages = [Message]()
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
-    
-    func sendMessage(messageContent: String, docId: String) {
+
+    func sendMessage(messageContent: String, docId: String, senderName: String) {
         if (user != nil) {
             guard let user = user, let userEmail = user.email else { return }
             db.collection("chatrooms").document(docId).collection("messages")
                 .addDocument(data: [
                     "sentAt": Date(),
-                    "displayName": userEmail,
+                    "displayName": senderName,
+                    "email": userEmail,
                     "content": messageContent,
                     "sender": user.uid
                 ]
@@ -42,12 +44,16 @@ class MessagesViewModel: ObservableObject {
                         return
                     }
                     
+//                    print("chatrooms documents: ", documents)
+                    
                     self.messages = documents.map { docSnapshot -> Message in
                         let data = docSnapshot.data()
                         let docId = docSnapshot.documentID
                         let content = data["content"] as? String ?? ""
                         let displayName = data["displayName"] as? String ?? ""
-                        return Message(id: docId, content: content, name: displayName)
+                        let email = data["email"] as? String ?? ""
+                        let safeEmail = email.lowercased()
+                        return Message(id: docId, content: content, name: displayName, email: safeEmail)
                     }
                 }
         }
