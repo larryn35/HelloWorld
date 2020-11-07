@@ -12,6 +12,7 @@ struct Login: View {
     @State var email = ""
     @State var password = ""
     @State private var showRegistration = false
+    @State var showAlert = false
     @ObservedObject var sessionStore = SessionStore()
     
     var body: some View {
@@ -24,11 +25,15 @@ struct Login: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button(action: {
-                    sessionStore.signIn(email: email, password: password)
+                    sessionStore.signIn(email: email, password: password) { success in
+                        if !success {
+                            showAlert = true
+                        }
+                    }
                 }, label: {
                     Text("Login")
                 })
-                                
+                
                 Text("Don't have an account? Sign up")
                     .font(.subheadline)
                     .padding()
@@ -37,10 +42,13 @@ struct Login: View {
                     }
                     .sheet(isPresented: $showRegistration, content: {
                         Register()
-
+                        
                     })
             }
             .navigationTitle("Welcome")
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))
+            }
         }
     }
 }

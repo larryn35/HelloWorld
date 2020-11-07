@@ -33,16 +33,16 @@ class SessionStore: ObservableObject {
         })
     }
     
-    func signIn(email: String, password: String) {
+    func signIn(email: String, password: String, completion: @escaping (Bool) -> Void) {
         let safeEmail = email.lowercased()
-        authRef.signIn(withEmail: safeEmail, password: password)
-//        { (result, error) in
-//            guard result != nil, error == nil else {
-//                print("Error signing in with \(email): \(String(describing: error))")
-//                return
-//            }
-//            print("Signed in with: \(email)")
-//        }
+        authRef.signIn(withEmail: safeEmail, password: password) { (result, error) in
+            guard result != nil, error == nil else {
+                print("failed to sign in with \(email)")
+                completion(false)
+                return
+            }
+            completion(true)
+        }
     }
     
     func signUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
