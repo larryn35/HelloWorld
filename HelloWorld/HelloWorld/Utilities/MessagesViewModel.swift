@@ -66,9 +66,7 @@ class MessagesViewModel: ObservableObject {
                         print("no documents")
                         return
                     }
-                    
-//                    print("chatrooms documents: ", documents)
-                    
+                                        
                     self.messages = documents.map { docSnapshot -> Message in
                         let data = docSnapshot.data()
                         let docId = docSnapshot.documentID

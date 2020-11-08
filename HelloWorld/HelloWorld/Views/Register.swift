@@ -9,14 +9,14 @@ import SwiftUI
 
 struct Register: View {
     
-    @State var email = ""
-    @State var password = ""
-    @State var firstName = ""
-    @State var lastName = ""
-    @State var showAlert = false
-    @State var isLoading = false
-    @State var showImagePicker = false
-    @State var imageData : Data = .init(count: 0)
+    @State private var email = ""
+    @State private var password = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
+    @State private var showAlert = false
+    @State private var isLoading = false
+    @State private var showImagePicker = false
+    @State private var imageData : Data = .init(count: 0)
     @Binding var showRegistration : Bool
 
     // TODO: form validation (min characters, no empty fields/spaces)
@@ -32,6 +32,8 @@ struct Register: View {
                     
                     Button(action: {
                         showImagePicker = true
+                        self.hideKeyboard()
+                        
                     }, label: {
                         if self.imageData.count == 0 {
                             Image("DefaultProfilePicture")
@@ -64,10 +66,12 @@ struct Register: View {
                     }
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     
+                    Spacer()
+                    
                     Button(action: {
-                        
+
                         isLoading.toggle()
-                        
+
                         sessionStore.signUp(email: email, password: password) { success in
                             if success {
                                 if self.imageData.count == 0 {
@@ -75,15 +79,15 @@ struct Register: View {
                                 } else {
                                     userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: imageData)
                                 }
-                                
+
                                 showRegistration = false
-                                
+
                             } else {
                                 showAlert = true
                                 isLoading.toggle()
                             }
                         }
-                        
+
                     }, label: {
                         Text("Sign up")
                             .padding()
