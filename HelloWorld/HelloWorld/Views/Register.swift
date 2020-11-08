@@ -17,10 +17,10 @@ struct Register: View {
     @State var isLoading = false
     @State var showImagePicker = false
     @State var imageData : Data = .init(count: 0)
-    
+    @Binding var showRegistration : Bool
+
     // TODO: form validation (min characters, no empty fields/spaces)
     
-    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var sessionStore = SessionStore()
     @ObservedObject var userProfile = UserProfileViewModel()
     
@@ -75,7 +75,8 @@ struct Register: View {
                                 } else {
                                     userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: imageData)
                                 }
-                                self.presentationMode.wrappedValue.dismiss()
+                                
+                                showRegistration = false
                                 
                             } else {
                                 showAlert = true
@@ -97,14 +98,14 @@ struct Register: View {
                 }
                 .padding()
                 .navigationTitle("Register")
+                .sheet(isPresented: $showImagePicker) {
+                    ImagePicker(imageData: self.$imageData)
+                }
                 
                 if isLoading {
                     Loading()
                 }
             }
-        }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(imageData: self.$imageData)
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))

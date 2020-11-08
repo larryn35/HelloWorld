@@ -6,45 +6,53 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MessageLine: View {
     
     var ownMessage = false
-    var message = ""
-    var sender = ""
+    var messageDetails = Message(content: "", name: "", email: "")
     
     var body: some View {
         
         if ownMessage {
             HStack {
                 Spacer()
-                Text(message)
+                Text(messageDetails.content)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
                     .background(Color.blue)
                     .cornerRadius(20)
                     .foregroundColor(.white)
-
-//                Image(systemName: "person.circle")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: 40.5, height: 40.5)
-//                    .overlay(Circle().stroke(Color.gray, lineWidth: 3))
             }
+            
         } else {
             HStack(alignment:.bottom, spacing: 10) {
-                Image(systemName: "person.circle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 40.5, height: 40.5)
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 3))
+    
+                if messageDetails.profilePicture == nil {
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 40.5, height: 40.5)
+                        .overlay(Circle().stroke(Color.gray, lineWidth: 3))
+                } else {
+                    if let url = messageDetails.profilePicture {
+                        WebImage(url: URL(string: url))
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .clipShape(Circle())
+                            .frame(width: 40.5, height: 40.5)
+                            .overlay(Circle().stroke(Color.gray, lineWidth: 3))
+                    }
+                }
                 
                 VStack(alignment: .leading, spacing: 3) {
                     HStack {
-                        Text(sender)
+                        Text(messageDetails.name)
+                            .font(.caption)
                         Spacer()
                     }
-                    Text(message)
+                    Text(messageDetails.content)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
                         .background(Color.green)

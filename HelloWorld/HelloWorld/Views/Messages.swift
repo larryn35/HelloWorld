@@ -12,6 +12,8 @@ struct Messages: View {
     
     @State var messageField = ""
     @State var senderName = ""
+    @State var senderPicture: String? = ""
+
     let chatroom: Chatroom
     var joinCode = ""
     
@@ -36,9 +38,9 @@ struct Messages: View {
             
             List(messagesViewModel.messages) { i in
                 if Auth.auth().currentUser?.email == i.email  {
-                    MessageLine(ownMessage: true, message: i.content, sender: i.name)
+                    MessageLine(ownMessage: true, messageDetails: i)
                 } else {
-                    MessageLine(ownMessage: false, message: i.content, sender: i.name)
+                    MessageLine(ownMessage: false, messageDetails: i)
                 }
             }
             
@@ -46,7 +48,7 @@ struct Messages: View {
                 TextField("Enter message...", text: $messageField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button(action: {
-                    messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: senderName)
+                    messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: senderName, profilePicture: senderPicture)
                     messageField = ""
                 }, label: {
                     Text("Send")
@@ -57,7 +59,7 @@ struct Messages: View {
         .onAppear {
             guard !userProfileVM.userProfiles.isEmpty else { return }
             senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
-            print(userProfileVM.userProfiles[0].profilePicture ?? "no profile picture")
+            senderPicture = userProfileVM.userProfiles[0].profilePicture ?? nil
         }
         .navigationBarTitle(chatroom.title)
     }

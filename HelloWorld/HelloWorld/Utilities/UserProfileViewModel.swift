@@ -23,7 +23,6 @@ class UserProfileViewModel: ObservableObject {
     private let storage = Storage.storage().reference()
     private let user = Auth.auth().currentUser
     
-    
     func fetchProfile() {
         if (user != nil) {
             guard let userEmail = user?.email else {
@@ -49,21 +48,6 @@ class UserProfileViewModel: ObservableObject {
                 }
         }
     }
-    //
-    //    func createProfile(firstName: String, lastName: String, email: String) {
-    //        db.collection("userprofiles")
-    //            .addDocument(data: [
-    //                "firstName": firstName,
-    //                "lastName": lastName,
-    //                "email": email.lowercased(),
-    //            ]) { error in
-    //                if let error = error {
-    //                    print("error adding profile: \(error)")
-    //                } else {
-    //                    print("successfuly created profile for \(email)")
-    //                }
-    //            }
-    //    }
     
     func createProfile(firstName: String, lastName: String, email: String, imageData: Data?) {
         

@@ -13,6 +13,7 @@ struct Message: Codable, Identifiable {
     var content: String
     var name: String
     var email: String
+    var profilePicture: String?
 }
 
 class MessagesViewModel: ObservableObject {
@@ -20,18 +21,40 @@ class MessagesViewModel: ObservableObject {
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
 
-    func sendMessage(messageContent: String, docId: String, senderName: String) {
+    func sendMessage(messageContent: String, docId: String, senderName: String, profilePicture: String?) {
         if (user != nil) {
-            guard let user = user, let userEmail = user.email else { return }
-            db.collection("chatrooms").document(docId).collection("messages")
-                .addDocument(data: [
-                    "sentAt": Date(),
-                    "displayName": senderName,
-                    "email": userEmail,
-                    "content": messageContent,
-                    "sender": user.uid
-                ]
-                )
+            // sender did not set profile picture
+            if profilePicture != nil {
+                guard let user = user, let userEmail = user.email else { return }
+                db.collection("chatrooms").document(docId).collection("messages")
+                    .addDocument(data: [
+                        "sentAt": Date(),
+                        "displayName": senderName,
+                        "email": userEmail,
+                        "content": messageContent,
+                        "sender": user.uid,
+                        "profilePicture": profilePicture!
+                    ]
+                    )
+                print("user with profile picture sent message")
+                
+            } else {
+                // sender has profile picture
+                guard let user = user, let userEmail = user.email else { return }
+                db.collection("chatrooms").document(docId).collection("messages")
+                    .addDocument(data: [
+                        "sentAt": Date(),
+                        "displayName": senderName,
+                        "email": userEmail,
+                        "content": messageContent,
+                        "sender": user.uid,
+                    ]
+                    )
+                print("user without profile picture sent message")
+            }
+            
+        } else {
+            print("user not found")
         }
     }
     
@@ -53,7 +76,8 @@ class MessagesViewModel: ObservableObject {
                         let displayName = data["displayName"] as? String ?? ""
                         let email = data["email"] as? String ?? ""
                         let safeEmail = email.lowercased()
-                        return Message(id: docId, content: content, name: displayName, email: safeEmail)
+                        let picture = data["profilePicture"] as? String
+                        return Message(id: docId, content: content, name: displayName, email: safeEmail, profilePicture: picture)
                     }
                 }
         }

@@ -41,8 +41,7 @@ struct Login: View {
                         showRegistration.toggle()
                     }
                     .sheet(isPresented: $showRegistration, content: {
-                        Register()
-                        
+                        Register(showRegistration: $showRegistration)
                     })
             }
             .navigationTitle("Welcome")
