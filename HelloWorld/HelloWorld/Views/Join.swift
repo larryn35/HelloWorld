@@ -21,12 +21,15 @@ struct Join: View {
                     Text("Join a chatroom")
                         .font(.title)
                     TextField("Enter your join code", text: $joinCode)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
                     Button(action: {
                         chatroomsViewModel.joinChatroom(code: joinCode) {
                             isOpen = false
                         }
                     }, label: {
                         Text("Join")
+                            .modifier(ButtonStyle())
                     })
                 }
                 
@@ -34,15 +37,19 @@ struct Join: View {
                     Text("Create a chatroom")
                         .font(.title)
                     TextField("Enter a title", text: $newTitle)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+
                     Button(action: {
                         chatroomsViewModel.createChatroom(title: newTitle) {
                             isOpen = false
                         }
                     }, label: {
                         Text("Create")
+                            .modifier(ButtonStyle())
                     })
                 }
             }
+            .padding()
             .navigationBarTitle("Join or create")
         }
     }

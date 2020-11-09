@@ -13,7 +13,8 @@ struct Messages: View {
     @State var messageField = ""
     @State var senderName = ""
     @State var senderPicture: String? = ""
-
+    @State var messages = [Message]()
+    
     let chatroom: Chatroom
     var joinCode = ""
     
@@ -36,18 +37,47 @@ struct Messages: View {
             }
             .padding(.horizontal)
             
-            List(messagesViewModel.messages) { i in
-                if Auth.auth().currentUser?.email == i.email  {
-                    MessageLine(ownMessage: true, messageDetails: i)
-                } else {
-                    MessageLine(ownMessage: false, messageDetails: i)
+            ScrollView {
+                ScrollViewReader { scrollView in
+                    LazyVStack {
+                        ForEach(messages, id:\.content) { i in
+                            if Auth.auth().currentUser?.email == i.email  {
+                                MessageLine(ownMessage: true, messageDetails: i)
+                            } else {
+                                MessageLine(ownMessage: false, messageDetails: i)
+                            }
+                        }
+                    }
+                    .onAppear {
+                        DispatchQueue.main.async {
+                            if let lastMsg = messages.last?.content {
+                                withAnimation {
+                                    scrollView.scrollTo(lastMsg)
+                                }
+                            }
+                        }
+                    }
+                    .onChange(of: messagesViewModel.messages) { _ in
+                        messages = messagesViewModel.messages
+                        
+                        DispatchQueue.main.async {
+                            if let lastMsg = messages.last?.content {
+                                withAnimation {
+                                    scrollView.scrollTo(lastMsg)
+                                }
+                            }
+                        }
+                    }
                 }
+                .padding()
             }
             
             HStack {
                 TextField("Enter message...", text: $messageField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button(action: {
+                    self.hideKeyboard()
+
                     messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: senderName, profilePicture: senderPicture)
                     messageField = ""
                 }, label: {
@@ -60,6 +90,7 @@ struct Messages: View {
             guard !userProfileVM.userProfiles.isEmpty else { return }
             senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
             senderPicture = userProfileVM.userProfiles[0].profilePicture ?? nil
+            messages = messagesViewModel.messages
         }
         .navigationBarTitle(chatroom.title)
     }

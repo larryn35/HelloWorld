@@ -29,3 +29,13 @@ extension View {
     }
 }
 #endif
+
+struct ButtonStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.blue)
+            .cornerRadius(25)
+    }
+}

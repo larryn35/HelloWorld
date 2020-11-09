@@ -30,11 +30,10 @@ struct MessageLine: View {
             HStack(alignment:.bottom, spacing: 10) {
     
                 if messageDetails.profilePicture == nil {
-                    Image(systemName: "person.circle")
+                    Image("IconClear")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 40.5, height: 40.5)
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 3))
                 } else {
                     if let url = messageDetails.profilePicture {
                         WebImage(url: URL(string: url))
@@ -42,7 +41,6 @@ struct MessageLine: View {
                             .aspectRatio(contentMode: .fill)
                             .clipShape(Circle())
                             .frame(width: 40.5, height: 40.5)
-                            .overlay(Circle().stroke(Color.gray, lineWidth: 3))
                     }
                 }
                 
@@ -59,6 +57,7 @@ struct MessageLine: View {
                         .cornerRadius(20)
                         .foregroundColor(.white)
                 }
+                
                 Spacer()
             }
         }
