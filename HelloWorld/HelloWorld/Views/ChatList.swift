@@ -14,23 +14,14 @@ struct ChatList: View {
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     @ObservedObject var sessionStore = SessionStore()
-        
+            
     var body: some View {
         NavigationView {
             List(chatroomsViewModel.chatrooms) { chatroom in
-                NavigationLink(destination: Messages(chatroom: chatroom)) {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(chatroom.title).fontWeight(.semibold)
-                            
-                            // diplay other users in the chatroom
-                            Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
-                        }
-                        Spacer()
-                    }
+                NavigationLink(destination: Messages(for: chatroom)) {
+                    ChatListItem(with: chatroom)
                 }
             }
-            
             .navigationBarTitle("Welcome")
             .navigationBarItems(
                 leading: Button(action: {
@@ -56,5 +47,39 @@ struct ChatList: View {
 struct ChatList_Previews: PreviewProvider {
     static var previews: some View {
         ChatList()
+    }
+}
+
+
+struct ChatListItem: View {
+    var chatroom: Chatroom
+    
+    @ObservedObject var messagesViewModel = MessagesViewModel()
+    @ObservedObject var userProfileVM = UserProfileViewModel()
+
+    init(with chatroom: Chatroom) {
+        self.chatroom = chatroom
+        messagesViewModel.fetchMessages(docId: chatroom.id)
+    }
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(chatroom.title).fontWeight(.semibold)
+                
+                // diplay other users in the chatroom
+                if chatroom.userNames.count >= 2 {
+                    Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+                }
+                
+                if let lastMessage = messagesViewModel.messages.last {
+                    Text(lastMessage.name + ": " + lastMessage.content)
+                        .lineLimit(1)
+                }
+            }
+
+            Spacer()
+        
+        }
     }
 }

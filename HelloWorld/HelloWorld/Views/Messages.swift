@@ -19,7 +19,7 @@ struct Messages: View {
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     
-    init(chatroom: Chatroom) {
+    init(for chatroom: Chatroom) {
         self.chatroom = chatroom
         self.joinCode = String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
         messagesViewModel.fetchMessages(docId: chatroom.id)
@@ -92,6 +92,6 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         
-        Messages(chatroom: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
+        Messages(for: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
     }
 }
