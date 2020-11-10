@@ -20,11 +20,11 @@ class ChatroomsViewModel: ObservableObject {
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
-//    init() {
-//        fetchData()
-//    }
+    init() {
+        fetchChatRoomData()
+    }
     
-    func fetchData() {
+    func fetchChatRoomData() {
         if (user != nil) {
             db.collection("chatrooms").whereField("users", arrayContains: user!.uid)
                 .addSnapshotListener { (snapshot, error) in

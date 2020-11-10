@@ -10,22 +10,22 @@ import SwiftUI
 struct ChatList: View {
     
     @State var joinModal = false
-    @State var userName = ""
-    
+        
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     @ObservedObject var sessionStore = SessionStore()
-    
-    init() {
-        chatroomsViewModel.fetchData()
-    }
-    
+        
     var body: some View {
         NavigationView {
             List(chatroomsViewModel.chatrooms) { chatroom in
                 NavigationLink(destination: Messages(chatroom: chatroom)) {
                     HStack {
-                        Text(chatroom.title)
+                        VStack(alignment: .leading) {
+                            Text(chatroom.title).fontWeight(.semibold)
+                            
+                            // diplay other users in the chatroom
+                            Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+                        }
                         Spacer()
                     }
                 }
@@ -46,6 +46,7 @@ struct ChatList: View {
                 })
             )
             .sheet(isPresented: $joinModal, content: {
+                // send user's name when creating/joining chatroom
                 Join(isOpen: $joinModal, userName: userProfileVM.userProfiles.first?.firstName ?? "Error")
             })
         }

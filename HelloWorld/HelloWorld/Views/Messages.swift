@@ -22,8 +22,7 @@ struct Messages: View {
     init(chatroom: Chatroom) {
         self.chatroom = chatroom
         self.joinCode = String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
-        messagesViewModel.fetchData(docId: chatroom.id)
-        userProfileVM.fetchProfile()
+        messagesViewModel.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {

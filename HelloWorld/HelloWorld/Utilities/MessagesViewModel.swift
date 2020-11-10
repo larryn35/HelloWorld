@@ -58,7 +58,7 @@ class MessagesViewModel: ObservableObject {
         }
     }
     
-    func fetchData(docId: String) {
+    func fetchMessages(docId: String) {
         if (user != nil) {
             db.collection("chatrooms").document(docId).collection("messages").order(by: "sentAt", descending: false)
                 .addSnapshotListener { (snapshot, error) in
