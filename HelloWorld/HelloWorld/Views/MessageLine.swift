@@ -7,15 +7,15 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import FirebaseAuth
 
 struct MessageLine: View {
     
-    var ownMessage = false
     var messageDetails = Message(content: "", name: "", email: "")
     
     var body: some View {
         
-        if ownMessage {
+        if Auth.auth().currentUser?.email == messageDetails.email  {
             HStack {
                 Spacer()
                 Text(messageDetails.content)

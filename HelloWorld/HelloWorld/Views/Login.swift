@@ -20,6 +20,8 @@ struct Login: View {
             VStack {
                 Group {
                     TextField("email", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                     SecureField("password", text: $password)
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle())

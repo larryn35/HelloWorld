@@ -18,18 +18,17 @@ struct Register: View {
     @State private var showImagePicker = false
     @State private var imageData : Data = .init(count: 0)
     @Binding var showRegistration : Bool
-
+    
     // TODO: form validation (min characters, no empty fields/spaces)
     
     @ObservedObject var sessionStore = SessionStore()
     @ObservedObject var userProfile = UserProfileViewModel()
     
     var body: some View {
-    
+        
         NavigationView {
             ZStack {
                 VStack {
-                    
                     Button(action: {
                         showImagePicker = true
                         self.hideKeyboard()
@@ -57,21 +56,22 @@ struct Register: View {
                         }
                     })
                     .padding(.vertical, 30)
-                                        
+                    
                     Group {
                         TextField("First Name", text: $firstName)
                         TextField("Last Name", text: $lastName)
                         TextField("Enter your email", text: $email)
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
                         SecureField("Create a password (6 characters or longer)", text: $password)
                     }
+                    .padding(.horizontal)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     
-                    Spacer()
-                    
                     Button(action: {
-
+                        
                         isLoading.toggle()
-
+                        
                         sessionStore.signUp(email: email, password: password) { success in
                             if success {
                                 if self.imageData.count == 0 {
@@ -79,15 +79,15 @@ struct Register: View {
                                 } else {
                                     userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: imageData)
                                 }
-
+                                
                                 showRegistration = false
-
+                                
                             } else {
                                 showAlert = true
                                 isLoading.toggle()
                             }
                         }
-
+                        
                     }, label: {
                         Text("Sign up")
                             .padding()
@@ -95,13 +95,8 @@ struct Register: View {
                             .background(Color.blue)
                             .cornerRadius(25)
                     })
-                    .padding()
-                    
                     Spacer()
-
                 }
-                .padding()
-                .navigationTitle("Register")
                 .sheet(isPresented: $showImagePicker) {
                     ImagePicker(imageData: self.$imageData)
                 }
