@@ -23,6 +23,10 @@ class UserProfileViewModel: ObservableObject {
     private let storage = Storage.storage().reference()
     private let user = Auth.auth().currentUser
     
+    init() {
+        fetchProfile()
+    }
+    
     func fetchProfile() {
         if (user != nil) {
             guard let userEmail = user?.email else {

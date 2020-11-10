@@ -12,12 +12,17 @@ struct Chatroom: Codable, Identifiable {
     var id: String
     var title: String
     var joinCode: Int
+    var userNames: [String]
 }
 
 class ChatroomsViewModel: ObservableObject {
     @Published var chatrooms = [Chatroom]()
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
+    
+//    init() {
+//        fetchData()
+//    }
     
     func fetchData() {
         if (user != nil) {
@@ -32,20 +37,22 @@ class ChatroomsViewModel: ObservableObject {
                         let data = docSnapshot.data()
                         let docId = docSnapshot.documentID
                         let title = data["title"] as? String ?? ""
+                        let userNames = data["userNames"] as? [String] ?? [""]
                         let joinCode = data["joinCode"] as? Int ?? -1
-                        return Chatroom(id: docId, title: title, joinCode: joinCode)
+                        return Chatroom(id: docId, title: title, joinCode: joinCode, userNames: userNames)
                     })
                 }
         }
     }
     
-    func createChatroom(title: String, handler: @escaping () -> Void) {
+    func createChatroom(title: String, userName: String, handler: @escaping () -> Void) {
         if (user != nil) {
             db.collection("chatrooms")
                 .addDocument(data: [
                     "title": title,
-                    "joinCode": Int.random(in: 10000..<999999),
-                    "users": [user!.uid]
+                    "joinCode": Int.random(in: 1000..<9999),
+                    "users": [user!.uid],
+                    "userNames": [userName]
                 ]) { error in
                     if let error = error {
                         print("error adding document: \(error)")
@@ -56,7 +63,7 @@ class ChatroomsViewModel: ObservableObject {
         }
     }
     
-    func joinChatroom(code: String, handler: @escaping () -> Void) {
+    func joinChatroom(code: String, userName: String, handler: @escaping () -> Void) {
         if (user != nil) {
             guard let intCode = Int(code) else { return }
             db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
@@ -67,6 +74,10 @@ class ChatroomsViewModel: ObservableObject {
                         self.db.collection("chatrooms").document(document.documentID).updateData([
                             "users": FieldValue.arrayUnion([self.user!.uid])
                         ])
+                        self.db.collection("chatrooms").document(document.documentID).updateData([
+                            "userNames": FieldValue.arrayUnion([userName])
+                        ])
+
                         handler()
                     }
                 }

@@ -81,7 +81,6 @@ struct Messages: View {
             }
             .padding(.horizontal)
         }
-
         .onAppear {
             guard !userProfileVM.userProfiles.isEmpty else { return }
             senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
@@ -94,6 +93,6 @@ struct Messages: View {
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
         
-        Messages(chatroom: Chatroom(id: "1000", title: "Hello!", joinCode: 10))
+        Messages(chatroom: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
     }
 }

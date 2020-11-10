@@ -9,9 +9,12 @@ import SwiftUI
 
 struct ChatList: View {
     
-    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
-    @ObservedObject var sessionStore = SessionStore()
     @State var joinModal = false
+    @State var userName = ""
+    
+    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
+    @ObservedObject var userProfileVM = UserProfileViewModel()
+    @ObservedObject var sessionStore = SessionStore()
     
     init() {
         chatroomsViewModel.fetchData()
@@ -43,7 +46,7 @@ struct ChatList: View {
                 })
             )
             .sheet(isPresented: $joinModal, content: {
-                Join(isOpen: $joinModal)
+                Join(isOpen: $joinModal, userName: userProfileVM.userProfiles.first?.firstName ?? "Error")
             })
         }
     }

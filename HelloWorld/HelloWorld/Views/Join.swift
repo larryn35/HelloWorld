@@ -12,6 +12,8 @@ struct Join: View {
     @Binding var isOpen: Bool
     @State var joinCode = ""
     @State var newTitle = ""
+    @State var userName = ""
+    
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     
     var body: some View {
@@ -24,7 +26,7 @@ struct Join: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     
                     Button(action: {
-                        chatroomsViewModel.joinChatroom(code: joinCode) {
+                        chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
                             isOpen = false
                         }
                     }, label: {
@@ -40,8 +42,8 @@ struct Join: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
 
                     Button(action: {
-                        chatroomsViewModel.createChatroom(title: newTitle) {
-                            isOpen = false
+                        chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
+                           isOpen = false
                         }
                     }, label: {
                         Text("Create")
