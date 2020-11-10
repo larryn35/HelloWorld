@@ -10,16 +10,19 @@ import SwiftUI
 struct ChatList: View {
     
     @State var joinModal = false
-        
+    
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     @ObservedObject var sessionStore = SessionStore()
-            
+    
     var body: some View {
         NavigationView {
             List(chatroomsViewModel.chatrooms) { chatroom in
-                NavigationLink(destination: Messages(for: chatroom)) {
+                ZStack {
                     ChatListItem(with: chatroom)
+                    NavigationLink(destination: Messages(for: chatroom)) {
+                        EmptyView()
+                    }
                 }
             }
             .navigationBarTitle("Welcome")
@@ -56,30 +59,43 @@ struct ChatListItem: View {
     
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
-
+    
+    func dateFormat(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, MMM d"
+        return formatter.string(from: date)
+    }
+    
+    
     init(with chatroom: Chatroom) {
         self.chatroom = chatroom
         messagesViewModel.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
+        VStack(alignment: .leading) {
+            HStack {
                 Text(chatroom.title).fontWeight(.semibold)
+                Spacer()
                 
-                // diplay other users in the chatroom
-                if chatroom.userNames.count >= 2 {
-                    Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
-                }
-                
+                // display last message date
                 if let lastMessage = messagesViewModel.messages.last {
-                    Text(lastMessage.name + ": " + lastMessage.content)
-                        .lineLimit(1)
+                    Text(dateFormat(date: lastMessage.date)).font(.caption)
+                    
                 }
             }
-
-            Spacer()
-        
+            
+            // diplay other users in the chatroom
+            if chatroom.userNames.count >= 2 {
+                Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+            }
+            
+            // display most recent message
+            if let lastMessage = messagesViewModel.messages.last {
+                Text(lastMessage.name + ": " + lastMessage.content)
+                    .lineLimit(1)
+                    .font(.caption2)
+            }
         }
     }
 }
