@@ -60,9 +60,9 @@ struct ChatListItem: View {
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     
-    func dateFormat(date: Date) -> String {
+    private func dateFormat(date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "E, MMM d"
+        formatter.dateFormat = "E, MMM d, h:mm a"
         return formatter.string(from: date)
     }
     
@@ -80,8 +80,8 @@ struct ChatListItem: View {
                 
                 // display last message date
                 if let lastMessage = messagesViewModel.messages.last {
-                    Text(dateFormat(date: lastMessage.date)).font(.caption)
-                    
+                    Text(timeSinceMessage(message: lastMessage.date))
+                        .font(.caption)
                 }
             }
             

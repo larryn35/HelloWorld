@@ -76,8 +76,9 @@ class MessagesViewModel: ObservableObject {
                         let email = data["email"] as? String ?? ""
                         let safeEmail = email.lowercased()
                         let picture = data["profilePicture"] as? String
-                        let date = data["sentAt"] as? Date ?? Date()
-                        return Message(id: docId, content: content, name: displayName, email: safeEmail, profilePicture: picture, date: date)
+                        let timestamp = data["sentAt"] as? Timestamp ?? Timestamp()
+
+                        return Message(id: docId, content: content, name: displayName, email: safeEmail, profilePicture: picture, date: timestamp.dateValue())
                     }
                 }
         }

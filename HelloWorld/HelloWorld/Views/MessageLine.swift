@@ -12,23 +12,35 @@ import FirebaseAuth
 struct MessageLine: View {
     
     var messageDetails = Message(content: "", name: "", email: "")
-    
+    @State var timestamp = false
+        
     var body: some View {
         
         if Auth.auth().currentUser?.email == messageDetails.email  {
             HStack {
                 Spacer()
-                Text(messageDetails.content)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 20)
-                    .background(Color.blue)
-                    .cornerRadius(20)
-                    .foregroundColor(.white)
+                VStack(alignment: .trailing) {
+                    Text(messageDetails.content)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .background(Color.blue)
+                        .cornerRadius(20)
+                        .foregroundColor(.white)
+                        .onTapGesture {
+                            withAnimation {
+                                timestamp.toggle()
+                            }
+                        }
+                    if timestamp {
+                        Text(timeSinceMessage(message: messageDetails.date))
+                            .font(.caption)
+                    }
+                }
             }
             
         } else {
             HStack(alignment:.bottom, spacing: 10) {
-    
+                
                 if messageDetails.profilePicture == nil {
                     Image("IconClear")
                         .resizable()
@@ -56,8 +68,17 @@ struct MessageLine: View {
                         .background(Color.green)
                         .cornerRadius(20)
                         .foregroundColor(.white)
+                        .onTapGesture {
+                            withAnimation {
+                                timestamp.toggle()
+                            }
+                        }
+                    
+                    if timestamp {
+                        Text(timeSinceMessage(message: messageDetails.date))
+                            .font(.caption)
+                    }
                 }
-                
                 Spacer()
             }
         }
