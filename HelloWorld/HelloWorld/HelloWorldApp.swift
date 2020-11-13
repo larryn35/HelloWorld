@@ -31,11 +31,13 @@ extension View {
 #endif
 
 struct ButtonStyle: ViewModifier {
+    var validation = false
+    
     func body(content: Content) -> some View {
         content
             .padding()
             .foregroundColor(.white)
-            .background(Color.blue)
+            .background(validation ? Color.blue : Color.gray)
             .cornerRadius(25)
     }
 }

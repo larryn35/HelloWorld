@@ -45,7 +45,7 @@ class ChatroomsViewModel: ObservableObject {
         }
     }
     
-    func createChatroom(title: String, userName: String, handler: @escaping () -> Void) {
+    func createChatroom(title: String, userName: String, completion: @escaping () -> Void) {
         if (user != nil) {
             db.collection("chatrooms")
                 .addDocument(data: [
@@ -57,13 +57,13 @@ class ChatroomsViewModel: ObservableObject {
                     if let error = error {
                         print("error adding document: \(error)")
                     } else {
-                        handler()
+                        completion()
                     }
                 }
         }
     }
     
-    func joinChatroom(code: String, userName: String, handler: @escaping () -> Void) {
+    func joinChatroom(code: String, userName: String, completion: @escaping () -> Void) {
         if (user != nil) {
             guard let intCode = Int(code) else { return }
             db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
@@ -77,8 +77,8 @@ class ChatroomsViewModel: ObservableObject {
                         self.db.collection("chatrooms").document(document.documentID).updateData([
                             "userNames": FieldValue.arrayUnion([userName])
                         ])
-
-                        handler()
+                        
+                        completion()
                     }
                 }
             }

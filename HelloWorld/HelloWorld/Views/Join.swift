@@ -14,6 +14,13 @@ struct Join: View {
     @State var newTitle = ""
     @State var userName = ""
     
+    private var codeInputCount: Bool {
+        joinCode.count == 4
+    }
+    private var correctChatTitle: Bool {
+        !newTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     
     var body: some View {
@@ -22,8 +29,9 @@ struct Join: View {
                 VStack {
                     Text("Join a chatroom")
                         .font(.title)
-                    TextField("Enter your join code", text: $joinCode)
+                    TextField("Enter your 4-digit join code", text: $joinCode)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.numberPad)
                     
                     Button(action: {
                         chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
@@ -31,8 +39,9 @@ struct Join: View {
                         }
                     }, label: {
                         Text("Join")
-                            .modifier(ButtonStyle())
+                            .modifier(ButtonStyle(validation: codeInputCount))
                     })
+                    .disabled(!codeInputCount)
                 }
                 
                 VStack {
@@ -47,8 +56,9 @@ struct Join: View {
                         }
                     }, label: {
                         Text("Create")
-                            .modifier(ButtonStyle())
+                            .modifier(ButtonStyle(validation: correctChatTitle))
                     })
+                    .disabled(!correctChatTitle)
                 }
             }
             .padding()
