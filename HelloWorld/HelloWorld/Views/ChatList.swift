@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ChatList: View {
     
@@ -56,16 +57,10 @@ struct ChatList_Previews: PreviewProvider {
 
 struct ChatListItem: View {
     var chatroom: Chatroom
+    @State var timestamp = ""
     
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
-    
-    private func dateFormat(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "E, MMM d, h:mm a"
-        return formatter.string(from: date)
-    }
-    
     
     init(with chatroom: Chatroom) {
         self.chatroom = chatroom
@@ -79,9 +74,12 @@ struct ChatListItem: View {
                 Spacer()
                 
                 // display last message date
+                Text(timestamp)
+                    .font(.caption)
+            }
+            .onAppear {
                 if let lastMessage = messagesViewModel.messages.last {
-                    Text(timeSinceMessage(message: lastMessage.date))
-                        .font(.caption)
+                    timestamp = timeSinceMessage(message: lastMessage.date)
                 }
             }
             
@@ -99,3 +97,4 @@ struct ChatListItem: View {
         }
     }
 }
+

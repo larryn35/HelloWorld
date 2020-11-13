@@ -17,10 +17,14 @@ struct Register: View {
     @State private var isLoading = false
     @State private var showImagePicker = false
     @State private var imageData : Data = .init(count: 0)
+    @State private var errorMessage = ""
     @Binding var showRegistration : Bool
     
-    // TODO: form validation (min characters, no empty fields/spaces)
-    
+    private var completedForm: Bool {
+        // returns true if all fields are filled
+        formValidation(for: [email, password, firstName, lastName])
+    }
+        
     @ObservedObject var sessionStore = SessionStore()
     @ObservedObject var userProfile = UserProfileViewModel()
     
@@ -72,8 +76,8 @@ struct Register: View {
                         
                         isLoading.toggle()
                         
-                        sessionStore.signUp(email: email, password: password) { success in
-                            if success {
+                        sessionStore.signUp(email: email, password: password) { success, error  in
+                            if success, error == nil {
                                 if self.imageData.count == 0 {
                                     userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: nil)
                                 } else {
@@ -84,6 +88,7 @@ struct Register: View {
                                 
                             } else {
                                 showAlert = true
+                                errorMessage = "\(String(describing: error!.localizedDescription))"
                                 isLoading.toggle()
                             }
                         }
@@ -92,9 +97,11 @@ struct Register: View {
                         Text("Sign up")
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color.blue)
+                            .background(completedForm ? Color.blue : Color.gray)
                             .cornerRadius(25)
                     })
+                    .disabled(!completedForm)
+                    
                     Spacer()
                 }
                 .sheet(isPresented: $showImagePicker) {
@@ -107,7 +114,7 @@ struct Register: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Alert"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
     }
 }
@@ -118,3 +125,18 @@ struct Register: View {
 //        Register()
 //    }
 //}
+
+func formValidation(for strings: [String]) -> Bool {
+    var passes = [Bool]()
+    for string in strings {
+        // field does not pass validation (false) if is empty / contains just spaces
+        passes.append(!string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+
+    // if any of the fields fail, return false, otherwise true
+    if passes.contains(false) {
+        return false
+    } else {
+        return true
+    }
+}

@@ -13,6 +13,7 @@ struct Login: View {
     @State private var password = ""
     @State private var showRegistration = false
     @State private var showAlert = false
+    @State private var errorMessage = ""
     @ObservedObject var sessionStore = SessionStore()
     
     var body: some View {
@@ -28,9 +29,10 @@ struct Login: View {
                 .padding(.horizontal)
                                 
                 Button(action: {
-                    sessionStore.signIn(email: email, password: password) { success in
-                        if !success {
+                    sessionStore.signIn(email: email, password: password) { success, error  in
+                        if !success, error != nil {
                             showAlert = true
+                            errorMessage = "\(String(describing: error!.localizedDescription))"
                         }
                     }
                 }, label: {
@@ -54,7 +56,7 @@ struct Login: View {
             }
             .navigationTitle("Welcome")
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Alert"), message: Text("You done goofed"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Alert"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
         }
     }

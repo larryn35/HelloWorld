@@ -12,8 +12,10 @@ import FirebaseAuth
 struct MessageLine: View {
     
     var messageDetails = Message(content: "", name: "", email: "")
-    @State var timestamp = false
+    var users = [String]()
         
+    @State var timestamp = false
+            
     var body: some View {
         
         if Auth.auth().currentUser?.email == messageDetails.email  {
@@ -23,9 +25,10 @@ struct MessageLine: View {
                     Text(messageDetails.content)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        .background(Color.blue)
+                        .background(Color(#colorLiteral(red: 0.873228865, green: 0.9759244819, blue: 1, alpha: 1)))
                         .cornerRadius(20)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(#colorLiteral(red: 0, green: 0.04255843915, blue: 0.09319479696, alpha: 1)))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(#colorLiteral(red: 0, green: 0.04255843915, blue: 0.09319479696, alpha: 1)), lineWidth: 1))
                         .onTapGesture {
                             withAnimation {
                                 timestamp.toggle()
@@ -46,6 +49,7 @@ struct MessageLine: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 40.5, height: 40.5)
+                    
                 } else {
                     if let url = messageDetails.profilePicture {
                         WebImage(url: URL(string: url))
@@ -60,14 +64,16 @@ struct MessageLine: View {
                     HStack {
                         Text(messageDetails.name)
                             .font(.caption)
+                            // TODO: rewrite code for color
+                            .foregroundColor(userColor(user: messageDetails.name, users: users))
                         Spacer()
                     }
                     Text(messageDetails.content)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        .background(Color.green)
+                        .background(Color(#colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)))
                         .cornerRadius(20)
-                        .foregroundColor(.white)
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(userColor(user: messageDetails.name, users: users),lineWidth: 1))
                         .onTapGesture {
                             withAnimation {
                                 timestamp.toggle()

@@ -37,8 +37,8 @@ struct Messages: View {
             ScrollView {
                 ScrollViewReader { scrollView in
                     LazyVStack {
-                        ForEach(messagesViewModel.messages, id:\.content) { i in
-                            MessageLine(messageDetails: i)
+                        ForEach(messagesViewModel.messages) { i in
+                            MessageLine(messageDetails: i, users: chatroom.userNames)
                         }
                     }
                     .onAppear {
@@ -64,7 +64,7 @@ struct Messages: View {
                 .ignoresSafeArea(.keyboard)
                 .padding(.bottom, 0)
             }
-            
+                        
             HStack {
                 TextField("Enter message...", text: $messageField)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
