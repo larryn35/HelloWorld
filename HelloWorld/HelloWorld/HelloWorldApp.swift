@@ -17,7 +17,7 @@ struct HelloWorldApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Home()
+            WelcomeScreen()
         }
     }
 }
