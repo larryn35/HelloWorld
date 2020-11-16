@@ -15,6 +15,8 @@ struct MessageLine: View {
     var users = [String]()
         
     @State var timestamp = false
+    
+    @ObservedObject var messagesViewModel = MessagesViewModel()
             
     var body: some View {
         
@@ -35,7 +37,7 @@ struct MessageLine: View {
                             }
                         }
                     if timestamp {
-                        Text(timeSinceMessage(message: messageDetails.date))
+                        Text(messagesViewModel.timeSinceMessage(message: messageDetails.date))
                             .font(.caption)
                     }
                 }
@@ -81,7 +83,7 @@ struct MessageLine: View {
                         }
                     
                     if timestamp {
-                        Text(timeSinceMessage(message: messageDetails.date))
+                        Text(messagesViewModel.timeSinceMessage(message: messageDetails.date))
                             .font(.caption)
                     }
                 }

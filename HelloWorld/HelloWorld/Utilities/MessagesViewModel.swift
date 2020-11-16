@@ -19,6 +19,7 @@ struct Message: Codable, Identifiable, Hashable {
 
 class MessagesViewModel: ObservableObject {
     @Published var messages = [Message]()
+    @Published var lastMessage = [Message]().last
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
 
@@ -80,7 +81,37 @@ class MessagesViewModel: ObservableObject {
 
                         return Message(id: docId, content: content, name: displayName, email: safeEmail, profilePicture: picture, date: timestamp.dateValue())
                     }
+                    
+                    self.lastMessage = self.messages.last
                 }
+        }
+    }
+    
+    func timeSinceMessage(message: Date) -> String  {
+        let dateFormatter = DateFormatter()
+        let relDateFormatter = RelativeDateTimeFormatter()
+        relDateFormatter.unitsStyle = .short
+
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([Calendar.Component.minute], from: message, to: Date())
+
+        guard let minute = dateComponents.minute
+        else {
+            return ("error getting hour")
+        }
+        // greater than 6 days (>8640 mins), show date
+        if Int(minute) > 8640 {
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+            return dateFormatter.string(from: message)
+            
+        // greater than 2 hours (> 120 mins), show day of the week
+        } else if Int(minute) > 120 {
+            dateFormatter.dateFormat = "E h:mm a"
+            return dateFormatter.string(from: message)
+        } else {
+            
+            // less than 2 hours, use relative time
+            return relDateFormatter.string(for: message) ?? "error formatting date"
         }
     }
 }

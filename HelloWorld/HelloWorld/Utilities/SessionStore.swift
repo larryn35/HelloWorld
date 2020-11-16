@@ -44,8 +44,8 @@ class SessionStore: ObservableObject {
             completion(true, error)
         }
     }
-        
-    func signUp(email: String, password: String, completion: @escaping (Bool, Error?) -> Void) {
+    
+    func signUp(email: String, password: String, displayName: String, photo: String?, completion: @escaping (Bool, Error?) -> Void) {
         let safeEmail = email.lowercased()
         authRef.createUser(withEmail: safeEmail, password: password) { (result, error) in
             guard result != nil, error == nil else {
@@ -54,6 +54,21 @@ class SessionStore: ObservableObject {
                 return
             }
             print("Signed up with \(email)")
+            
+            // set display name
+            if let user = Auth.auth().currentUser {
+                let changeRequest = user.createProfileChangeRequest()
+                changeRequest.displayName = displayName
+                changeRequest.photoURL = URL(string: photo ?? "")
+                changeRequest.commitChanges { (error) in
+                    if let error = error {
+                        print("error updating user profile: \(error.localizedDescription)" )
+                    } else {
+                        print("profile updated")
+                    }
+                }
+            }
+            
             completion(true, error)
         }
     }
@@ -67,6 +82,19 @@ class SessionStore: ObservableObject {
             print("error signing out: \(error)")
         }
     }
+    
+    //    func updateProfile(displayName: String, photo: String?) {
+    //        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+    //        changeRequest?.displayName = displayName
+    //        changeRequest?.photoURL = URL(string: photo ?? "")
+    //        changeRequest?.commitChanges { (error) in
+    //            if let error = error {
+    //                print("error updating user profile: \(error.localizedDescription)" )
+    //            } else {
+    //                print("profile updated")
+    //            }
+    //        }
+    //    }
     
     // unmounts authentication state listener, prevents listener from running in the background after unmounting iew
     func unbind() {

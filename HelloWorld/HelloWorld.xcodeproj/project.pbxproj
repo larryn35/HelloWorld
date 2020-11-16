@@ -10,7 +10,6 @@
 		168486E52CD55DA53B3D34B8 /* Pods_HelloWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */; };
 		5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B632553DC5F0038B60B /* MessageLine.swift */; };
 		5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */; };
-		5C5EFAA4255B7B5D006ED85D /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5EFAA3255B7B5C006ED85D /* DateManager.swift */; };
 		5C5F3BA52560B4C700F3E3BB /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5F3BA42560B4C700F3E3BB /* Home.swift */; };
 		5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63614425534A0C00E374B8 /* HelloWorldApp.swift */; };
 		5C63614725534A0C00E374B8 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63614625534A0C00E374B8 /* WelcomeScreen.swift */; };
@@ -33,7 +32,6 @@
 /* Begin PBXFileReference section */
 		5C5C6B632553DC5F0038B60B /* MessageLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLine.swift; sourceTree = "<group>"; };
 		5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
-		5C5EFAA3255B7B5C006ED85D /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		5C5F3BA42560B4C700F3E3BB /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		5C63614125534A0C00E374B8 /* HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C63614425534A0C00E374B8 /* HelloWorldApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloWorldApp.swift; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 				5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */,
 				5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */,
 				5C72DA752556672D00108E41 /* ImagePicker.swift */,
-				5C5EFAA3255B7B5C006ED85D /* DateManager.swift */,
 				5CB7EB8B255BDC530034B570 /* UserMessageColor.swift */,
 			);
 			path = Utilities;
@@ -272,7 +269,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C63614725534A0C00E374B8 /* WelcomeScreen.swift in Sources */,
-				5C5EFAA4255B7B5D006ED85D /* DateManager.swift in Sources */,
 				5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */,
 				5C6361B52553960900E374B8 /* Messages.swift in Sources */,
 				5CB7EB8C255BDC530034B570 /* UserMessageColor.swift in Sources */,

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct Messages: View {
     
@@ -74,8 +75,12 @@ struct Messages: View {
                     
                     Button(action: {
                         self.hideKeyboard()
-                        print(senderName)
-                        messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: senderName, profilePicture: senderPicture)
+                        if let user = Auth.auth().currentUser?.displayName {
+                            messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: "")
+                            
+                        } else {
+                            print("failed to send message")
+                        }
                         messageField = ""
                     }, label: {
                         Text("Send")
@@ -83,11 +88,7 @@ struct Messages: View {
                 }
                 .padding(.horizontal)
             }
-            .onAppear {
-                guard !userProfileVM.userProfiles.isEmpty else { return }
-                senderName = userProfileVM.userProfiles[0].firstName + " " + userProfileVM.userProfiles[0].lastName
-                senderPicture = userProfileVM.userProfiles[0].profilePicture ?? nil
-            }
+
             .navigationBarTitle(chatroom.title)
             .navigationBarItems(
                 trailing:

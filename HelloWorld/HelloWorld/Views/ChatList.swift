@@ -11,8 +11,6 @@ import UIKit
 struct ChatList: View {
     
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
-    //    @ObservedObject var userProfileVM = UserProfileViewModel()
-    //    @ObservedObject var sessionStore = SessionStore()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -40,7 +38,7 @@ struct ChatList_Previews: PreviewProvider {
 struct ChatListItem: View {
     var chatroom: Chatroom
     @State var timestamp = ""
-    
+
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     
@@ -48,26 +46,20 @@ struct ChatListItem: View {
     
     init(with chatroom: Chatroom) {
         self.chatroom = chatroom
-        messagesViewModel.fetchMessages(docId: chatroom.id)
+//        messagesViewModel.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {
         ZStack {
-            
             VStack(alignment: .leading) {
                 HStack {
                     Text(chatroom.title).fontWeight(.semibold)
                     Spacer()
                     
                     // display last message date
-                    Text(timestamp)
-                        .font(.caption)
-                }
-                .onAppear {
-                    DispatchQueue.main.async {
-                        if let lastMessage = messagesViewModel.messages.last {
-                            timestamp = timeSinceMessage(message: lastMessage.date)
-                        }
+                    if let lastMessage = messagesViewModel.lastMessage {
+                        Text(messagesViewModel.timeSinceMessage(message: lastMessage.date))
+                            .font(.caption)
                     }
                 }
                 
@@ -86,6 +78,9 @@ struct ChatListItem: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 showMessage = true
+            }
+            .onAppear {
+                messagesViewModel.fetchMessages(docId: chatroom.id)
             }
             .sheet(isPresented: $showMessage, content: {
                 Messages(for: chatroom)

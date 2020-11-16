@@ -9,7 +9,10 @@ import SwiftUI
 import UIKit
 
 func userColor(user: String, users: [String]) -> Color {
-    let firstName = user.components(separatedBy: " ").first ?? ""
+    guard let firstName = user.components(separatedBy: " ").first else {
+        return Color(.red)
+    }
+    
     var color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     
     switch firstName {

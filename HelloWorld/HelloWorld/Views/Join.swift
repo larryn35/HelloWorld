@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct Join: View {
     
-    @Binding var isOpen: Bool
+//    @Binding var isOpen: Bool
     @State var joinCode = ""
     @State var newTitle = ""
-    @State var userName = ""
+//    @State var userName = ""
+    
+    private var userName = Auth.auth().currentUser?.displayName ?? ""
     
     private var codeInputCount: Bool {
         joinCode.count == 4
@@ -35,7 +38,7 @@ struct Join: View {
                     
                     Button(action: {
                         chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
-                            isOpen = false
+//                            isOpen = false
                         }
                     }, label: {
                         Text("Join")
@@ -52,7 +55,7 @@ struct Join: View {
 
                     Button(action: {
                         chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
-                           isOpen = false
+//                           isOpen = false
                         }
                     }, label: {
                         Text("Create")
@@ -69,6 +72,6 @@ struct Join: View {
 
 struct Join_Previews: PreviewProvider {
     static var previews: some View {
-        Join(isOpen: .constant(true))
+        Join()
     }
 }

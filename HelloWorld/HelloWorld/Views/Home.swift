@@ -35,7 +35,7 @@ struct Home: View {
                 LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
                     .zIndex(-99)
                 
-                Text("Hello")
+                Join()
                     
             }
             .tabItem {
