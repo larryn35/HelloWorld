@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		168486E52CD55DA53B3D34B8 /* Pods_HelloWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */; };
+		5C42B39F25635A2800727BB5 /* CreateJoinChatroom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */; };
 		5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B632553DC5F0038B60B /* MessageLine.swift */; };
 		5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */; };
 		5C5F3BA52560B4C700F3E3BB /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5F3BA42560B4C700F3E3BB /* Home.swift */; };
@@ -20,7 +21,6 @@
 		5C6361A325535C7500E374B8 /* ChatList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361A225535C7500E374B8 /* ChatList.swift */; };
 		5C6361A725535C8300E374B8 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361A625535C8300E374B8 /* Login.swift */; };
 		5C6361AC25537B2700E374B8 /* ChatroomsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361AB25537B2700E374B8 /* ChatroomsViewModel.swift */; };
-		5C6361AF25538B8400E374B8 /* Join.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361AE25538B8400E374B8 /* Join.swift */; };
 		5C6361B2255392DB00E374B8 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */; };
 		5C6361B52553960900E374B8 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6361B42553960900E374B8 /* Messages.swift */; };
 		5C728B102554D8A40020B70D /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C728B0F2554D8A40020B70D /* Register.swift */; };
@@ -30,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJoinChatroom.swift; sourceTree = "<group>"; };
 		5C5C6B632553DC5F0038B60B /* MessageLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLine.swift; sourceTree = "<group>"; };
 		5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		5C5F3BA42560B4C700F3E3BB /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -44,7 +45,6 @@
 		5C6361A225535C7500E374B8 /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
 		5C6361A625535C8300E374B8 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		5C6361AB25537B2700E374B8 /* ChatroomsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatroomsViewModel.swift; sourceTree = "<group>"; };
-		5C6361AE25538B8400E374B8 /* Join.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Join.swift; sourceTree = "<group>"; };
 		5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
 		5C6361B42553960900E374B8 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		5C728B0F2554D8A40020B70D /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 				5C728B0F2554D8A40020B70D /* Register.swift */,
 				5C5F3BA42560B4C700F3E3BB /* Home.swift */,
 				5C6361A225535C7500E374B8 /* ChatList.swift */,
-				5C6361AE25538B8400E374B8 /* Join.swift */,
+				5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */,
 				5C6361B42553960900E374B8 /* Messages.swift */,
 				5C5C6B632553DC5F0038B60B /* MessageLine.swift */,
 				5C72DA722556577700108E41 /* LoadingAnimation.swift */,
@@ -269,13 +269,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C63614725534A0C00E374B8 /* WelcomeScreen.swift in Sources */,
+				5C42B39F25635A2800727BB5 /* CreateJoinChatroom.swift in Sources */,
 				5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */,
 				5C6361B52553960900E374B8 /* Messages.swift in Sources */,
 				5CB7EB8C255BDC530034B570 /* UserMessageColor.swift in Sources */,
 				5C72DA762556672E00108E41 /* ImagePicker.swift in Sources */,
 				5C5F3BA52560B4C700F3E3BB /* Home.swift in Sources */,
 				5C6361A725535C8300E374B8 /* Login.swift in Sources */,
-				5C6361AF25538B8400E374B8 /* Join.swift in Sources */,
 				5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */,
 				5C728B102554D8A40020B70D /* Register.swift in Sources */,
 				5C6361A325535C7500E374B8 /* ChatList.swift in Sources */,

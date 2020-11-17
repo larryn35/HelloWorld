@@ -22,7 +22,7 @@ class MessagesViewModel: ObservableObject {
     @Published var lastMessage = [Message]().last
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
-
+    
     func sendMessage(messageContent: String, docId: String, senderName: String, profilePicture: String?) {
         if (user != nil) {
             // sender did not set profile picture
@@ -68,7 +68,7 @@ class MessagesViewModel: ObservableObject {
                         print("no documents")
                         return
                     }
-                                                            
+                    
                     self.messages = documents.map { docSnapshot -> Message in
                         let data = docSnapshot.data()
                         let docId = docSnapshot.documentID
@@ -78,7 +78,7 @@ class MessagesViewModel: ObservableObject {
                         let safeEmail = email.lowercased()
                         let picture = data["profilePicture"] as? String
                         let timestamp = data["sentAt"] as? Timestamp ?? Timestamp()
-
+                        
                         return Message(id: docId, content: content, name: displayName, email: safeEmail, profilePicture: picture, date: timestamp.dateValue())
                     }
                     
@@ -91,10 +91,10 @@ class MessagesViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         let relDateFormatter = RelativeDateTimeFormatter()
         relDateFormatter.unitsStyle = .short
-
+        
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([Calendar.Component.minute], from: message, to: Date())
-
+        
         guard let minute = dateComponents.minute
         else {
             return ("error getting hour")
@@ -108,10 +108,14 @@ class MessagesViewModel: ObservableObject {
         } else if Int(minute) > 120 {
             dateFormatter.dateFormat = "E h:mm a"
             return dateFormatter.string(from: message)
-        } else {
             
-            // less than 2 hours, use relative time
+        // less than 2 hours, use relative time
+        } else if Int(minute) > 1 {
             return relDateFormatter.string(for: message) ?? "error formatting date"
+            
+        // less than a minute, show "just now"
+        } else {
+            return "just now"
         }
     }
 }

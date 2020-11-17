@@ -88,7 +88,6 @@ struct Messages: View {
                 }
                 .padding(.horizontal)
             }
-
             .navigationBarTitle(chatroom.title)
             .navigationBarItems(
                 trailing:

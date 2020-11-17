@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ChatList: View {
     
@@ -46,7 +45,6 @@ struct ChatListItem: View {
     
     init(with chatroom: Chatroom) {
         self.chatroom = chatroom
-//        messagesViewModel.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {

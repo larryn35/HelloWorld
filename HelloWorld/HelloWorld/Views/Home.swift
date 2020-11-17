@@ -12,9 +12,15 @@ struct Home: View {
     
     @ObservedObject var sessionStore = SessionStore()
 
+    @State private var tabSelection = 1
+
+    
     var body: some View {
         
-        TabView {
+        TabView(selection: $tabSelection) {
+
+            // MARK:  Chatroom List
+
             ZStack {
                 
                 LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
@@ -27,21 +33,28 @@ struct Home: View {
             .tabItem {
                 Image(systemName: "list.dash")
                 Text("chatrooms")
-            
             }
+            .tag(1)
             
+            // MARK:  Create or join chatroom
+
             ZStack {
                 
                 LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
                     .zIndex(-99)
                 
-                Join()
-                    
+                VStack(spacing: 120) {
+                    CreateChatroom(tabSelection: $tabSelection)
+                    JoinChatroom(tabSelection: $tabSelection)
+                }
             }
             .tabItem {
                 Image(systemName: "plus")
-                Text("add/join chatroom")
+                Text("create/join chatroom")
             }
+            .tag(2)
+
+            // MARK:  Settings
             
             ZStack {
                 
@@ -57,6 +70,8 @@ struct Home: View {
                 Image(systemName: "person")
                 Text("settings")
             }
+            .tag(3)
+
         }
     }
 }
