@@ -15,7 +15,7 @@ struct CreateChatroom: View {
     @State var newTitle = ""
 
     var completedForm: Bool {
-        !newTitle.isEmpty
+        !newTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
     var userName = Auth.auth().currentUser?.displayName ?? ""
@@ -50,7 +50,7 @@ struct CreateChatroom: View {
             .padding(.horizontal, 20)
             
             Button(action: {
-                
+                newTitle = ""
                 chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
                     tabSelection = 1
                 }
@@ -115,6 +115,7 @@ struct JoinChatroom: View {
             .padding(.horizontal, 20)
             
             Button(action: {
+                joinCode = ""
                 chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
                     tabSelection = 1
                 }

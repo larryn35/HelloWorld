@@ -18,8 +18,29 @@ struct ProfileSettings: View {
     @State private var showAlert = false
     @State private var showActionSheet = false
     @State private var errorMessage = ""
+    @State private var alert = AlertMessage.passwordChanged
     
     @ObservedObject var sessionStore = SessionStore()
+    
+    enum AlertMessage {
+        case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
+    }
+    
+    func getAlert(alertType: AlertMessage) -> Alert {
+        switch alertType {
+        case .passwordChanged:
+            return Alert(title: Text("Password has been successfuly changed"), dismissButton: .default(Text("OK")))
+        case .emailChanged:
+            return Alert(title: Text("Email has been successfuly changed"), dismissButton: .default(Text("OK")))
+        case .passwordError:
+            return Alert(title: Text("Password could not be changed"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        case .passwordMismatch:
+            return Alert(title: Text("Password could not be changed"), message: Text("Passwords do not match, please try again"), dismissButton: .default(Text("OK")))
+        case .emailError:
+            return Alert(title: Text("Email could not be changed"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -89,16 +110,20 @@ struct ProfileSettings: View {
                         
                         Button(action: {
                             if newPassword != passwordCheck {
+                                alert = AlertMessage.passwordMismatch
                                 showAlert = true
-                                errorMessage = "passwords do not match, please try again"
+
                                 
                             } else {
                                 sessionStore.updatePassword(to: newPassword) { success, error in
                                     if success, error == nil {
                                         newPassword = ""
-                                    } else {
+                                        alert = AlertMessage.passwordChanged
                                         showAlert = true
-                                        errorMessage = "\(String(describing: error!.localizedDescription))"
+                                    } else {
+                                        errorMessage = error?.localizedDescription ?? "Please try again"
+                                        alert = AlertMessage.passwordError
+                                        showAlert = true
                                     }
                                 }
                             }
@@ -116,9 +141,12 @@ struct ProfileSettings: View {
                             sessionStore.updateEmail(to: newEmail) { success, error in
                                 if success, error == nil {
                                     newEmail = ""
-                                } else {
+                                    alert = AlertMessage.emailChanged
                                     showAlert = true
-                                    errorMessage = "\(String(describing: error!.localizedDescription))"
+                                } else {
+                                    errorMessage = error?.localizedDescription ?? "Please try again"
+                                    alert = AlertMessage.emailError
+                                    showAlert = true
                                 }
                             }
                         }, label: {
@@ -164,7 +192,7 @@ struct ProfileSettings: View {
             ImagePicker(imageData: $imageData)
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("uh-oh"), message: Text(errorMessage), dismissButton: .default(Text("ok")))
+            getAlert(alertType: alert)
         }
     }
 }
