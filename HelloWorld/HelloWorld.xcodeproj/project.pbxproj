@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		168486E52CD55DA53B3D34B8 /* Pods_HelloWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */; };
 		5C42B39F25635A2800727BB5 /* CreateJoinChatroom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */; };
+		5C42B3A32563682200727BB5 /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42B3A22563682200727BB5 /* ProfileSettings.swift */; };
 		5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B632553DC5F0038B60B /* MessageLine.swift */; };
 		5C5C6B672553EAD50038B60B /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */; };
 		5C5F3BA52560B4C700F3E3BB /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5F3BA42560B4C700F3E3BB /* Home.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateJoinChatroom.swift; sourceTree = "<group>"; };
+		5C42B3A22563682200727BB5 /* ProfileSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettings.swift; sourceTree = "<group>"; };
 		5C5C6B632553DC5F0038B60B /* MessageLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLine.swift; sourceTree = "<group>"; };
 		5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		5C5F3BA42560B4C700F3E3BB /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				5C5F3BA42560B4C700F3E3BB /* Home.swift */,
 				5C6361A225535C7500E374B8 /* ChatList.swift */,
 				5C42B39E25635A2800727BB5 /* CreateJoinChatroom.swift */,
+				5C42B3A22563682200727BB5 /* ProfileSettings.swift */,
 				5C6361B42553960900E374B8 /* Messages.swift */,
 				5C5C6B632553DC5F0038B60B /* MessageLine.swift */,
 				5C72DA722556577700108E41 /* LoadingAnimation.swift */,
@@ -280,6 +283,7 @@
 				5C728B102554D8A40020B70D /* Register.swift in Sources */,
 				5C6361A325535C7500E374B8 /* ChatList.swift in Sources */,
 				5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */,
+				5C42B3A32563682200727BB5 /* ProfileSettings.swift in Sources */,
 				5C63616A25534EF100E374B8 /* SessionStore.swift in Sources */,
 				5C6361B2255392DB00E374B8 /* MessagesViewModel.swift in Sources */,
 				5C72DA732556577700108E41 /* LoadingAnimation.swift in Sources */,

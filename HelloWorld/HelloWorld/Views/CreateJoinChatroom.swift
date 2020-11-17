@@ -41,7 +41,9 @@ struct CreateChatroom: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Color(.white).opacity(0.7).cornerRadius(10).shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4))
+                .background(Color(.white))
+                .opacity(0.7).cornerRadius(10)
+                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
                 .frame(width: UIScreen.main.bounds.width - 50)
                 
             }
@@ -104,7 +106,9 @@ struct JoinChatroom: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Color(.white).opacity(0.7).cornerRadius(10).shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4))
+                .background(Color(.white).opacity(0.7))
+                .cornerRadius(10)
+                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
                 .frame(width: UIScreen.main.bounds.width - 50)
                 
             }

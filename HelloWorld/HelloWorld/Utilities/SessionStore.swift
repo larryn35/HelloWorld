@@ -56,17 +56,8 @@ class SessionStore: ObservableObject {
             print("Signed up with \(email)")
             
             // set display name
-            if let user = Auth.auth().currentUser {
-                let changeRequest = user.createProfileChangeRequest()
-                changeRequest.displayName = displayName
-                changeRequest.photoURL = URL(string: photo ?? "")
-                changeRequest.commitChanges { (error) in
-                    if let error = error {
-                        print("error updating user profile: \(error.localizedDescription)" )
-                    } else {
-                        print("profile updated")
-                    }
-                }
+            if Auth.auth().currentUser != nil {
+                self.updateProfile(displayName: displayName, photo: "")
             }
             
             completion(true, error)
@@ -83,18 +74,46 @@ class SessionStore: ObservableObject {
         }
     }
     
-    //    func updateProfile(displayName: String, photo: String?) {
-    //        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-    //        changeRequest?.displayName = displayName
-    //        changeRequest?.photoURL = URL(string: photo ?? "")
-    //        changeRequest?.commitChanges { (error) in
-    //            if let error = error {
-    //                print("error updating user profile: \(error.localizedDescription)" )
-    //            } else {
-    //                print("profile updated")
-    //            }
-    //        }
-    //    }
+    func updateProfile(displayName: String?, photo: String?) {
+        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        changeRequest?.displayName = displayName
+        changeRequest?.photoURL = URL(string: photo ?? "")
+        changeRequest?.commitChanges { (error) in
+            if let error = error {
+                print("error updating user profile: \(error.localizedDescription)" )
+            } else {
+                print("profile updated")
+            }
+        }
+    }
+    
+    func updateEmail(to email: String, completion: @escaping (Bool, Error?) -> Void) {
+        Auth.auth().currentUser?.updateEmail(to: email) { (error) in
+            if error != nil {
+                print("failed to update email: \(String(describing: error?.localizedDescription))")
+                completion(false, error)
+                return
+                
+            } else {
+                print("email updated to \(email)")
+                completion(true, error)
+            }
+        }
+    }
+    
+    func updatePassword(to password: String, completion: @escaping (Bool, Error?) -> Void) {
+        Auth.auth().currentUser?.updatePassword(to: password) { (error) in
+            if error != nil {
+                print("failed to update password: \(String(describing: error?.localizedDescription))")
+                completion(false, error)
+                return
+                
+            } else {
+                print("password updated")
+                completion(true, error)
+            }
+        }
+    }
     
     // unmounts authentication state listener, prevents listener from running in the background after unmounting iew
     func unbind() {
