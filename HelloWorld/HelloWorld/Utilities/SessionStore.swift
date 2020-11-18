@@ -45,7 +45,7 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String, displayName: String, photo: String?, completion: @escaping (Bool, Error?) -> Void) {
+    func signUp(email: String, password: String, displayName: String, completion: @escaping (Bool, Error?) -> Void) {
         let safeEmail = email.lowercased()
         authRef.createUser(withEmail: safeEmail, password: password) { (result, error) in
             guard result != nil, error == nil else {
@@ -57,7 +57,7 @@ class SessionStore: ObservableObject {
             
             // set display name
             if Auth.auth().currentUser != nil {
-                self.updateProfile(displayName: displayName, photo: "")
+                self.updateProfile(displayName: displayName)
             }
             
             completion(true, error)
@@ -74,15 +74,14 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func updateProfile(displayName: String?, photo: String?) {
+    func updateProfile(displayName: String?) {
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = displayName
-        changeRequest?.photoURL = URL(string: photo ?? "")
         changeRequest?.commitChanges { (error) in
             if let error = error {
                 print("error updating user profile: \(error.localizedDescription)" )
             } else {
-                print("profile updated")
+                print("profile updated for \(String(describing: displayName))")
             }
         }
     }

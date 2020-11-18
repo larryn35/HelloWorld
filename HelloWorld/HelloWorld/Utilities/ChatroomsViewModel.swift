@@ -65,7 +65,10 @@ class ChatroomsViewModel: ObservableObject {
     
     func joinChatroom(code: String, userName: String, completion: @escaping () -> Void) {
         if (user != nil) {
-            guard let intCode = Int(code) else { return }
+            guard let intCode = Int(code) else {
+                print("intCode error")
+                return
+            }
             db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
                 if let error = error {
                     print("error getting documents: \(error)")
@@ -82,6 +85,8 @@ class ChatroomsViewModel: ObservableObject {
                     }
                 }
             }
+        } else {
+            print("cannot join chatroom, user is nil")
         }
     }
 }

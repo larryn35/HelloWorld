@@ -7,10 +7,11 @@
 
 import SwiftUI
 import FirebaseAuth
+import SDWebImageSwiftUI
 
 struct ProfileSettings: View {
     
-    @State private var imageData : Data = .init(count: 0)
+//    @State private var imageData : Data = .init(count: 0)
     @State private var showImagePicker = false
     @State private var newEmail = ""
     @State private var newPassword = ""
@@ -21,7 +22,8 @@ struct ProfileSettings: View {
     @State private var alert = AlertMessage.passwordChanged
     
     @ObservedObject var sessionStore = SessionStore()
-    
+    @ObservedObject var userProfileVM = UserProfileViewModel()
+
     enum AlertMessage {
         case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
     }
@@ -61,7 +63,15 @@ struct ProfileSettings: View {
                 ZStack(alignment: .bottomTrailing) {
                     
                     Group {
-                        if self.imageData.count == 0 {
+                        if let profilePicture = userProfileVM.userProfilePicture, profilePicture != "" {
+                            WebImage(url: URL(string: profilePicture))
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 15)
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 8))
+                                    .frame(width: 150, height: 150)
+                        } else {
                             Image("DefaultProfilePicture")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -69,21 +79,10 @@ struct ProfileSettings: View {
                                 .shadow(radius: 15)
                                 .overlay(Circle().stroke(Color.white, lineWidth: 8))
                                 .frame(width: 150, height: 150)
-                        } else {
-                            if let image = UIImage(data: imageData) {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 15)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                                    .frame(width: 150, height: 150)
-                            }
                         }
                     }
                     .padding(.vertical, 30)
-                    
-                    
+                                        
                     Button(action: {
                         showActionSheet = true
                         
@@ -185,21 +184,22 @@ struct ProfileSettings: View {
                 .default(Text("Camera")) {  },
                 .default(Text("Photo library")) { showImagePicker = true },
                 .default(Text("Reset to default photo")) {
-                    imageData.count = 0
+//                    imageData.count = 0
                     UserProfileViewModel().updateProfilePicture(imageData: nil)
                 },
                 .cancel()
             ])
         }
         .sheet(isPresented: $showImagePicker) {
-            ImagePicker(imageData: $imageData)
-//                .onDisappear {
-//                    UserProfileViewModel().updateProfilePicture(imageData: imageData)
-//                }
+//            ImagePicker(imageData: $imageData)
+            ImagePicker()
         }
         .alert(isPresented: $showAlert) {
             getAlert(alertType: alert)
         }
+//        .onDisappear {
+//            UserProfileViewModel().updateProfilePicture(imageData: imageData)
+//        }
     }
 }
 

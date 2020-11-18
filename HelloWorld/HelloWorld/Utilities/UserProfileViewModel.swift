@@ -19,6 +19,7 @@ struct UserProfile: Codable, Identifiable {
 
 class UserProfileViewModel: ObservableObject {
     @Published var userProfiles = [UserProfile]()
+    @Published var userProfilePicture = [UserProfile]().first?.profilePicture
     private let db = Firestore.firestore()
     private let storage = Storage.storage().reference()
     private let user = Auth.auth().currentUser
@@ -27,7 +28,7 @@ class UserProfileViewModel: ObservableObject {
         fetchProfile()
     }
     
-    func fetchProfile() {
+    private func fetchProfile() {
         if (user != nil) {
             guard let userEmail = user?.email else {
                 print("error retrieving userEmail")
@@ -41,7 +42,7 @@ class UserProfileViewModel: ObservableObject {
                         return
                     }
                     
-                    self.userProfiles = documents.map({ (docSnapshot) -> UserProfile in
+                    self.userProfiles = documents.map { (docSnapshot) -> UserProfile in
                         let data = docSnapshot.data()
                         let userID = docSnapshot.documentID
                         let firstName = data["firstName"] as? String ?? ""
@@ -49,7 +50,8 @@ class UserProfileViewModel: ObservableObject {
                         let email = data["email"] as? String ?? ""
                         let picture = data["profilePicture"] as? String
                         return UserProfile(id: userID, firstName: firstName, lastName: lastName, email: email, profilePicture: picture)
-                    })
+                    }
+                    self.userProfilePicture = self.userProfiles.first?.profilePicture
                 }
         }
     }

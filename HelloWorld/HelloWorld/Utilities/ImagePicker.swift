@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
-    @Binding var imageData: Data
+//    @Binding var imageData: Data
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var parent: ImagePicker
@@ -22,7 +22,7 @@ struct ImagePicker: UIViewControllerRepresentable {
             
             if let uiImage = info[.originalImage] as? UIImage {
                 if let data = uiImage.jpegData(compressionQuality: 0.45) {
-                    parent.imageData = data
+//                    parent.imageData = data
                     UserProfileViewModel().updateProfilePicture(imageData: data)
                 }
 

@@ -46,7 +46,7 @@ struct MessageLine: View {
         } else {
             HStack(alignment:.bottom, spacing: 10) {
                 
-                if messageDetails.profilePicture == nil {
+                if messageDetails.profilePicture == nil || messageDetails.profilePicture == "" {
                     Image("IconClear")
                         .resizable()
                         .aspectRatio(contentMode: .fit)

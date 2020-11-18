@@ -50,8 +50,9 @@ struct CreateChatroom: View {
             .padding(.horizontal, 20)
             
             Button(action: {
-                newTitle = ""
                 chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
+                    newTitle = ""
+                    self.hideKeyboard()
                     tabSelection = 1
                 }
                 
@@ -115,8 +116,9 @@ struct JoinChatroom: View {
             .padding(.horizontal, 20)
             
             Button(action: {
-                joinCode = ""
                 chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
+                    joinCode = ""
+                    self.hideKeyboard()
                     tabSelection = 1
                 }
                 

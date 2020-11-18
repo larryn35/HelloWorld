@@ -76,8 +76,7 @@ struct Messages: View {
                     Button(action: {
                         self.hideKeyboard()
                         if let user = Auth.auth().currentUser?.displayName {
-                            messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: "")
-                            
+                            messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
                         } else {
                             print("failed to send message")
                         }

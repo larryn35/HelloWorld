@@ -88,7 +88,7 @@ struct Register: View {
                     
                     isLoading.toggle()
                     
-                    sessionStore.signUp(email: email, password: password, displayName: firstName, photo: "") { success, error  in
+                    sessionStore.signUp(email: email, password: password, displayName: firstName) { success, error  in
                         if success, error == nil {
                             userProfile.createProfile(firstName: firstName, lastName: lastName, email: email, imageData: nil)
                                                         
