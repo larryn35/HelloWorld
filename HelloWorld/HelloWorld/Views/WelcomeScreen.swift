@@ -58,9 +58,8 @@ struct WelcomeScreen: View {
                                         .padding(.vertical, 10)
                                         .frame(width: (UIScreen.main.bounds.width - 50) / 2)
                                     
-                                }.background(index == 0 ? Color.white.opacity(0.7) : Color.clear)
+                                }.background(index == 0 ? Color.white : Color.clear)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                                //                        .animation(.easeIn)
                                 
                                 Button(action: {
                                     index = 1                                    
@@ -72,9 +71,8 @@ struct WelcomeScreen: View {
                                         .padding(.vertical, 10)
                                         .frame(width: (UIScreen.main.bounds.width - 50) / 2)
                                     
-                                }.background(index == 1 ? Color.white.opacity(0.7) : Color.clear)
+                                }.background(index == 1 ? Color.white : Color.clear)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                                //                        .animation(.easeIn)
                             }
                             .frame(width: UIScreen.main.bounds.width - 50)
                             .background(Color.black.opacity(0.1))
@@ -85,14 +83,14 @@ struct WelcomeScreen: View {
                                         
                         if index == 0 {
                             Login(keyboardDisplayed: $keyboardDisplayed)
+                                .transition(AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))
                         } else {
                             Register(keyboardDisplayed: $keyboardDisplayed)
+                                .transition(AnyTransition.asymmetric(insertion: .move(edge: .leading), removal: AnyTransition.move(edge: .trailing).combined(with: .opacity)))
                         }
                         Spacer()
                     }
                     .animation(.easeInOut)
-
-//                    .frame(height: UIScreen.main.bounds.height - 200)
                 }
                 .onTapGesture {
                     self.keyboardDisplayed = false

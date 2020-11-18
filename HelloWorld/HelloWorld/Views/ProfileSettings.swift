@@ -11,7 +11,6 @@ import SDWebImageSwiftUI
 
 struct ProfileSettings: View {
     
-//    @State private var imageData : Data = .init(count: 0)
     @State private var showImagePicker = false
     @State private var newEmail = ""
     @State private var newPassword = ""
@@ -23,7 +22,7 @@ struct ProfileSettings: View {
     
     @ObservedObject var sessionStore = SessionStore()
     @ObservedObject var userProfileVM = UserProfileViewModel()
-
+    
     enum AlertMessage {
         case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
     }
@@ -40,7 +39,7 @@ struct ProfileSettings: View {
             return Alert(title: Text("Password could not be changed"), message: Text("Passwords do not match, please try again"), dismissButton: .default(Text("OK")))
         case .emailError:
             return Alert(title: Text("Email could not be changed"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-        
+            
         }
     }
     
@@ -51,26 +50,28 @@ struct ProfileSettings: View {
             
             VStack {
                 HStack {
-                    Text("Hello, \(Auth.auth().currentUser?.displayName ?? "there!")")
+                    Text("hello, \(Auth.auth().currentUser?.displayName?.lowercased() ?? "there!")")
                         .foregroundColor(.white)
                         .font(.title)
                         .fontWeight(.semibold)
                     Spacer()
                 }
-                .padding()
-                
+                .padding([.top, .horizontal])
                 
                 ZStack(alignment: .bottomTrailing) {
                     
                     Group {
                         if let profilePicture = userProfileVM.userProfilePicture, profilePicture != "" {
                             WebImage(url: URL(string: profilePicture))
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 15)
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                                    .frame(width: 150, height: 150)
+                                .resizable()
+                                .placeholder {
+                                        Circle().foregroundColor(.white)
+                                    }
+                                .aspectRatio(contentMode: .fill)
+                                .clipShape(Circle())
+                                .shadow(radius: 15)
+                                .overlay(Circle().stroke(Color.white, lineWidth: 8))
+                                .frame(width: 125, height: 125)
                         } else {
                             Image("DefaultProfilePicture")
                                 .resizable()
@@ -78,18 +79,18 @@ struct ProfileSettings: View {
                                 .clipShape(Circle())
                                 .shadow(radius: 15)
                                 .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                                .frame(width: 150, height: 150)
+                                .frame(width: 125, height: 125)
                         }
                     }
-                    .padding(.vertical, 30)
-                                        
+                    .padding(.vertical, 15)
+                    
                     Button(action: {
                         showActionSheet = true
                         
                     }, label: {
                         Image(systemName: "camera.circle")
                             .resizable()
-                            .frame(width: 60, height: 60)
+                            .frame(width: 40, height: 40)
                             .foregroundColor(.white)
                             .background(Color(.blue))
                             .clipShape(Circle())
@@ -102,7 +103,7 @@ struct ProfileSettings: View {
                         SecureField("password", text: $newPassword)
                             .textContentType(.newPassword)
                             .keyboardType(.default)
-
+                        
                         SecureField("retype password", text: $passwordCheck)
                             .textContentType(.newPassword)
                             .keyboardType(.default)
@@ -111,7 +112,6 @@ struct ProfileSettings: View {
                             if newPassword != passwordCheck {
                                 alert = AlertMessage.passwordMismatch
                                 showAlert = true
-
                                 
                             } else {
                                 sessionStore.updatePassword(to: newPassword) { success, error in
@@ -135,7 +135,7 @@ struct ProfileSettings: View {
                         TextField("email", text: $newEmail)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-
+                        
                         Button(action: {
                             sessionStore.updateEmail(to: newEmail) { success, error in
                                 if success, error == nil {
@@ -149,18 +149,15 @@ struct ProfileSettings: View {
                                 }
                             }
                         }, label: {
-                                Text("apply")
+                            Text("apply")
                         })
                     }
                 }
-                .background(Color(.white).opacity(0.7))
+                .background(Color(.white))
                 .frame(height: 360)
                 .cornerRadius(10)
                 .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
                 .padding()
-                .onAppear {
-                    UITableView.appearance().backgroundColor = .clear
-                }
                 
                 Spacer()
                 
@@ -184,22 +181,17 @@ struct ProfileSettings: View {
                 .default(Text("Camera")) {  },
                 .default(Text("Photo library")) { showImagePicker = true },
                 .default(Text("Reset to default photo")) {
-//                    imageData.count = 0
                     UserProfileViewModel().updateProfilePicture(imageData: nil)
                 },
                 .cancel()
             ])
         }
         .sheet(isPresented: $showImagePicker) {
-//            ImagePicker(imageData: $imageData)
             ImagePicker()
         }
         .alert(isPresented: $showAlert) {
             getAlert(alertType: alert)
         }
-//        .onDisappear {
-//            UserProfileViewModel().updateProfilePicture(imageData: imageData)
-//        }
     }
 }
 

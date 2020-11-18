@@ -24,6 +24,7 @@ struct ChatList: View {
             }
             .cornerRadius(10)
         }
+        .padding()
     }
 }
 

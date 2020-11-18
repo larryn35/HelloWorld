@@ -14,7 +14,6 @@ struct Home: View {
 
     @State var tabSelection = 1
 
-    
     var body: some View {
         
         TabView(selection: $tabSelection) {
@@ -27,7 +26,6 @@ struct Home: View {
                     .zIndex(-99)
                 
                 ChatList()
-                    .padding()
                     
             }
             .tabItem {
@@ -49,6 +47,7 @@ struct Home: View {
                 VStack(spacing: 120) {
                     CreateChatroom(tabSelection: $tabSelection)
                     JoinChatroom(tabSelection: $tabSelection)
+                    Spacer()
                 }
             }
             .tabItem {

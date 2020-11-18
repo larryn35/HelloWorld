@@ -42,12 +42,9 @@ struct CreateChatroom: View {
                 .padding()
                 .padding(.vertical)
                 .background(Color(.white))
-                .opacity(0.7).cornerRadius(10)
+                .cornerRadius(10)
                 .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
-                .frame(width: UIScreen.main.bounds.width - 50)
-                
             }
-            .padding(.horizontal, 20)
             
             Button(action: {
                 chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
@@ -69,6 +66,7 @@ struct CreateChatroom: View {
             .disabled(!completedForm)
             
         }
+        .padding()
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Please try again"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
@@ -107,13 +105,10 @@ struct JoinChatroom: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Color(.white).opacity(0.7))
+                .background(Color(.white))
                 .cornerRadius(10)
-                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
-                .frame(width: UIScreen.main.bounds.width - 50)
-                
+                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)                
             }
-            .padding(.horizontal, 20)
             
             Button(action: {
                 chatroomsViewModel.joinChatroom(code: joinCode, userName: userName) {
@@ -135,8 +130,18 @@ struct JoinChatroom: View {
             .disabled(!completedForm)
             
         }
+        .padding()
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Please try again"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
+struct CreateJoinChatroom_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            CreateChatroom(tabSelection: .constant(1))
+            JoinChatroom(tabSelection: .constant(1))
         }
     }
 }
