@@ -181,15 +181,21 @@ struct ProfileSettings: View {
             }
         }
         .actionSheet(isPresented: $showActionSheet) {
-            ActionSheet(title: Text("Change background"), message: Text("Select a new color"), buttons: [
+            ActionSheet(title: Text("Change profile picture"), message: Text("Your photo will appear next to your messages and will be visible to others"), buttons: [
                 .default(Text("Camera")) {  },
                 .default(Text("Photo library")) { showImagePicker = true },
-                .default(Text("Reset to default photo")) { imageData.count = 0 },
+                .default(Text("Reset to default photo")) {
+                    imageData.count = 0
+                    UserProfileViewModel().updateProfilePicture(imageData: nil)
+                },
                 .cancel()
             ])
         }
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(imageData: $imageData)
+//                .onDisappear {
+//                    UserProfileViewModel().updateProfilePicture(imageData: imageData)
+//                }
         }
         .alert(isPresented: $showAlert) {
             getAlert(alertType: alert)

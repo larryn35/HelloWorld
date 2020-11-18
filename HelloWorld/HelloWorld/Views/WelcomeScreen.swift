@@ -18,7 +18,7 @@ struct WelcomeScreen: View {
     @State var index = 0
         
     var body: some View {
-        Home()
+        Home(tabSelection: 1)
             .fullScreenCover(isPresented: $sessionStore.isAnon, content: {
 
                 ZStack {

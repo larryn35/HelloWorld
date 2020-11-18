@@ -23,7 +23,9 @@ struct ImagePicker: UIViewControllerRepresentable {
             if let uiImage = info[.originalImage] as? UIImage {
                 if let data = uiImage.jpegData(compressionQuality: 0.45) {
                     parent.imageData = data
+                    UserProfileViewModel().updateProfilePicture(imageData: data)
                 }
+
             } else {
              print("error selecting picture from picker")
             }

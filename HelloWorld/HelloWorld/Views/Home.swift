@@ -12,7 +12,7 @@ struct Home: View {
     
     @ObservedObject var sessionStore = SessionStore()
 
-    @State private var tabSelection = 1
+    @State var tabSelection = 1
 
     
     var body: some View {
