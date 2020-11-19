@@ -30,71 +30,81 @@ struct Messages: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                HStack {
-                    Text("Join code: \(joinCode)")
-                        .font(.footnote)
-                    Spacer()
-                }
-                .padding([.top, .horizontal])
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .edgesIgnoringSafeArea(.top)
+                    .zIndex(-99)
                 
-                ScrollView {
-                    ScrollViewReader { scrollView in
-                        LazyVStack {
-                            ForEach(messagesViewModel.messages) { i in
-                                MessageLine(messageDetails: i, users: chatroom.userNames)
-                            }
-                        }
-                        .onAppear {
-                            DispatchQueue.main.async {
-                                if let lastMsg = messagesViewModel.messages.last?.content {
-                                    //                                withAnimation {
-                                    scrollView.scrollTo(lastMsg)
-                                    //                                }
+                Color(.white).opacity(0.7)
+                    .edgesIgnoringSafeArea(.top)
+                    .blur(radius: 3.0)
+                    .zIndex(-98)
+                
+                
+                VStack {
+//                    Text("join code: \(joinCode)")
+//                        .padding(12)
+//                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.red))
+//                        .padding([.top, .horizontal])
+                    
+                    ScrollView {
+                        ScrollViewReader { scrollView in
+
+                            LazyVStack {
+                                ForEach(messagesViewModel.messages, id: \.self) { i in
+                                    MessageLine(messageDetails: i, users: chatroom.userNames)
                                 }
                             }
-                        }
-                        .onChange(of: messagesViewModel.messages) { _ in
-                            DispatchQueue.main.async {
-                                if let lastMsg = messagesViewModel.messages.last?.content {
-                                    withAnimation {
+                            .onAppear {
+                                DispatchQueue.main.async {
+                                    if let lastMsg = messagesViewModel.lastMessage {
+                                        withAnimation {
+                                            scrollView.scrollTo(lastMsg)
+                                        }
+                                    }
+                                }
+                            }
+                            .onChange(of: messagesViewModel.messages) { _ in
+                                DispatchQueue.main.async {
+                                    if let lastMsg = messagesViewModel.lastMessage {
                                         scrollView.scrollTo(lastMsg)
                                     }
                                 }
                             }
                         }
+                        .padding()
+                        .ignoresSafeArea(.keyboard)
+                        .padding(.bottom, 0)
+                    }
+                    
+                    HStack {
+                        TextField("Enter message...", text: $messageField)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            self.hideKeyboard()
+                            if let user = Auth.auth().currentUser?.displayName {
+                                messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
+                            } else {
+                                print("failed to send message")
+                            }
+                            messageField = ""
+                        }, label: {
+                            Text("Send")
+                        })
                     }
                     .padding()
-                    .ignoresSafeArea(.keyboard)
-                    .padding(.bottom, 0)
+                    .background(Color(.white))
                 }
-                
-                HStack {
-                    TextField("Enter message...", text: $messageField)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-                    Button(action: {
-                        self.hideKeyboard()
-                        if let user = Auth.auth().currentUser?.displayName {
-                            messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
-                        } else {
-                            print("failed to send message")
+                .navigationBarTitle(chatroom.title, displayMode: .inline)
+                .navigationBarItems(
+                    trailing:
+                        Button("Close") {
+                            self.presentationMode.wrappedValue.dismiss()
                         }
-                        messageField = ""
-                    }, label: {
-                        Text("Send")
-                    })
-                }
-                .padding(.horizontal)
+                )
             }
-            .navigationBarTitle(chatroom.title)
-            .navigationBarItems(
-                trailing:
-                    Button("Close") {
-                        self.presentationMode.wrappedValue.dismiss()
-                        
-                    }
-            )
         }
     }
 }
