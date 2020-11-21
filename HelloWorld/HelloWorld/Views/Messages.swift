@@ -13,24 +13,27 @@ struct Messages: View {
     @State var messageField = ""
     @State var senderName = ""
     @State var senderPicture: String? = ""
+    @State var showPopover = false
+    @State var showAlert = false
     
     let chatroom: Chatroom
     var joinCode = ""
     
-    @ObservedObject var messagesViewModel = MessagesViewModel()
+    @ObservedObject var messagesVM = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
+    @ObservedObject var chatroomVM = ChatroomsViewModel()
     
     @Environment(\.presentationMode) var presentationMode
     
     init(for chatroom: Chatroom) {
         self.chatroom = chatroom
         self.joinCode = String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
-        messagesViewModel.fetchMessages(docId: chatroom.id)
+        messagesVM.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {
         NavigationView {
-            ZStack {
+            ZStack(alignment: .topLeading) {
                 LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
                     .edgesIgnoringSafeArea(.top)
                     .zIndex(-99)
@@ -40,35 +43,24 @@ struct Messages: View {
                     .blur(radius: 3.0)
                     .zIndex(-98)
                 
-                
                 VStack {
-//                    Text("join code: \(joinCode)")
-//                        .padding(12)
-//                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.red))
-//                        .padding([.top, .horizontal])
-                    
                     ScrollView {
                         ScrollViewReader { scrollView in
-
                             LazyVStack {
-                                ForEach(messagesViewModel.messages, id: \.self) { i in
+                                ForEach(messagesVM.messages, id: \.self) { i in
                                     MessageLine(messageDetails: i, users: chatroom.userNames)
                                 }
                             }
                             .onAppear {
-                                DispatchQueue.main.async {
-                                    if let lastMsg = messagesViewModel.lastMessage {
-                                        withAnimation {
-                                            scrollView.scrollTo(lastMsg)
-                                        }
+                                if let lastMsg = messagesVM.lastMessage {
+                                    withAnimation {
+                                        scrollView.scrollTo(lastMsg)
                                     }
                                 }
                             }
-                            .onChange(of: messagesViewModel.messages) { _ in
-                                DispatchQueue.main.async {
-                                    if let lastMsg = messagesViewModel.lastMessage {
-                                        scrollView.scrollTo(lastMsg)
-                                    }
+                            .onChange(of: messagesVM.messages) { _ in
+                                if let lastMsg = messagesVM.lastMessage {
+                                    scrollView.scrollTo(lastMsg)
                                 }
                             }
                         }
@@ -83,9 +75,9 @@ struct Messages: View {
                         Spacer()
                         
                         Button(action: {
-                            self.hideKeyboard()
+//                            self.hideKeyboard()
                             if let user = Auth.auth().currentUser?.displayName {
-                                messagesViewModel.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
+                                messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
                             } else {
                                 print("failed to send message")
                             }
@@ -99,19 +91,92 @@ struct Messages: View {
                 }
                 .navigationBarTitle(chatroom.title, displayMode: .inline)
                 .navigationBarItems(
-                    trailing:
+                    leading:
+                        Button(action: {
+                            withAnimation{
+                                showPopover.toggle()
+                            }
+                        }, label: {
+                            Image(systemName: "info.circle")
+                                .resizable()
+                                .frame(width: 20, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .padding()
+                        })
+                    
+                    , trailing:
                         Button("Close") {
                             self.presentationMode.wrappedValue.dismiss()
                         }
                 )
+                
+                if showPopover {
+                    Color(.black).opacity(0.6).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                        .onTapGesture {
+                            withAnimation{
+                                showPopover.toggle()
+                            }
+                        }
+                        .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.7)))
+                    
+                    Popover(chatroom: chatroom, joinCode: joinCode, showAlert: $showAlert)
+                        .padding()
+                        .transition(.move(edge: .leading))
+                }
             }
+            .alert(isPresented: $showAlert, content: {
+                Alert(title: Text("leave chatroom?"),
+                      message: Text("your messages will still be visible to others"),
+                      primaryButton: .destructive(Text("leave")) {
+                        chatroomVM.leaveChatroom(code: joinCode, userName: Auth.auth().currentUser?.displayName ?? "") {
+                            showPopover.toggle()
+                        }
+                        presentationMode.wrappedValue.dismiss()
+
+                      },
+                      secondaryButton: .cancel())
+            })
         }
     }
 }
 
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
-        
         Messages(for: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
+    }
+}
+
+struct Popover: View {
+    var chatroom: Chatroom
+    var joinCode: String
+    @Binding var showAlert: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("join code:")
+                .fontWeight(.semibold)
+            Text(joinCode)
+            
+            Divider()
+            
+            Text("who's in here:")
+                .fontWeight(.semibold)
+            ForEach(chatroom.userNames, id:\.self) { user in
+                Text(user)
+            }
+            
+            Divider()
+            
+            Button(action: {
+                showAlert = true
+            }, label: {
+                Text("leave chatroom")
+                    .foregroundColor(.red)
+                    .fontWeight(.semibold)
+            })
+        }
+        .frame(width: 150)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(10)
     }
 }

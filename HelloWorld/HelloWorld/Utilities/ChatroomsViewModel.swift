@@ -89,4 +89,31 @@ class ChatroomsViewModel: ObservableObject {
             print("cannot join chatroom, user is nil")
         }
     }
+    
+    func leaveChatroom(code: String, userName: String, completion: @escaping () -> Void) {
+        if (user != nil) {
+            guard let intCode = Int(code) else {
+                print("intCode error")
+                return
+            }
+            db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("error getting documents: \(error)")
+                } else {
+                    for document in snapshot!.documents {
+                        self.db.collection("chatrooms").document(document.documentID).updateData([
+                            "users": FieldValue.arrayRemove([self.user!.uid])
+                        ])
+                        self.db.collection("chatrooms").document(document.documentID).updateData([
+                            "userNames": FieldValue.arrayRemove([userName])
+                        ])
+                        
+                        completion()
+                    }
+                }
+            }
+        } else {
+            print("cannot join chatroom, user is nil")
+        }
+    }
 }
