@@ -81,6 +81,12 @@ class ChatroomsViewModel: ObservableObject {
                             "userNames": FieldValue.arrayUnion([userName])
                         ])
                         
+                        MessagesViewModel().sendMessage(
+                                messageContent: "\(userName) has joined the chatroom",
+                                docId: document.documentID,
+                                senderName: "HelloWorld",
+                                profilePicture: nil)
+                        
                         completion()
                     }
                 }
@@ -107,6 +113,12 @@ class ChatroomsViewModel: ObservableObject {
                         self.db.collection("chatrooms").document(document.documentID).updateData([
                             "userNames": FieldValue.arrayRemove([userName])
                         ])
+                        
+                        MessagesViewModel().sendMessage(
+                                messageContent: "\(userName) has left the chatroom",
+                                docId: document.documentID,
+                                senderName: "HelloWorld",
+                                profilePicture: nil)
                         
                         completion()
                     }

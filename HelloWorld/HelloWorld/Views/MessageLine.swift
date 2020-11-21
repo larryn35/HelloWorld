@@ -13,14 +13,21 @@ struct MessageLine: View {
     
     var messageDetails = Message(content: "", name: "", email: "")
     var users = [String]()
-        
+    
     @State var timestamp = false
     
-    @ObservedObject var messagesViewModel = MessagesViewModel()
-            
+    @ObservedObject var messagesVM = MessagesViewModel()
+    
     var body: some View {
         
-        if Auth.auth().currentUser?.email == messageDetails.email  {
+        if messageDetails.name == "HelloWorld" {
+            Text(messageDetails.content)
+                .padding()
+                .background(Color.white.opacity(0.4))
+                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                .cornerRadius(10)
+        
+        } else if Auth.auth().currentUser?.email == messageDetails.email  {
             HStack {
                 Spacer()
                 VStack(alignment: .trailing) {
@@ -36,7 +43,7 @@ struct MessageLine: View {
                             }
                         }
                     if timestamp {
-                        Text(messagesViewModel.timeSinceMessage(message: messageDetails.date))
+                        Text(messagesVM.timeSinceMessage(message: messageDetails.date))
                             .font(.caption)
                     }
                 }
@@ -81,7 +88,7 @@ struct MessageLine: View {
                         }
                     
                     if timestamp {
-                        Text(messagesViewModel.timeSinceMessage(message: messageDetails.date))
+                        Text(messagesVM.timeSinceMessage(message: messageDetails.date))
                             .font(.caption)
                     }
                 }

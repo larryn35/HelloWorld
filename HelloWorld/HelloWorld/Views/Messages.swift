@@ -75,7 +75,7 @@ struct Messages: View {
                         Spacer()
                         
                         Button(action: {
-//                            self.hideKeyboard()
+                            //                            self.hideKeyboard()
                             if let user = Auth.auth().currentUser?.displayName {
                                 messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
                             } else {
@@ -127,11 +127,13 @@ struct Messages: View {
                 Alert(title: Text("leave chatroom?"),
                       message: Text("your messages will still be visible to others"),
                       primaryButton: .destructive(Text("leave")) {
-                        chatroomVM.leaveChatroom(code: joinCode, userName: Auth.auth().currentUser?.displayName ?? "") {
-                            showPopover.toggle()
+                        
+                        if let userName = Auth.auth().currentUser?.displayName {
+                            chatroomVM.leaveChatroom(code: joinCode, userName: userName) {
+                                showPopover.toggle()
+                            }
+                            presentationMode.wrappedValue.dismiss()
                         }
-                        presentationMode.wrappedValue.dismiss()
-
                       },
                       secondaryButton: .cancel())
             })
@@ -158,7 +160,7 @@ struct Popover: View {
             
             Divider()
             
-            Text("who's in here:")
+            Text("who's here:")
                 .fontWeight(.semibold)
             ForEach(chatroom.userNames, id:\.self) { user in
                 Text(user)

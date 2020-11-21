@@ -22,7 +22,7 @@ struct CreateChatroom: View {
 
     @Binding var tabSelection: Int
 
-    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
+    @ObservedObject var chatroomsVM = ChatroomsViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -47,7 +47,7 @@ struct CreateChatroom: View {
             }
             
             Button(action: {
-                chatroomsViewModel.createChatroom(title: newTitle, userName: userName) {
+                chatroomsVM.createChatroom(title: newTitle, userName: userName) {
                     newTitle = ""
                     self.hideKeyboard()
                     tabSelection = 1
@@ -87,7 +87,8 @@ struct JoinChatroom: View {
     @Binding var tabSelection: Int
     
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
-    
+    @ObservedObject var messagesVM = MessagesViewModel()
+
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
