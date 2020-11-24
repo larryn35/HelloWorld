@@ -21,12 +21,24 @@ struct MessageLine: View {
     var body: some View {
         
         if messageDetails.name == "HelloWorld" {
-            Text(messageDetails.content)
-                .padding()
-                .background(Color.white.opacity(0.4))
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                .cornerRadius(10)
-        
+            VStack {
+                Text(messageDetails.content)
+                    .padding()
+                    .background(Color.white.opacity(0.4))
+                    .opacity(0.8)
+                    .cornerRadius(10)
+                    .onTapGesture {
+                        withAnimation {
+                            timestamp.toggle()
+                        }
+                    }
+                
+                if timestamp {
+                    Text(messagesVM.timeSinceMessage(message: messageDetails.date))
+                        .font(.caption)
+                }
+            }
+            
         } else if Auth.auth().currentUser?.email == messageDetails.email  {
             HStack {
                 Spacer()
