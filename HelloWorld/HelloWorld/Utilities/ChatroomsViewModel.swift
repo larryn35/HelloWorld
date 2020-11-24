@@ -65,7 +65,10 @@ class ChatroomsViewModel: ObservableObject {
     
     func joinChatroom(code: String, userName: String, completion: @escaping () -> Void) {
         if (user != nil) {
-            guard let intCode = Int(code) else { return }
+            guard let intCode = Int(code) else {
+                print("intCode error")
+                return
+            }
             db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
                 if let error = error {
                     print("error getting documents: \(error)")
@@ -78,10 +81,51 @@ class ChatroomsViewModel: ObservableObject {
                             "userNames": FieldValue.arrayUnion([userName])
                         ])
                         
+                        MessagesViewModel().sendMessage(
+                                messageContent: "\(userName) has joined the chatroom",
+                                docId: document.documentID,
+                                senderName: "HelloWorld",
+                                profilePicture: nil)
+                        
                         completion()
                     }
                 }
             }
+        } else {
+            print("cannot join chatroom, user is nil")
+        }
+    }
+    
+    func leaveChatroom(code: String, userName: String, completion: @escaping () -> Void) {
+        if (user != nil) {
+            guard let intCode = Int(code) else {
+                print("intCode error")
+                return
+            }
+            db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("error getting documents: \(error)")
+                } else {
+                    for document in snapshot!.documents {
+                        self.db.collection("chatrooms").document(document.documentID).updateData([
+                            "users": FieldValue.arrayRemove([self.user!.uid])
+                        ])
+                        self.db.collection("chatrooms").document(document.documentID).updateData([
+                            "userNames": FieldValue.arrayRemove([userName])
+                        ])
+                        
+                        MessagesViewModel().sendMessage(
+                                messageContent: "\(userName) has left the chatroom",
+                                docId: document.documentID,
+                                senderName: "HelloWorld",
+                                profilePicture: nil)
+                        
+                        completion()
+                    }
+                }
+            }
+        } else {
+            print("cannot join chatroom, user is nil")
         }
     }
 }

@@ -6,45 +6,25 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct ChatList: View {
     
-    @State var joinModal = false
-    
     @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
-    @ObservedObject var userProfileVM = UserProfileViewModel()
-    @ObservedObject var sessionStore = SessionStore()
     
     var body: some View {
-        NavigationView {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("chatrooms")
+                .foregroundColor(.white)
+                .font(.title)
+                .fontWeight(.semibold)
+            
             List(chatroomsViewModel.chatrooms) { chatroom in
-                ZStack {
-                    ChatListItem(with: chatroom)
-                    NavigationLink(destination: Messages(for: chatroom)) {
-                        EmptyView()
-                    }
-                }
+                ChatListItem(with: chatroom)
+                    .padding(.vertical)
             }
-            .navigationBarTitle("Welcome")
-            .navigationBarItems(
-                leading: Button(action: {
-                    sessionStore.signOut()
-                }, label: {
-                    Text("Sign out")
-                }),
-                
-                trailing: Button(action: {
-                    joinModal = true
-                }, label: {
-                    Image(systemName: "plus.circle")
-                })
-            )
-            .sheet(isPresented: $joinModal, content: {
-                // send user's name when creating/joining chatroom
-                Join(isOpen: $joinModal, userName: userProfileVM.userProfiles.first?.firstName ?? "Error")
-            })
+            .cornerRadius(10)
         }
+        .padding()
     }
 }
 
@@ -58,42 +38,52 @@ struct ChatList_Previews: PreviewProvider {
 struct ChatListItem: View {
     var chatroom: Chatroom
     @State var timestamp = ""
-    
+
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     
+    @State private var showMessage = false
+    
     init(with chatroom: Chatroom) {
         self.chatroom = chatroom
-        messagesViewModel.fetchMessages(docId: chatroom.id)
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(chatroom.title).fontWeight(.semibold)
-                Spacer()
+        ZStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(chatroom.title).fontWeight(.semibold)
+                    Spacer()
+                    
+                    // display last message date
+                    if let lastMessage = messagesViewModel.lastMessage {
+                        Text(messagesViewModel.timeSinceMessage(message: lastMessage.date))
+                            .font(.caption)
+                    }
+                }
                 
-                // display last message date
-                Text(timestamp)
-                    .font(.caption)
-            }
-            .onAppear {
+                // diplay other users in the chatroom
+                if chatroom.userNames.count >= 2 {
+                    Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+                }
+                
+                // display most recent message
                 if let lastMessage = messagesViewModel.messages.last {
-                    timestamp = timeSinceMessage(message: lastMessage.date)
+                    Text(lastMessage.name + ": " + lastMessage.content)
+                        .lineLimit(1)
+                        .font(.caption2)
                 }
             }
-            
-            // diplay other users in the chatroom
-            if chatroom.userNames.count >= 2 {
-                Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                showMessage = true
             }
-            
-            // display most recent message
-            if let lastMessage = messagesViewModel.messages.last {
-                Text(lastMessage.name + ": " + lastMessage.content)
-                    .lineLimit(1)
-                    .font(.caption2)
+            .onAppear {
+                messagesViewModel.fetchMessages(docId: chatroom.id)
             }
+            .sheet(isPresented: $showMessage, content: {
+                Messages(for: chatroom)
+            })
         }
     }
 }

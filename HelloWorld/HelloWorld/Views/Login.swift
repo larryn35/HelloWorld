@@ -11,59 +11,82 @@ struct Login: View {
     
     @State private var email = ""
     @State private var password = ""
-    @State private var showRegistration = false
     @State private var showAlert = false
     @State private var errorMessage = ""
+    
     @ObservedObject var sessionStore = SessionStore()
     
+    private var completedForm: Bool {
+        !email.isEmpty && password.count >= 6
+    }
+    
+    @Binding var keyboardDisplayed: Bool
+    
     var body: some View {
-        NavigationView {
+        VStack {
             VStack {
-                Group {
+                HStack(spacing: 15) {
+                    Image(systemName: "envelope")
+                        .frame(width:20)
+                    
                     TextField("email", text: $email)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
-                    SecureField("password", text: $password)
-                }
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-                                
-                Button(action: {
-                    sessionStore.signIn(email: email, password: password) { success, error  in
-                        if !success, error != nil {
-                            showAlert = true
-                            errorMessage = "\(String(describing: error!.localizedDescription))"
+                        .onTapGesture {
+                            keyboardDisplayed = true
                         }
-                    }
-                }, label: {
-                    Text("Login")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color.blue)
-                        .cornerRadius(25)
-                })
-                .padding()
+                }.padding(.vertical)
                 
-                Text("Don't have an account? Sign up")
-                    .font(.subheadline)
-                    .padding()
-                    .onTapGesture {
-                        showRegistration.toggle()
+                Divider()
+                
+                HStack(spacing: 15) {
+                    Image(systemName: "lock")
+                        .frame(width:20)
+                    
+                    SecureField("password", text: $password)
+                        .onTapGesture {
+                            keyboardDisplayed = true
+                        }
+                }
+                .padding(.vertical)
+            }
+            .padding(.horizontal, 20)
+            
+            Button(action: {
+                
+                sessionStore.signIn(email: email, password: password) { success, error  in
+                    if !success, error != nil {
+                        showAlert = true
+                        errorMessage = "\(String(describing: error!.localizedDescription))"
                     }
-                    .sheet(isPresented: $showRegistration, content: {
-                        Register(showRegistration: $showRegistration)
-                    })
-            }
-            .navigationTitle("Welcome")
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Alert"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-            }
+                }
+                
+//                keyboardDisplayed = false
+//                self.hideKeyboard()
+                
+            }, label: {
+                Text("sign in")
+                    .padding(8)
+                    .frame(width: UIScreen.main.bounds.width - 150)
+                    .foregroundColor(.white)
+                    .background(completedForm ? Color.red : Color.gray)
+                    .cornerRadius(10)
+                    .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+            })
+            .offset(y: 35)
+            .disabled(!completedForm)
+        }
+        .padding(.vertical)
+        .background(Color(.white).cornerRadius(10).shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4))
+        .frame(width: UIScreen.main.bounds.width - 50)
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Please try again"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
     }
 }
 
 struct Login_Previews: PreviewProvider {
     static var previews: some View {
-        Login()
+        Login(keyboardDisplayed: .constant(false))
     }
 }

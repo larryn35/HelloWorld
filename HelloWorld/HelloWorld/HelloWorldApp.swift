@@ -17,7 +17,7 @@ struct HelloWorldApp: App {
     
     var body: some Scene {
         WindowGroup {
-            Home()
+            WelcomeScreen()
         }
     }
 }
@@ -29,15 +29,3 @@ extension View {
     }
 }
 #endif
-
-struct ButtonStyle: ViewModifier {
-    var validation = false
-    
-    func body(content: Content) -> some View {
-        content
-            .padding()
-            .foregroundColor(.white)
-            .background(validation ? Color.blue : Color.gray)
-            .cornerRadius(25)
-    }
-}
