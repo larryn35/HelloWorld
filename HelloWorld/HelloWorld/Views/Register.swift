@@ -9,23 +9,23 @@ import SwiftUI
 
 struct Register: View {
     
+    @ObservedObject var sessionStore = SessionStore()
+    @ObservedObject var userProfile = UserProfileViewModel()
+    
+    @Binding var keyboardDisplayed: Bool
+    
     @State private var email = ""
     @State private var password = ""
     @State private var firstName = ""
     @State private var lastName = ""
+    @State private var errorMessage = ""
     @State private var showAlert = false
     @State private var isLoading = false
-    @State private var errorMessage = ""
-    
-    @Binding var keyboardDisplayed: Bool
     
     private var completedForm: Bool {
         // returns true if all fields are filled
         formValidation(for: [email, password, firstName, lastName])
     }
-    
-    @ObservedObject var sessionStore = SessionStore()
-    @ObservedObject var userProfile = UserProfileViewModel()
     
     var body: some View {
         ZStack {
@@ -105,13 +105,14 @@ struct Register: View {
                         .frame(width: UIScreen.main.bounds.width - 150)
                         .foregroundColor(.white)
                         .background(completedForm ? Color.red : Color.gray)
-                        .cornerRadius(10)
-                        .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                        .shadowStyle()
                 })
                 .offset(y: 35)
             }
             .padding(.vertical)
-            .background(Color(.white).cornerRadius(10).shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4))
+            .background(
+                Color(.white).shadowStyle()
+            )
             .frame(width: UIScreen.main.bounds.width - 50)
             
             if isLoading {

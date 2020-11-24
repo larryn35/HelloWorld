@@ -11,41 +11,22 @@ import SDWebImageSwiftUI
 
 struct ProfileSettings: View {
     
-    @State private var showImagePicker = false
-    @State private var newEmail = ""
-    @State private var newPassword = ""
-    @State private var passwordCheck = ""
-    @State private var showAlert = false
-    @State private var showActionSheet = false
-    @State private var errorMessage = ""
-    @State private var alert = AlertMessage.passwordChanged
-    
     @ObservedObject var sessionStore = SessionStore()
     @ObservedObject var userProfileVM = UserProfileViewModel()
     
-    enum AlertMessage {
-        case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
-    }
-    
-    func getAlert(alertType: AlertMessage) -> Alert {
-        switch alertType {
-        case .passwordChanged:
-            return Alert(title: Text("Password has been successfuly changed"), dismissButton: .default(Text("OK")))
-        case .emailChanged:
-            return Alert(title: Text("Email has been successfuly changed"), dismissButton: .default(Text("OK")))
-        case .passwordError:
-            return Alert(title: Text("Password could not be changed"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-        case .passwordMismatch:
-            return Alert(title: Text("Password could not be changed"), message: Text("Passwords do not match, please try again"), dismissButton: .default(Text("OK")))
-        case .emailError:
-            return Alert(title: Text("Email could not be changed"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-            
-        }
-    }
-    
+    @State private var newEmail = ""
+    @State private var newPassword = ""
+    @State private var passwordCheck = ""
+    @State private var errorMessage = ""
+    @State private var showAlert = false
+    @State private var showActionSheet = false
+    @State private var showImagePicker = false
+    @State private var alert = AlertMessage.passwordChanged
+        
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
+            Constants.gradientBackground
+                .edgesIgnoringSafeArea(.all)
                 .zIndex(-99)
             
             VStack {
@@ -65,21 +46,14 @@ struct ProfileSettings: View {
                             WebImage(url: URL(string: profilePicture))
                                 .resizable()
                                 .placeholder {
-                                        Circle().foregroundColor(.white)
-                                    }
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                                .shadow(radius: 15)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                                .frame(width: 125, height: 125)
+                                    Circle().foregroundColor(.white)
+                                }
+                                .imageStyle()
+                                
                         } else {
                             Image("DefaultProfilePicture")
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(Circle())
-                                .shadow(radius: 15)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                                .frame(width: 125, height: 125)
+                                .imageStyle()
                         }
                     }
                     .padding(.vertical, 15)
@@ -155,8 +129,7 @@ struct ProfileSettings: View {
                 }
                 .background(Color(.white))
                 .frame(height: 360)
-                .cornerRadius(10)
-                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                .shadowStyle()
                 .padding()
                 
                 Spacer()
@@ -169,28 +142,30 @@ struct ProfileSettings: View {
                         .frame(width: UIScreen.main.bounds.width - 150)
                         .foregroundColor(.white)
                         .background(Color.red)
-                        .cornerRadius(10)
-                        .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                        .shadowStyle()
                 })
                 
                 Spacer()
             }
         }
         .actionSheet(isPresented: $showActionSheet) {
-            ActionSheet(title: Text("Change profile picture"), message: Text("Your photo will appear next to your messages and will be visible to others"), buttons: [
-                .default(Text("Camera")) {  },
-                .default(Text("Photo library")) { showImagePicker = true },
-                .default(Text("Reset to default photo")) {
-                    UserProfileViewModel().updateProfilePicture(imageData: nil)
-                },
-                .cancel()
-            ])
+            ActionSheet(
+                title: Text("Change profile picture"),
+                message: Text("Your photo will appear next to your messages and will be visible to others"),
+                buttons: [
+                    .default(Text("Camera")) {  },
+                    .default(Text("Photo library")) { showImagePicker = true },
+                    .default(Text("Reset to default photo")) {
+                        UserProfileViewModel().updateProfilePicture(imageData: nil)
+                    },
+                    .cancel()
+                ])
         }
         .sheet(isPresented: $showImagePicker) {
             ImagePicker()
         }
         .alert(isPresented: $showAlert) {
-            getAlert(alertType: alert)
+            getAlert(alertType: alert, errorMessage: errorMessage)
         }
     }
 }
@@ -200,3 +175,43 @@ struct ProfileSettings_Previews: PreviewProvider {
         ProfileSettings()
     }
 }
+
+// MARK:  Alert messages
+
+extension ProfileSettings {
+    
+    enum AlertMessage {
+        case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
+    }
+    
+    private func getAlert(alertType: AlertMessage, errorMessage: String?) -> Alert {
+        switch alertType {
+        case .passwordChanged:
+            return Alert(
+                title: Text("Password has been successfuly changed"),
+                dismissButton: .default(Text("OK")))
+        case .emailChanged:
+            return Alert(
+                title: Text("Email has been successfuly changed"),
+                dismissButton: .default(Text("OK")))
+        case .passwordError:
+            return Alert(
+                title: Text("Password could not be changed"),
+                message: Text(errorMessage ?? "Please try again"),
+                dismissButton: .default(Text("OK")))
+        case .passwordMismatch:
+            return Alert(
+                title: Text("Password could not be changed"),
+                message: Text("Passwords do not match, please try again"),
+                dismissButton: .default(Text("OK")))
+        case .emailError:
+            return Alert(
+                title: Text("Email could not be changed"),
+                message: Text(errorMessage ?? "Please try again"),
+                dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
+
+

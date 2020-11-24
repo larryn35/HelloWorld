@@ -8,20 +8,19 @@
 import SwiftUI
 
 struct Login: View {
-    
+    @ObservedObject var sessionStore = SessionStore()
+
+    @Binding var keyboardDisplayed: Bool
+
     @State private var email = ""
     @State private var password = ""
-    @State private var showAlert = false
     @State private var errorMessage = ""
-    
-    @ObservedObject var sessionStore = SessionStore()
+    @State private var showAlert = false
     
     private var completedForm: Bool {
         !email.isEmpty && password.count >= 6
     }
-    
-    @Binding var keyboardDisplayed: Bool
-    
+        
     var body: some View {
         VStack {
             VStack {
@@ -53,7 +52,6 @@ struct Login: View {
             .padding(.horizontal, 20)
             
             Button(action: {
-                
                 sessionStore.signIn(email: email, password: password) { success, error  in
                     if !success, error != nil {
                         showAlert = true
@@ -61,26 +59,27 @@ struct Login: View {
                     }
                 }
                 
-//                keyboardDisplayed = false
-//                self.hideKeyboard()
-                
             }, label: {
                 Text("sign in")
                     .padding(8)
                     .frame(width: UIScreen.main.bounds.width - 150)
                     .foregroundColor(.white)
                     .background(completedForm ? Color.red : Color.gray)
-                    .cornerRadius(10)
-                    .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                    .shadowStyle()
             })
             .offset(y: 35)
             .disabled(!completedForm)
         }
         .padding(.vertical)
-        .background(Color(.white).cornerRadius(10).shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4))
         .frame(width: UIScreen.main.bounds.width - 50)
+        .background(
+            Color(.white).shadowStyle()
+        )
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Please try again"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Please try again"),
+                message: Text(errorMessage),
+                dismissButton: .default(Text("OK")))
         }
     }
 }

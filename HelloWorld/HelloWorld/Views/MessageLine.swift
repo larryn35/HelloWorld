@@ -74,7 +74,7 @@ struct MessageLine: View {
                     if let url = messageDetails.profilePicture {
                         WebImage(url: URL(string: url))
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
                             .clipShape(Circle())
                             .frame(width: 40.5, height: 40.5)
                     }
@@ -85,7 +85,7 @@ struct MessageLine: View {
                         Text(messageDetails.name)
                             .font(.caption)
                             // TODO: rewrite code for color
-                            .foregroundColor(userColor(user: messageDetails.name, users: users))
+                            .foregroundColor(messagesVM.userColor(user: messageDetails.name, users: users))
                         Spacer()
                     }
                     Text(messageDetails.content)

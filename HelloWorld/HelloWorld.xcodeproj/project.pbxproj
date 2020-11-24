@@ -27,7 +27,8 @@
 		5C728B102554D8A40020B70D /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C728B0F2554D8A40020B70D /* Register.swift */; };
 		5C72DA732556577700108E41 /* LoadingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C72DA722556577700108E41 /* LoadingAnimation.swift */; };
 		5C72DA762556672E00108E41 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C72DA752556672D00108E41 /* ImagePicker.swift */; };
-		5CB7EB8C255BDC530034B570 /* UserMessageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB7EB8B255BDC530034B570 /* UserMessageColor.swift */; };
+		5CC7DCF1256CC067003D2C83 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7DCF0256CC067003D2C83 /* Constants.swift */; };
+		5CC7DCF4256CD014003D2C83 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7DCF3256CD013003D2C83 /* ViewModifiers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,7 +53,8 @@
 		5C728B0F2554D8A40020B70D /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		5C72DA722556577700108E41 /* LoadingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimation.swift; sourceTree = "<group>"; };
 		5C72DA752556672D00108E41 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		5CB7EB8B255BDC530034B570 /* UserMessageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessageColor.swift; sourceTree = "<group>"; };
+		5CC7DCF0256CC067003D2C83 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5CC7DCF3256CD013003D2C83 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
 		6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A85178BF4B23F9E2D92DAB /* Pods-HelloWorld.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.debug.xcconfig"; sourceTree = "<group>"; };
 		EF598B5F7548DAC41BE23EA0 /* Pods-HelloWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.release.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,7 +137,8 @@
 				5C6361B1255392DB00E374B8 /* MessagesViewModel.swift */,
 				5C5C6B662553EAD50038B60B /* UserProfileViewModel.swift */,
 				5C72DA752556672D00108E41 /* ImagePicker.swift */,
-				5CB7EB8B255BDC530034B570 /* UserMessageColor.swift */,
+				5CC7DCF0256CC067003D2C83 /* Constants.swift */,
+				5CC7DCF3256CD013003D2C83 /* ViewModifiers.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -274,8 +277,8 @@
 				5C63614725534A0C00E374B8 /* WelcomeScreen.swift in Sources */,
 				5C42B39F25635A2800727BB5 /* CreateJoinChatroom.swift in Sources */,
 				5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */,
+				5CC7DCF4256CD014003D2C83 /* ViewModifiers.swift in Sources */,
 				5C6361B52553960900E374B8 /* Messages.swift in Sources */,
-				5CB7EB8C255BDC530034B570 /* UserMessageColor.swift in Sources */,
 				5C72DA762556672E00108E41 /* ImagePicker.swift in Sources */,
 				5C5F3BA52560B4C700F3E3BB /* Home.swift in Sources */,
 				5C6361A725535C8300E374B8 /* Login.swift in Sources */,
@@ -288,6 +291,7 @@
 				5C6361B2255392DB00E374B8 /* MessagesViewModel.swift in Sources */,
 				5C72DA732556577700108E41 /* LoadingAnimation.swift in Sources */,
 				5C6361AC25537B2700E374B8 /* ChatroomsViewModel.swift in Sources */,
+				5CC7DCF1256CC067003D2C83 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

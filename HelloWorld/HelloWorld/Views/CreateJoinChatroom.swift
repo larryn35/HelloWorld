@@ -9,21 +9,20 @@ import SwiftUI
 import FirebaseAuth
 
 struct CreateChatroom: View {
-    
+    @ObservedObject var chatroomsVM = ChatroomsViewModel()
+
+    @Binding var tabSelection: Int
+
     @State var showAlert = false
     @State var errorMessage = ""
     @State var newTitle = ""
 
+    var userName = Auth.auth().currentUser?.displayName ?? ""
+
     var completedForm: Bool {
         !newTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
-    
-    var userName = Auth.auth().currentUser?.displayName ?? ""
-
-    @Binding var tabSelection: Int
-
-    @ObservedObject var chatroomsVM = ChatroomsViewModel()
-    
+        
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
@@ -42,8 +41,7 @@ struct CreateChatroom: View {
                 .padding()
                 .padding(.vertical)
                 .background(Color(.white))
-                .cornerRadius(10)
-                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                .shadowStyle()
             }
             
             Button(action: {
@@ -59,8 +57,7 @@ struct CreateChatroom: View {
                     .frame(width: UIScreen.main.bounds.width - 150)
                     .foregroundColor(.white)
                     .background(completedForm ? Color.red : Color.gray)
-                    .cornerRadius(10)
-                    .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                    .shadowStyle()
             })
             .offset(y: 20)
             .disabled(!completedForm)
@@ -74,20 +71,19 @@ struct CreateChatroom: View {
 }
 
 struct JoinChatroom: View {
+    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
     
+    @Binding var tabSelection: Int
+
     @State var showAlert = false
     @State var errorMessage = ""
     @State var joinCode = ""
 
+    var userName = Auth.auth().currentUser?.displayName ?? ""
+    
     var completedForm: Bool {
         joinCode.count == 4
     }
-    var userName = Auth.auth().currentUser?.displayName ?? ""
-    
-    @Binding var tabSelection: Int
-    
-    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
-    @ObservedObject var messagesVM = MessagesViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -107,8 +103,7 @@ struct JoinChatroom: View {
                 .padding()
                 .padding(.vertical)
                 .background(Color(.white))
-                .cornerRadius(10)
-                .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)                
+                .shadowStyle()
             }
             
             Button(action: {
@@ -124,8 +119,7 @@ struct JoinChatroom: View {
                     .frame(width: UIScreen.main.bounds.width - 150)
                     .foregroundColor(.white)
                     .background(completedForm ? Color.red : Color.gray)
-                    .cornerRadius(10)
-                    .shadow(color: Color(.black).opacity(0.3), radius: 4, x: 4, y: 4)
+                    .shadowStyle()
             })
             .offset(y: 20)
             .disabled(!completedForm)

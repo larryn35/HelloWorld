@@ -10,41 +10,38 @@ import SwiftUI
 struct WelcomeScreen: View {
     @ObservedObject var sessionStore = SessionStore()
     
+    @State var keyboardDisplayed = false
+    @State var index = 0
+    
     init() {
         sessionStore.listen()
     }
     
-    @State var keyboardDisplayed = false
-    @State var index = 0
-        
     var body: some View {
         Home(tabSelection: 1)
             .fullScreenCover(isPresented: $sessionStore.isAnon, content: {
-
+                
                 ZStack {
-                    LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    Constants.gradientBackground
                         .edgesIgnoringSafeArea(.all)
-                        .blur(radius: 20, opaque: true)
                     
                     VStack {
                         VStack(spacing: 30) {
                             if !keyboardDisplayed {
-                                    Image("IconClear")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 150)
-                                        .padding(.top, 20)
-                                        .transition(.move(edge: .top))
-
-                                    
-                                    VStack(alignment: .leading) {
-                                        Text("hello, world")
-                                            .font(.largeTitle)
-                                            .foregroundColor(.white)
-                                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                                    }
-                                    .transition(.fade)
-
+                                Image("IconClear")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 150)
+                                    .padding(.top, 20)
+                                    .transition(.move(edge: .top))
+                                
+                                VStack(alignment: .leading) {
+                                    Text("hello, world")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                        .fontWeight(.bold)
+                                }
+                                .transition(.fade)
                             }
                             
                             HStack {
@@ -66,7 +63,7 @@ struct WelcomeScreen: View {
                                 }) {
                                     
                                     Text("new")
-                                        .foregroundColor(self.index == 1 ? .black : .white)
+                                        .foregroundColor(index == 1 ? .black : .white)
                                         .fontWeight(.bold)
                                         .padding(.vertical, 10)
                                         .frame(width: (UIScreen.main.bounds.width - 50) / 2)
@@ -80,7 +77,7 @@ struct WelcomeScreen: View {
                             .padding(.top, keyboardDisplayed ? 0 : 25)
                         }
                         .padding(.bottom, 25)
-                                        
+                        
                         if index == 0 {
                             Login(keyboardDisplayed: $keyboardDisplayed)
                                 .transition(AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))

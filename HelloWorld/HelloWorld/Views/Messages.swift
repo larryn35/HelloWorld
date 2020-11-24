@@ -9,6 +9,9 @@ import SwiftUI
 import FirebaseAuth
 
 struct Messages: View {
+    @ObservedObject var messagesVM = MessagesViewModel()
+    @ObservedObject var userProfileVM = UserProfileViewModel()
+    @ObservedObject var chatroomVM = ChatroomsViewModel()
     
     @State var messageField = ""
     @State var senderName = ""
@@ -18,11 +21,7 @@ struct Messages: View {
     
     let chatroom: Chatroom
     var joinCode = ""
-    
-    @ObservedObject var messagesVM = MessagesViewModel()
-    @ObservedObject var userProfileVM = UserProfileViewModel()
-    @ObservedObject var chatroomVM = ChatroomsViewModel()
-    
+        
     @Environment(\.presentationMode) var presentationMode
     
     init(for chatroom: Chatroom) {
@@ -34,7 +33,7 @@ struct Messages: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .topLeading) {
-                LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                Constants.gradientBackground
                     .edgesIgnoringSafeArea(.top)
                     .zIndex(-99)
                 
@@ -75,7 +74,6 @@ struct Messages: View {
                         Spacer()
                         
                         Button(action: {
-                            //                            self.hideKeyboard()
                             if let user = Auth.auth().currentUser?.displayName {
                                 messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
                             } else {
@@ -99,7 +97,7 @@ struct Messages: View {
                         }, label: {
                             Image(systemName: "info.circle")
                                 .resizable()
-                                .frame(width: 20, height: 20, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                                .frame(width: 20, height: 20)
                                 .padding()
                         })
                     

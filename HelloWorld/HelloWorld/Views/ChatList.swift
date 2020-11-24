@@ -19,7 +19,7 @@ struct ChatList: View {
                 .fontWeight(.semibold)
             
             List(chatroomsViewModel.chatrooms) { chatroom in
-                ChatListItem(with: chatroom)
+                ChatListItem(chatroom: chatroom)
                     .padding(.vertical)
             }
             .cornerRadius(10)
@@ -34,19 +34,18 @@ struct ChatList_Previews: PreviewProvider {
     }
 }
 
-
 struct ChatListItem: View {
-    var chatroom: Chatroom
-    @State var timestamp = ""
-
     @ObservedObject var messagesViewModel = MessagesViewModel()
     @ObservedObject var userProfileVM = UserProfileViewModel()
-    
+
+    @State var timestamp = ""
     @State private var showMessage = false
     
-    init(with chatroom: Chatroom) {
-        self.chatroom = chatroom
-    }
+    var chatroom: Chatroom
+    
+//    init(with chatroom: Chatroom) {
+//        self.chatroom = chatroom
+//    }
     
     var body: some View {
         ZStack {
@@ -63,8 +62,10 @@ struct ChatListItem: View {
                 }
                 
                 // diplay other users in the chatroom
-                if chatroom.userNames.count >= 2 {
-                    Text(chatroom.userNames.filter { $0 != userProfileVM.userProfiles.first?.firstName }.joined(separator: ", ")).font(.caption)
+                if chatroom.userNames.count >= 2,
+                   let ownName = userProfileVM.userProfiles.first?.firstName {
+                    Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
+                        .font(.caption)
                 }
                 
                 // display most recent message

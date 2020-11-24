@@ -21,12 +21,11 @@ struct Home: View {
             // MARK:  Chatroom List
 
             ZStack {
-                
-                LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
+                Constants.gradientBackground
+                    .edgesIgnoringSafeArea(.all)
                     .zIndex(-99)
                 
                 ChatList()
-                    
             }
             .tabItem {
                 Image(systemName: "list.dash")
@@ -37,8 +36,8 @@ struct Home: View {
             // MARK:  Create or join chatroom
 
             ZStack {
-                
-                LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
+                Constants.gradientBackground
+                    .edgesIgnoringSafeArea(.all)
                     .zIndex(-99)
                     .onTapGesture {
                         self.hideKeyboard()
@@ -59,19 +58,17 @@ struct Home: View {
             // MARK:  Settings
             
             ZStack {
-                
-                LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing).edgesIgnoringSafeArea(.all)
+                Constants.gradientBackground
+                    .edgesIgnoringSafeArea(.all)
                     .zIndex(-99)
                 
                 ProfileSettings()
-                    
             }
             .tabItem {
                 Image(systemName: "person")
                 Text("settings")
             }
             .tag(3)
-
         }
     }
 }
