@@ -73,7 +73,7 @@ struct Login: View {
         .padding(.vertical)
         .frame(width: UIScreen.main.bounds.width - 50)
         .background(
-            Color(.white).shadowStyle()
+            Constants.fill.shadowStyle()
         )
         .alert(isPresented: $showAlert) {
             Alert(

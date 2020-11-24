@@ -28,7 +28,7 @@ struct WelcomeScreen: View {
                     VStack {
                         VStack(spacing: 30) {
                             if !keyboardDisplayed {
-                                Image("IconClear")
+                                Image("Logo")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 150)
@@ -38,7 +38,7 @@ struct WelcomeScreen: View {
                                 VStack(alignment: .leading) {
                                     Text("hello, world")
                                         .font(.largeTitle)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(Constants.title)
                                         .fontWeight(.bold)
                                 }
                                 .transition(.fade)
@@ -50,12 +50,12 @@ struct WelcomeScreen: View {
                                 }) {
                                     
                                     Text("existing")
-                                        .foregroundColor(index == 0 ? .black : .white)
+                                        .foregroundColor(index == 0 ? Constants.title : .secondary)
                                         .fontWeight(.bold)
                                         .padding(.vertical, 10)
                                         .frame(width: (UIScreen.main.bounds.width - 50) / 2)
                                     
-                                }.background(index == 0 ? Color.white : Color.clear)
+                                }.background(index == 0 ? Constants.fill : Color.clear)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 
                                 Button(action: {
@@ -63,12 +63,12 @@ struct WelcomeScreen: View {
                                 }) {
                                     
                                     Text("new")
-                                        .foregroundColor(index == 1 ? .black : .white)
+                                        .foregroundColor(index == 1 ? Constants.title : .secondary)
                                         .fontWeight(.bold)
                                         .padding(.vertical, 10)
                                         .frame(width: (UIScreen.main.bounds.width - 50) / 2)
                                     
-                                }.background(index == 1 ? Color.white : Color.clear)
+                                }.background(index == 1 ? Constants.fill : Color.clear)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                             .frame(width: UIScreen.main.bounds.width - 50)

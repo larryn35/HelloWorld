@@ -27,7 +27,7 @@ struct CreateChatroom: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("create new chatroom")
-                    .foregroundColor(.white)
+                    .foregroundColor(Constants.title)
                     .font(.title)
                     .fontWeight(.semibold)
                 
@@ -40,7 +40,7 @@ struct CreateChatroom: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Color(.white))
+                .background(Constants.fill)
                 .shadowStyle()
             }
             
@@ -89,7 +89,7 @@ struct JoinChatroom: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("join a chatroom")
-                    .foregroundColor(.white)
+                    .foregroundColor(Constants.title)
                     .font(.title)
                     .fontWeight(.semibold)
                 
@@ -102,7 +102,7 @@ struct JoinChatroom: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Color(.white))
+                .background(Constants.fill)
                 .shadowStyle()
             }
             

@@ -23,8 +23,9 @@ struct MessageLine: View {
         if messageDetails.name == "HelloWorld" {
             VStack {
                 Text(messageDetails.content)
+                    .font(.caption)
                     .padding()
-                    .background(Color.white.opacity(0.4))
+                    .background(Color.secondary.opacity(0.4))
                     .opacity(0.8)
                     .cornerRadius(10)
                     .onTapGesture {
@@ -65,16 +66,16 @@ struct MessageLine: View {
             HStack(alignment:.bottom, spacing: 10) {
                 
                 if messageDetails.profilePicture == nil || messageDetails.profilePicture == "" {
-                    Image("IconClear")
+                    Image("Logo")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: 40.5, height: 40.5)
                     
                 } else {
                     if let url = messageDetails.profilePicture {
                         WebImage(url: URL(string: url))
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .clipShape(Circle())
                             .frame(width: 40.5, height: 40.5)
                     }
@@ -91,7 +92,7 @@ struct MessageLine: View {
                     Text(messageDetails.content)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        .background(Color(#colorLiteral(red: 0.9568007047, green: 0.9568007047, blue: 0.9568007047, alpha: 1)))
+                        .background(Constants.primary)
                         .cornerRadius(10)
                         .onTapGesture {
                             withAnimation {

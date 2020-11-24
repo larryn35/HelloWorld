@@ -37,7 +37,7 @@ struct Messages: View {
                     .edgesIgnoringSafeArea(.top)
                     .zIndex(-99)
                 
-                Color(.white).opacity(0.7)
+                Constants.primary.opacity(0.8)
                     .edgesIgnoringSafeArea(.top)
                     .blur(radius: 3.0)
                     .zIndex(-98)
@@ -85,7 +85,7 @@ struct Messages: View {
                         })
                     }
                     .padding()
-                    .background(Color(.white))
+                    .background(Constants.primary)
                 }
                 .navigationBarTitle(chatroom.title, displayMode: .inline)
                 .navigationBarItems(
@@ -136,6 +136,7 @@ struct Messages: View {
                       secondaryButton: .cancel())
             })
         }
+        .accentColor(Constants.title)
     }
 }
 
@@ -176,7 +177,7 @@ struct Popover: View {
         }
         .frame(width: 150)
         .padding()
-        .background(Color.white)
+        .background(Constants.primary)
         .cornerRadius(10)
     }
 }

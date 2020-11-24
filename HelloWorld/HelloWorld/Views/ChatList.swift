@@ -14,7 +14,7 @@ struct ChatList: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("chatrooms")
-                .foregroundColor(.white)
+                .foregroundColor(Constants.title)
                 .font(.title)
                 .fontWeight(.semibold)
             
@@ -22,7 +22,7 @@ struct ChatList: View {
                 ChatListItem(chatroom: chatroom)
                     .padding(.vertical)
             }
-            .cornerRadius(10)
+            .shadowStyle()
         }
         .padding()
     }
@@ -42,11 +42,7 @@ struct ChatListItem: View {
     @State private var showMessage = false
     
     var chatroom: Chatroom
-    
-//    init(with chatroom: Chatroom) {
-//        self.chatroom = chatroom
-//    }
-    
+        
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {

@@ -8,5 +8,11 @@
 import SwiftUI
 
 enum Constants {
-    static let gradientBackground = LinearGradient(gradient: Gradient(colors: [Color.red, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+    static let color1 = Color("Color1")
+    static let color2 = Color("Color2")
+    static let title = Color("Title")
+    static let fill = Color("FillColor")
+    static let primary = Color("Primary")
+    
+    static let gradientBackground = LinearGradient(gradient: Gradient(colors: [color1, color2]), startPoint: .topLeading, endPoint: .bottomTrailing)
 }

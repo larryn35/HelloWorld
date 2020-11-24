@@ -111,7 +111,7 @@ struct Register: View {
             }
             .padding(.vertical)
             .background(
-                Color(.white).shadowStyle()
+                Constants.fill.shadowStyle()
             )
             .frame(width: UIScreen.main.bounds.width - 50)
             

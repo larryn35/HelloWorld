@@ -32,7 +32,7 @@ struct ProfileSettings: View {
             VStack {
                 HStack {
                     Text("hello, \(Auth.auth().currentUser?.displayName?.lowercased() ?? "there!")")
-                        .foregroundColor(.white)
+                        .foregroundColor(Constants.title)
                         .font(.title)
                         .fontWeight(.semibold)
                     Spacer()
@@ -46,7 +46,7 @@ struct ProfileSettings: View {
                             WebImage(url: URL(string: profilePicture))
                                 .resizable()
                                 .placeholder {
-                                    Circle().foregroundColor(.white)
+                                    Circle().foregroundColor(Constants.primary)
                                 }
                                 .imageStyle()
                                 
@@ -65,8 +65,8 @@ struct ProfileSettings: View {
                         Image(systemName: "camera.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundColor(.white)
-                            .background(Color(.blue))
+                            .foregroundColor(Constants.primary)
+                            .background(Constants.title)
                             .clipShape(Circle())
                             .offset(x: -4, y: -4)
                     })

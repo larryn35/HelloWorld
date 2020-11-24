@@ -15,7 +15,7 @@ private struct AvatarImage: ViewModifier {
             .aspectRatio(contentMode: .fill)
             .clipShape(Circle())
             .shadow(radius: 15)
-            .overlay(Circle().stroke(Color.white, lineWidth: 8))
+            .overlay(Circle().stroke(Constants.primary, lineWidth: 8))
             .frame(width: 125, height: 125)
     }
 }
