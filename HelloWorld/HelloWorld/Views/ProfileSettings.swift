@@ -22,7 +22,11 @@ struct ProfileSettings: View {
     @State private var showActionSheet = false
     @State private var showImagePicker = false
     @State private var alert = AlertMessage.passwordChanged
-        
+    
+    private var passwordFieldsCompleted: Bool {
+        formValidation(for: [newPassword, passwordCheck])
+    }
+    
     var body: some View {
         ZStack {
             Constants.gradientBackground
@@ -49,7 +53,7 @@ struct ProfileSettings: View {
                                     Circle().foregroundColor(Constants.primary)
                                 }
                                 .imageStyle()
-                                
+                            
                         } else {
                             Image("DefaultProfilePicture")
                                 .resizable()
@@ -62,74 +66,103 @@ struct ProfileSettings: View {
                         showActionSheet = true
                         
                     }, label: {
-                        Image(systemName: "camera.circle")
+                        Image(systemName: "camera.circle.fill")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .foregroundColor(Constants.primary)
-                            .background(Constants.title)
+                            .foregroundColor(Constants.title)
+                            .background(Constants.primary)
                             .clipShape(Circle())
                             .offset(x: -4, y: -4)
                     })
                 }
                 
-                Form {
-                    Section(header: Text("change password").padding(.top)) {
-                        SecureField("password", text: $newPassword)
-                            .textContentType(.newPassword)
-                            .keyboardType(.default)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("change password")
+                        .foregroundColor(Constants.title)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                    
+                    Group {
+                        HStack(spacing: 15) {
+                            Image(systemName: "lock.fill")
+                                .frame(width:20)
+                            
+                            SecureField("password", text: $newPassword)
+                                .textContentType(.newPassword)
+                                .keyboardType(.default)
+                        }
                         
-                        SecureField("retype password", text: $passwordCheck)
-                            .textContentType(.newPassword)
-                            .keyboardType(.default)
-                        
-                        Button(action: {
-                            if newPassword != passwordCheck {
-                                alert = AlertMessage.passwordMismatch
-                                showAlert = true
-                                
-                            } else {
-                                sessionStore.updatePassword(to: newPassword) { success, error in
-                                    if success, error == nil {
-                                        newPassword = ""
-                                        alert = AlertMessage.passwordChanged
+                        HStack(spacing: 15) {
+                            Image(systemName: "lock.fill")
+                                .frame(width:20)
+                            
+                            SecureField("retype password", text: $passwordCheck)
+                                .textContentType(.newPassword)
+                                .keyboardType(.default)
+                            
+                            Text("apply")
+                                .foregroundColor(passwordFieldsCompleted ? .green : Color(.gray).opacity(0.5))
+                                .onTapGesture {
+                                    if newPassword != passwordCheck {
+                                        alert = AlertMessage.passwordMismatch
                                         showAlert = true
+                                        
                                     } else {
-                                        errorMessage = error?.localizedDescription ?? "Please try again"
-                                        alert = AlertMessage.passwordError
-                                        showAlert = true
+                                        sessionStore.updatePassword(to: newPassword) { success, error in
+                                            if success, error == nil {
+                                                newPassword = ""
+                                                alert = AlertMessage.passwordChanged
+                                                showAlert = true
+                                            } else {
+                                                errorMessage = error?.localizedDescription ?? "Please try again"
+                                                alert = AlertMessage.passwordError
+                                                showAlert = true
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }, label: {
-                            Text("apply")
-                        })
+                                .disabled(!passwordFieldsCompleted)
+                        }
                     }
+                    .padding()
+                    .background(Constants.fill)
+                    .shadowStyle()
                     
-                    Section(header: Text("change email").padding(.top)) {
+                    Text("change email")
+                        .foregroundColor(Constants.title)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .padding(.top, 10)
+                    
+                    HStack(spacing: 15) {
+                        Image(systemName: "envelope.fill")
+                            .frame(width:20)
+                        
                         TextField("email", text: $newEmail)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                         
-                        Button(action: {
-                            sessionStore.updateEmail(to: newEmail) { success, error in
-                                if success, error == nil {
-                                    newEmail = ""
-                                    alert = AlertMessage.emailChanged
-                                    showAlert = true
-                                } else {
-                                    errorMessage = error?.localizedDescription ?? "Please try again"
-                                    alert = AlertMessage.emailError
-                                    showAlert = true
+                        Text("apply")
+                            .foregroundColor(!newEmail.isEmpty ? .green : Color(.gray).opacity(0.5))
+                            .onTapGesture {
+                                sessionStore.updateEmail(to: newEmail) { success, error in
+                                    if success, error == nil {
+                                        newEmail = ""
+                                        alert = AlertMessage.emailChanged
+                                        showAlert = true
+                                    } else {
+                                        errorMessage = error?.localizedDescription ?? "Please try again"
+                                        alert = AlertMessage.emailError
+                                        showAlert = true
+                                    }
                                 }
                             }
-                        }, label: {
-                            Text("apply")
-                        })
+                            .disabled(newEmail.isEmpty)
                     }
+                    .padding()
+                    .background(Constants.fill)
+                    .shadowStyle()
                 }
-                .background(Color(.white))
-                .frame(height: 360)
-                .shadowStyle()
                 .padding()
                 
                 Spacer()
