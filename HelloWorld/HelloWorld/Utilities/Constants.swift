@@ -15,4 +15,8 @@ enum Constants {
     static let primary = Color("Primary")
     
     static let gradientBackground = LinearGradient(gradient: Gradient(colors: [color1, color2]), startPoint: .topLeading, endPoint: .bottomTrailing)
+    
+    static let contentWidth = UIScreen.main.bounds.width - 50
+    static let buttonWidth = UIScreen.main.bounds.width - 150
 }
+

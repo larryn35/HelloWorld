@@ -58,7 +58,7 @@ struct WelcomeView: View {
                                 .welcomeFormat(optionNumber: 1, optionSelected)
                         }
                     }
-                    .frame(width: UIScreen.main.bounds.width - 50)
+                    .frame(width: Constants.contentWidth)
                     .background(Color.black.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .padding(.top, keyboardDisplayed ? 10 : 25)
@@ -66,7 +66,7 @@ struct WelcomeView: View {
                     // MARK:  Login/Register views
                     
                     if optionSelected == 0 {
-                        Login(keyboardDisplayed: $keyboardDisplayed)
+                        LoginView(keyboardDisplayed: $keyboardDisplayed)
                             .transition(
                                 AnyTransition.asymmetric(
                                     insertion: .move(edge: .trailing),
@@ -98,7 +98,7 @@ private extension Text {
             .fontWeight(.bold)
             .foregroundColor(optionSelected == optionNumber ? Constants.title : .secondary)
             .padding(.vertical, 10)
-            .frame(width: (UIScreen.main.bounds.width - 50) / 2)
+            .frame(width: (Constants.contentWidth) / 2)
             .background(optionSelected == optionNumber ? Constants.fill : .clear)
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
