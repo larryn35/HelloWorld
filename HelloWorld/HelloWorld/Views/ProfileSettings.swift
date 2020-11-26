@@ -24,7 +24,7 @@ struct ProfileSettings: View {
     @State private var alert = AlertMessage.passwordChanged
     
     private var passwordFieldsCompleted: Bool {
-        formValidation(for: [newPassword, passwordCheck])
+        Helper.validateForm(for: [newPassword, passwordCheck])
     }
     
     var body: some View {

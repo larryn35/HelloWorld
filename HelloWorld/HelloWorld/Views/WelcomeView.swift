@@ -72,7 +72,7 @@ struct WelcomeView: View {
                                     insertion: .move(edge: .trailing),
                                     removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))
                     } else {
-                        Register(keyboardDisplayed: $keyboardDisplayed)
+                        RegisterView(keyboardDisplayed: $keyboardDisplayed)
                             .transition(
                                 AnyTransition.asymmetric(
                                     insertion: .move(edge: .leading),

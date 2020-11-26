@@ -57,10 +57,9 @@ struct LoginView: View {
             Constants.fill.shadowStyle()
         )
         .alert(isPresented: $loginVM.showAlert) {
-            Alert(
-                title: Text("Please try again"),
-                message: Text(loginVM.errorMessage),
-                dismissButton: .default(Text("OK")))
+            Alert(title: Text("Please try again"),
+                  message: Text(loginVM.errorMessage),
+                  dismissButton: .default(Text("OK")))
         }
     }
 }
