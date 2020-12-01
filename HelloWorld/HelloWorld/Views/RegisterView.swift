@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject var registerVM = RegisterViewModel()
+    @ObservedObject var sessionStore = SessionStore()
     @Binding var keyboardDisplayed: Bool
     
     var body: some View {
@@ -67,30 +68,30 @@ struct RegisterView: View {
                 .padding([.horizontal, .top])
                 
                 Button(action: {
-                    registerVM.signUp()
+                    sessionStore.signUp(
+                        email: registerVM.email,
+                        password: registerVM.password,
+                        displayName: "\(registerVM.firstName) \(registerVM.lastName)"
+                    )
                 }) {
                     Text("sign up")
-                        .padding(8)
-                        .frame(width: Constants.buttonWidth)
-                        .foregroundColor(.white)
-                        .background(registerVM.isFormCompleted ? Color.red : Color.gray)
-                        .shadowStyle()
+                        .buttonStyle(condition: registerVM.isFormCompleted)
                 }
                 .offset(y: 20)
                 .disabled(!registerVM.isFormCompleted)
-                
-                if registerVM.isLoading {
-                    Loading()
-                }
             }
             .frame(width: Constants.contentWidth)
             .background(
                 Constants.fill.shadowStyle()
             )
+            
+            if sessionStore.showAlert {
+                Loading()
+            }
         }
-        .alert(isPresented: $registerVM.showAlert) {
+        .alert(isPresented: $sessionStore.showAlert) {
             Alert(title: Text("Please try again"),
-                  message: Text(registerVM.errorMessage),
+                  message: Text(sessionStore.errorMessage),
                   dismissButton: .default(Text("OK")))
         }
     }

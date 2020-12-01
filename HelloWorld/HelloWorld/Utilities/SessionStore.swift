@@ -13,9 +13,13 @@ struct User {
     var email: String
 }
 
-class SessionStore: ObservableObject {
+final class SessionStore: ObservableObject {
     @Published var session: User?
     @Published var isAnon: Bool = false
+    @Published var isLoading = false
+    @Published var showAlert = false
+    var errorMessage = ""
+    
     var handle: AuthStateDidChangeListenerHandle?
     let authRef = Auth.auth()
     
@@ -33,34 +37,40 @@ class SessionStore: ObservableObject {
         })
     }
     
-    func signIn(email: String, password: String, completion: @escaping (Error?) -> Void) {
+    func signIn(email: String, password: String) {
         let safeEmail = email.lowercased()
-        authRef.signIn(withEmail: safeEmail, password: password) { (result, error) in
+        authRef.signIn(withEmail: safeEmail, password: password) { [weak self] (result, error) in
             guard result != nil, error == nil else {
                 print("failed to sign in with \(email)")
-                completion(error)
+                if let self = self {
+                    self.errorMessage = error!.localizedDescription
+                    self.showAlert = true
+                }
                 return
             }
-            completion(nil)
         }
     }
     
-    func signUp(email: String, password: String, displayName: String, completion: @escaping (Error?) -> Void) {
+    func signUp(email: String, password: String, displayName: String) {
+        isLoading.toggle()
         let safeEmail = email.lowercased()
-        authRef.createUser(withEmail: safeEmail, password: password) { (result, error) in
+        authRef.createUser(withEmail: safeEmail, password: password) { [weak self] (result, error) in
             guard result != nil, error == nil else {
                 print("Error signing up with \(email): \(String(describing: error!.localizedDescription))")
-                completion(error)
+                if let self = self {
+                    self.errorMessage = error!.localizedDescription
+                    self.isLoading.toggle()
+                    self.showAlert = true
+                }
                 return
             }
             print("Signed up with \(email)")
             
             // set display name
-            if Auth.auth().currentUser != nil {
+            if let self = self, self.authRef.currentUser != nil {
                 self.updateProfile(displayName: displayName)
+                self.isLoading.toggle()
             }
-            
-            completion(nil)
         }
     }
     
@@ -75,7 +85,7 @@ class SessionStore: ObservableObject {
     }
     
     func updateProfile(displayName: String?) {
-        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+        let changeRequest = authRef.currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = displayName
         changeRequest?.commitChanges { (error) in
             if let error = error {
@@ -86,34 +96,33 @@ class SessionStore: ObservableObject {
         }
     }
     
-    func updateEmail(to email: String, completion: @escaping (Bool, Error?) -> Void) {
-        Auth.auth().currentUser?.updateEmail(to: email) { (error) in
+    func updateEmail(to email: String, completion: @escaping (Error?) -> Void) {
+        authRef.currentUser?.updateEmail(to: email) { (error) in
             if error != nil {
                 print("failed to update email: \(String(describing: error?.localizedDescription))")
-                completion(false, error)
+                completion(error)
                 return
                 
             } else {
                 print("email updated to \(email)")
-                completion(true, error)
+                completion(nil)
             }
         }
     }
     
-    func updatePassword(to password: String, completion: @escaping (Bool, Error?) -> Void) {
-        Auth.auth().currentUser?.updatePassword(to: password) { (error) in
+    func updatePassword(to password: String, completion: @escaping (Error?) -> Void) {
+        authRef.currentUser?.updatePassword(to: password) { (error) in
             if error != nil {
                 print("failed to update password: \(String(describing: error?.localizedDescription))")
-                completion(false, error)
+                completion(error)
                 return
-                
             } else {
                 print("password updated")
-                completion(true, error)
+                completion(nil)
             }
         }
     }
-    
+        
     // unmounts authentication state listener, prevents listener from running in the background after unmounting iew
     func unbind() {
         if let handle = handle {

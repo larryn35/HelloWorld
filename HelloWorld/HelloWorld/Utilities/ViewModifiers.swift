@@ -14,9 +14,9 @@ private struct AvatarImage: ViewModifier {
         content
             .aspectRatio(contentMode: .fill)
             .clipShape(Circle())
-            .shadow(radius: 15)
             .overlay(Circle().stroke(Constants.primary, lineWidth: 8))
             .frame(width: 125, height: 125)
+            .shadow(radius: 15)
     }
 }
 
@@ -28,6 +28,19 @@ private struct Shadow: ViewModifier {
     }
 }
 
+private struct ButtonStyle: ViewModifier {
+    var condition: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .padding(8)
+            .frame(width: Constants.buttonWidth)
+            .foregroundColor(.white)
+            .background(condition ? Color.red : Color.gray.opacity(0.5))
+            .shadowStyle()
+    }
+}
+
 extension View {
     func imageStyle() -> some View {
         self.modifier(AvatarImage())
@@ -35,6 +48,10 @@ extension View {
     
     func shadowStyle() -> some View {
         self.modifier(Shadow())
+    }
+    
+    func buttonStyle(condition: Bool) -> some View {
+        self.modifier(ButtonStyle(condition: condition))
     }
 }
 

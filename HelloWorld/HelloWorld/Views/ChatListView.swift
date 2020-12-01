@@ -1,15 +1,15 @@
 //
-//  ChatList.swift
+//  ChatListView.swift
 //  HelloWorld
 //
 //  Created by Larry N on 11/4/20.
 //
 
 import SwiftUI
+import FirebaseAuth
 
-struct ChatList: View {
-    
-    @ObservedObject var chatroomsViewModel = ChatroomsViewModel()
+struct ChatListView: View {
+    @StateObject var chatroomsViewModel = ChatroomsViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -30,19 +30,16 @@ struct ChatList: View {
 
 struct ChatList_Previews: PreviewProvider {
     static var previews: some View {
-        ChatList()
+        ChatListView()
     }
 }
 
 struct ChatListItem: View {
-    @ObservedObject var messagesViewModel = MessagesViewModel()
-    @ObservedObject var userProfileVM = UserProfileViewModel()
-
-    @State var timestamp = ""
+    @StateObject var messagesViewModel = MessagesViewModel()
     @State private var showMessage = false
     
     var chatroom: Chatroom
-        
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading) {
@@ -59,16 +56,22 @@ struct ChatListItem: View {
                 
                 // diplay other users in the chatroom
                 if chatroom.userNames.count >= 2,
-                   let ownName = userProfileVM.userProfiles.first?.firstName {
+                   let ownName = Auth.auth().currentUser?.displayName {
                     Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
                         .font(.caption)
                 }
                 
                 // display most recent message
-                if let lastMessage = messagesViewModel.messages.last {
-                    Text(lastMessage.name + ": " + lastMessage.content)
-                        .lineLimit(1)
-                        .font(.caption2)
+                if let lastMessage = messagesViewModel.lastMessage {
+                    if lastMessage.name == Auth.auth().currentUser?.displayName {
+                        Text("You: " + lastMessage.content)
+                            .lineLimit(1)
+                            .font(.caption2)
+                    } else {
+                        Text(lastMessage.name + ": " + lastMessage.content)
+                            .lineLimit(1)
+                            .font(.caption2)
+                    }
                 }
             }
             .contentShape(Rectangle())

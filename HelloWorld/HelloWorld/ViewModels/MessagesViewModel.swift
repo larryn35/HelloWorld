@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestore
 
 struct Message: Codable, Identifiable, Hashable {
     var id: String?
@@ -17,7 +18,7 @@ struct Message: Codable, Identifiable, Hashable {
     var date = Date()
 }
 
-class MessagesViewModel: ObservableObject {
+final class MessagesViewModel: ObservableObject {
     @Published var messages = [Message]()
     @Published var lastMessage = [Message]().last
     private let db = Firestore.firestore()
@@ -36,8 +37,7 @@ class MessagesViewModel: ObservableObject {
                         "content": messageContent,
                         "sender": user.uid,
                         "profilePicture": profilePicture!
-                    ]
-                    )
+                    ])
                 print("user with profile picture sent message")
                 
             } else {
@@ -50,8 +50,7 @@ class MessagesViewModel: ObservableObject {
                         "email": userEmail,
                         "content": messageContent,
                         "sender": user.uid,
-                    ]
-                    )
+                    ])
                 print("user without profile picture sent message")
             }
             
@@ -120,7 +119,7 @@ class MessagesViewModel: ObservableObject {
     }
     
     func userColor(user: String, users: [String]) -> Color {
-        guard let firstName = user.components(separatedBy: " ").first else {
+        guard let firstName = Auth.auth().currentUser?.displayName else {
             return Color(.red)
         }
         

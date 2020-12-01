@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 struct Chatroom: Codable, Identifiable {
     var id: String
@@ -15,13 +16,26 @@ struct Chatroom: Codable, Identifiable {
     var userNames: [String]
 }
 
-class ChatroomsViewModel: ObservableObject {
+final class ChatroomsViewModel: ObservableObject {
     @Published var chatrooms = [Chatroom]()
+    @Published var newTitle = ""
+    @Published var joinCode = ""
+    @Published var errorMessage = ""
+
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
     init() {
         fetchChatRoomData()
+    }
+    
+    // MARK:  Validation
+    var isTitleValid: Bool {
+        Helper.validateForm(for: [newTitle])
+    }
+    
+    var isCodeValid: Bool {
+        joinCode.count == 4
     }
     
     func fetchChatRoomData() {
@@ -45,47 +59,55 @@ class ChatroomsViewModel: ObservableObject {
         }
     }
     
-    func createChatroom(title: String, userName: String, completion: @escaping () -> Void) {
-        if (user != nil) {
+    func createChatroom(completion: @escaping () -> Void) {
+        if user != nil {
             db.collection("chatrooms")
                 .addDocument(data: [
-                    "title": title,
+                    "title": newTitle,
                     "joinCode": Int.random(in: 1000..<9999),
                     "users": [user!.uid],
-                    "userNames": [userName]
-                ]) { error in
+                    "userNames": [user?.displayName]
+                ]) { [weak self] error in
                     if let error = error {
                         print("error adding document: \(error)")
                     } else {
+                        self?.newTitle = ""
                         completion()
                     }
                 }
         }
     }
     
-    func joinChatroom(code: String, userName: String, completion: @escaping () -> Void) {
-        if (user != nil) {
+    func joinChatroom(code: String, completion: @escaping () -> Void) {
+        if user != nil {
             guard let intCode = Int(code) else {
                 print("intCode error")
                 return
             }
-            db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { (snapshot, error) in
-                if let error = error {
-                    print("error getting documents: \(error)")
+            db.collection("chatrooms").whereField("joinCode", isEqualTo: intCode).getDocuments { [weak self] (snapshot, error) in
+                if error != nil {
+                    print("error getting documents: \(String(describing: error?.localizedDescription))")
+                    return
                 } else {
+                    guard let self = self, let name = self.user?.displayName else {
+                        print("joinChatroom: error retrieving displayName - \(String(describing: error))")
+                        return
+                    }
                     for document in snapshot!.documents {
                         self.db.collection("chatrooms").document(document.documentID).updateData([
                             "users": FieldValue.arrayUnion([self.user!.uid])
                         ])
                         self.db.collection("chatrooms").document(document.documentID).updateData([
-                            "userNames": FieldValue.arrayUnion([userName])
+                            "userNames": FieldValue.arrayUnion([name])
                         ])
                         
                         MessagesViewModel().sendMessage(
-                                messageContent: "\(userName) has joined the chatroom",
+                            messageContent: "\(name) has joined the chatroom",
                                 docId: document.documentID,
                                 senderName: "HelloWorld",
                                 profilePicture: nil)
+                        
+                        self.joinCode = ""
                         
                         completion()
                     }
@@ -93,6 +115,7 @@ class ChatroomsViewModel: ObservableObject {
             }
         } else {
             print("cannot join chatroom, user is nil")
+            return
         }
     }
     

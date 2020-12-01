@@ -7,7 +7,7 @@
 
 import Foundation
 import Firebase
-import FirebaseStorage
+import FirebaseFirestore
 
 struct UserProfile: Codable, Identifiable {
     var id: String
@@ -73,7 +73,7 @@ class UserProfileViewModel: ObservableObject {
         }
     }
     
-    func updateProfilePicture(imageData: Data?) {
+    func updateProfilePicture(imageData: Data?, completion: @escaping (URL) -> Void) {
         if let uid = Auth.auth().currentUser?.uid {
             if imageData != nil {
                 storage.child("profilePictures").child(uid).putData(imageData!, metadata: nil) { (_, error) in
@@ -88,6 +88,7 @@ class UserProfileViewModel: ObservableObject {
                         }
                         
                         self.db.collection("userprofiles").document(uid).setData(["profilePicture": url.absoluteString], merge: true)
+                        completion(url)
                     }
                 }
             } else {

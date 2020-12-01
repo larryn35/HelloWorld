@@ -9,7 +9,6 @@ import SwiftUI
 
 struct WelcomeView: View {
     @ObservedObject var sessionStore = SessionStore()
-    
     @State var keyboardDisplayed = false
     @State var optionSelected = 0 // login = 0, register = 1
     
@@ -18,7 +17,7 @@ struct WelcomeView: View {
     }
     
     var body: some View {
-        Home(tabSelection: 1).fullScreenCover(isPresented: $sessionStore.isAnon) {
+        HomeView(tabSelection: 1).fullScreenCover(isPresented: $sessionStore.isAnon) {
             // User is not logged in, present login/register views
             ZStack {
                 Constants.gradientBackground.edgesIgnoringSafeArea(.all)
@@ -26,8 +25,6 @@ struct WelcomeView: View {
                 VStack(spacing: 30) {
                     
                     // MARK:  logo/title
-                    
-                    
                     if !keyboardDisplayed { // remove when keyboard appears for more space
                         Image("Logo")
                             .resizable()
@@ -46,7 +43,6 @@ struct WelcomeView: View {
                     }
                     
                     // MARK:  login/register buttons
-                    
                     HStack {
                         Button(action: { optionSelected = 0}) {
                             Text("login")
@@ -64,7 +60,6 @@ struct WelcomeView: View {
                     .padding(.top, keyboardDisplayed ? 10 : 25)
                     
                     // MARK:  Login/Register views
-                    
                     if optionSelected == 0 {
                         LoginView(keyboardDisplayed: $keyboardDisplayed)
                             .transition(

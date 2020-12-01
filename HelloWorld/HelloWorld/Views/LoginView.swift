@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var loginVM = LoginViewModel()
+    @ObservedObject var sessionStore = SessionStore()
     @Binding var keyboardDisplayed: Bool
         
     var body: some View {
@@ -40,14 +41,10 @@ struct LoginView: View {
             .padding([.horizontal, .top])
             
             Button(action: {
-                loginVM.signIn()
+                sessionStore.signIn(email: loginVM.email, password: loginVM.password)
             }) {
                 Text("sign in")
-                    .padding(8)
-                    .frame(width: Constants.buttonWidth)
-                    .foregroundColor(.white)
-                    .background(loginVM.isFormCompleted ? Color.red : Color.gray)
-                    .shadowStyle()
+                    .buttonStyle(condition: loginVM.isFormCompleted)
             }
             .offset(y: 20)
             .disabled(!loginVM.isFormCompleted)
@@ -56,9 +53,9 @@ struct LoginView: View {
         .background(
             Constants.fill.shadowStyle()
         )
-        .alert(isPresented: $loginVM.showAlert) {
+        .alert(isPresented: $sessionStore.showAlert) {
             Alert(title: Text("Please try again"),
-                  message: Text(loginVM.errorMessage),
+                  message: Text(sessionStore.errorMessage),
                   dismissButton: .default(Text("OK")))
         }
     }

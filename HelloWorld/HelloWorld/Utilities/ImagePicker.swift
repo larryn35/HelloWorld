@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
+    @Binding var image: UIImage?
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var parent: ImagePicker
@@ -18,14 +19,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            
+                        
             if let uiImage = info[.originalImage] as? UIImage {
-                if let data = uiImage.jpegData(compressionQuality: 0.45) {
-                    UserProfileViewModel().updateProfilePicture(imageData: data)
-                }
-
-            } else {
-             print("error selecting picture from picker")
+                parent.image = uiImage
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
