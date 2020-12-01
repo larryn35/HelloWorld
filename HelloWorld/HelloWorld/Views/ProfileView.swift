@@ -10,12 +10,11 @@ import FirebaseAuth
 import SDWebImageSwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var sessionStore = SessionStore()
+    @EnvironmentObject var sessionStore: SessionStore
     @StateObject var profileVM = ProfileViewModel()
     @State private var inputImage: UIImage?
     @State private var newPhoto: Image?
-    private let user = Auth.auth().currentUser
-        
+            
     func loadImage() {
         guard let inputImage = inputImage else { return }
         newPhoto = Image(uiImage: inputImage)
@@ -29,13 +28,16 @@ struct ProfileView: View {
             
             VStack {
                 HStack {
-                    Text("hello, \(user?.displayName?.lowercased() ?? "there!")")
+                    Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
                         .foregroundColor(Constants.title)
                         .font(.title)
                         .fontWeight(.semibold)
                     Spacer()
                 }
                 .padding([.top, .horizontal])
+                .onAppear {
+                    sessionStore.fetchUser()
+                }
                 
                 HStack(spacing: 50) {
                     ZStack(alignment: .bottomTrailing) {

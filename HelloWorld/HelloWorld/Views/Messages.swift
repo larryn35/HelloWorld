@@ -10,8 +10,8 @@ import FirebaseAuth
 
 struct Messages: View {
     @ObservedObject var messagesVM = MessagesViewModel()
-    @ObservedObject var userProfileVM = UserProfileViewModel()
-    @ObservedObject var chatroomVM = ChatroomsViewModel()
+    @StateObject var profileVM = ProfileViewModel()
+    @StateObject var chatroomVM = ChatroomsViewModel()
     
     @State var messageField = ""
     @State var senderName = ""
@@ -75,14 +75,17 @@ struct Messages: View {
                         
                         Button(action: {
                             if let user = Auth.auth().currentUser?.displayName {
-                                messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: userProfileVM.userProfilePicture)
+                                messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: profileVM.profilePicture)
                             } else {
                                 print("failed to send message")
                             }
                             messageField = ""
-                        }, label: {
+                        }) {
                             Text("Send")
-                        })
+                        }
+                        .onAppear {
+                            profileVM.fetchProfilePicture()
+                        }
                     }
                     .padding()
                     .background(Constants.primary)

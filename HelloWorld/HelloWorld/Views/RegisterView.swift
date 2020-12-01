@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @EnvironmentObject var sessionStore: SessionStore
     @StateObject var registerVM = RegisterViewModel()
-    @ObservedObject var sessionStore = SessionStore()
     @Binding var keyboardDisplayed: Bool
     
     var body: some View {
@@ -99,6 +99,6 @@ struct RegisterView: View {
 
 struct Register_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView(keyboardDisplayed: .constant(false))
+        RegisterView(keyboardDisplayed: .constant(false)).environmentObject(SessionStore())
     }
 }

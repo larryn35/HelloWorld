@@ -36,7 +36,7 @@ private struct ButtonStyle: ViewModifier {
             .padding(8)
             .frame(width: Constants.buttonWidth)
             .foregroundColor(.white)
-            .background(condition ? Color.red : Color.gray.opacity(0.5))
+            .background(condition ? Color.red : Color.gray.opacity(0.8))
             .shadowStyle()
     }
 }

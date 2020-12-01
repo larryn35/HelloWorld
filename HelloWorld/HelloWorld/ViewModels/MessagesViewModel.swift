@@ -119,13 +119,9 @@ final class MessagesViewModel: ObservableObject {
     }
     
     func userColor(user: String, users: [String]) -> Color {
-        guard let firstName = Auth.auth().currentUser?.displayName else {
-            return Color(.red)
-        }
-        
         var color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        switch firstName {
+        switch user {
         case users[0]:
             color = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
         case users[1]:

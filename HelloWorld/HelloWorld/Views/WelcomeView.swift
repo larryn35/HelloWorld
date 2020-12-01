@@ -8,16 +8,13 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @ObservedObject var sessionStore = SessionStore()
+    @EnvironmentObject var sessionStore: SessionStore
     @State var keyboardDisplayed = false
     @State var optionSelected = 0 // login = 0, register = 1
     
-    init() {
-        sessionStore.listen()
-    }
-    
     var body: some View {
-        HomeView(tabSelection: 1).fullScreenCover(isPresented: $sessionStore.isAnon) {
+        HomeView(tabSelection: 1)
+            .fullScreenCover(isPresented: $sessionStore.isAnon, onDismiss: sessionStore.fetchUser) {
             // User is not logged in, present login/register views
             ZStack {
                 Constants.gradientBackground.edgesIgnoringSafeArea(.all)
@@ -66,12 +63,15 @@ struct WelcomeView: View {
                                 AnyTransition.asymmetric(
                                     insertion: .move(edge: .trailing),
                                     removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))
+                            .environmentObject(SessionStore())
+
                     } else {
                         RegisterView(keyboardDisplayed: $keyboardDisplayed)
                             .transition(
                                 AnyTransition.asymmetric(
                                     insertion: .move(edge: .leading),
                                     removal: AnyTransition.move(edge: .trailing).combined(with: .opacity)))
+                            .environmentObject(SessionStore())
                     }
                     Spacer()
                 }
@@ -81,6 +81,9 @@ struct WelcomeView: View {
                 self.keyboardDisplayed = false
                 self.hideKeyboard()
             }
+        }
+        .onAppear {
+            sessionStore.listen()
         }
     }
 }
@@ -101,6 +104,7 @@ private extension Text {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView()
+        WelcomeView().environmentObject(SessionStore())
+
     }
 }

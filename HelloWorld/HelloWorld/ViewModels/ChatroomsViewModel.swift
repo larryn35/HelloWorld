@@ -75,6 +75,8 @@ final class ChatroomsViewModel: ObservableObject {
                         completion()
                     }
                 }
+        } else {
+            print("error creating user, user is nil")
         }
     }
     

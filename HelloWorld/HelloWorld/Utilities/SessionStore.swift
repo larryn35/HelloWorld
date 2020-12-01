@@ -15,6 +15,7 @@ struct User {
 
 final class SessionStore: ObservableObject {
     @Published var session: User?
+    @Published var userName = Auth.auth().currentUser?.displayName
     @Published var isAnon: Bool = false
     @Published var isLoading = false
     @Published var showAlert = false
@@ -22,6 +23,10 @@ final class SessionStore: ObservableObject {
     
     var handle: AuthStateDidChangeListenerHandle?
     let authRef = Auth.auth()
+    
+    func fetchUser() {
+        userName = Auth.auth().currentUser?.displayName
+    }
     
     // Attaches a listener for Firebase to signal whenever a change to the authentication state occurs
     func listen() {
@@ -39,13 +44,12 @@ final class SessionStore: ObservableObject {
     
     func signIn(email: String, password: String) {
         let safeEmail = email.lowercased()
-        authRef.signIn(withEmail: safeEmail, password: password) { [weak self] (result, error) in
+        authRef.signIn(withEmail: safeEmail, password: password) { (result, error) in
             guard result != nil, error == nil else {
                 print("failed to sign in with \(email)")
-                if let self = self {
-                    self.errorMessage = error!.localizedDescription
-                    self.showAlert = true
-                }
+                self.errorMessage = error!.localizedDescription
+                self.showAlert = true
+        
                 return
             }
         }
@@ -54,20 +58,19 @@ final class SessionStore: ObservableObject {
     func signUp(email: String, password: String, displayName: String) {
         isLoading.toggle()
         let safeEmail = email.lowercased()
-        authRef.createUser(withEmail: safeEmail, password: password) { [weak self] (result, error) in
+        authRef.createUser(withEmail: safeEmail, password: password) { (result, error) in
             guard result != nil, error == nil else {
                 print("Error signing up with \(email): \(String(describing: error!.localizedDescription))")
-                if let self = self {
-                    self.errorMessage = error!.localizedDescription
-                    self.isLoading.toggle()
-                    self.showAlert = true
-                }
+                self.errorMessage = error!.localizedDescription
+                self.isLoading.toggle()
+                self.showAlert = true
+                
                 return
             }
             print("Signed up with \(email)")
             
             // set display name
-            if let self = self, self.authRef.currentUser != nil {
+            if self.authRef.currentUser != nil {
                 self.updateProfile(displayName: displayName)
                 self.isLoading.toggle()
             }
@@ -84,7 +87,7 @@ final class SessionStore: ObservableObject {
         }
     }
     
-    func updateProfile(displayName: String?) {
+    func updateProfile(displayName: String) {
         let changeRequest = authRef.currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = displayName
         changeRequest?.commitChanges { (error) in

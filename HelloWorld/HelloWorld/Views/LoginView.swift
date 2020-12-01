@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
+    @EnvironmentObject var sessionStore: SessionStore
     @StateObject var loginVM = LoginViewModel()
-    @ObservedObject var sessionStore = SessionStore()
     @Binding var keyboardDisplayed: Bool
         
     var body: some View {
@@ -62,7 +62,8 @@ struct LoginView: View {
 }
 
 struct Login_Previews: PreviewProvider {
+    
     static var previews: some View {
-        LoginView(keyboardDisplayed: .constant(false))
+        LoginView(keyboardDisplayed: .constant(false)).environmentObject(SessionStore())
     }
 }
