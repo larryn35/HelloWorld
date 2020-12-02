@@ -21,6 +21,8 @@ struct Message: Codable, Identifiable, Hashable {
 final class MessagesViewModel: ObservableObject {
     @Published var messages = [Message]()
     @Published var lastMessage = [Message]().last
+    @Published var messageCount = 0
+    @Published var readMessagesCount = 0
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
@@ -54,6 +56,8 @@ final class MessagesViewModel: ObservableObject {
                 print("user without profile picture sent message")
             }
             
+            messageCount = messages.count
+            
         } else {
             print("user not found")
         }
@@ -82,10 +86,39 @@ final class MessagesViewModel: ObservableObject {
                     }
                     
                     self.lastMessage = self.messages.last
+                    self.messageCount = self.messages.count
                 }
         }
     }
     
+    func openedMessage(docId: String) {
+        if (user != nil) {
+            db.collection("chatrooms").document(docId).collection("unread").document(user!.uid)
+                .setData(["messagesRead": messageCount])
+            
+            fetchMessages(docId: docId)
+        }
+    }
+    
+    func fetchNumberOfReadMessages(docId: String) {
+        if (user != nil) {
+            db.collection("chatrooms").document(docId).collection("unread").document(user!.uid)
+                .addSnapshotListener { [weak self] (snapshot, error) in
+                    guard let document = snapshot else {
+                        print("no docs returned")
+                        return
+                    }
+                    
+                    guard let self = self, let data = document.data() else {
+                        print("Read messages data was empty.")
+                        return
+                    }
+                    
+                    self.readMessagesCount = data["messagesRead"] as? Int ?? 100
+                }
+        }
+    }
+        
     func timeSinceMessage(message: Date) -> String  {
         let dateFormatter = DateFormatter()
         let relDateFormatter = RelativeDateTimeFormatter()
@@ -118,24 +151,27 @@ final class MessagesViewModel: ObservableObject {
         }
     }
     
+    
     func userColor(user: String, users: [String]) -> Color {
-        var color = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        var color = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         switch user {
         case users[0]:
             color = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
         case users[1]:
-            color = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
-        case users[2]:
             color = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
+        case users[2]:
+            color = #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1)
         case users[3]:
-            color = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
-        case users[4]:
-            color = #colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)
-        default:
             color = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
+        case users[4]:
+            color = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        default:
+            color = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         }
         
         return Color(color)
     }
 }
+
+

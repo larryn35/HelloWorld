@@ -125,9 +125,9 @@ struct Messages: View {
                 }
             }
             .alert(isPresented: $showAlert, content: {
-                Alert(title: Text("leave chatroom?"),
-                      message: Text("your messages will still be visible to others"),
-                      primaryButton: .destructive(Text("leave")) {
+                Alert(title: Text("Leave chatroom?"),
+                      message: Text("Your messages will still be visible to others"),
+                      primaryButton: .destructive(Text("Leave")) {
                         
                         if let userName = Auth.auth().currentUser?.displayName {
                             chatroomVM.leaveChatroom(code: joinCode, userName: userName) {

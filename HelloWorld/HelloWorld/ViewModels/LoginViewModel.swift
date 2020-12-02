@@ -15,4 +15,10 @@ final class LoginViewModel: ObservableObject {
     var isFormCompleted: Bool {
         !email.isEmpty && password.count >= 6
     }
+    
+    // MARK:  Clear fields
+    func clearFields() {
+        email = ""
+        password = ""
+    }
 }

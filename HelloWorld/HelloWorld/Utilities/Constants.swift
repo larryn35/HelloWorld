@@ -19,4 +19,3 @@ enum Constants {
     static let contentWidth = UIScreen.main.bounds.width - 50
     static let buttonWidth = UIScreen.main.bounds.width - 150
 }
-

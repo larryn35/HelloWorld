@@ -11,7 +11,7 @@ import FirebaseAuth
 struct CreateView: View {
     @StateObject var chatroomsVM = ChatroomsViewModel()
     @Binding var tabSelection: Int
-        
+
     var body: some View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {

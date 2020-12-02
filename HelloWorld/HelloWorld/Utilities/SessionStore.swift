@@ -16,7 +16,7 @@ struct User {
 final class SessionStore: ObservableObject {
     @Published var session: User?
     @Published var userName = Auth.auth().currentUser?.displayName
-    @Published var isAnon: Bool = false
+    @Published var isSignedIn: Bool = false
     @Published var isLoading = false
     @Published var showAlert = false
     var errorMessage = ""
@@ -32,17 +32,17 @@ final class SessionStore: ObservableObject {
     func listen() {
         handle = authRef.addStateDidChangeListener({ (auth, user) in
             if let user = user {
-                self.isAnon = false
+                self.isSignedIn = true
                 guard let email = user.email else { return }
                 self.session = User(uid: user.uid, email: email)
             } else {
-                self.isAnon = true
+                self.isSignedIn = false
                 self.session = nil
             }
         })
     }
     
-    func signIn(email: String, password: String) {
+    func signIn(email: String, password: String, completion: @escaping () -> Void) {
         let safeEmail = email.lowercased()
         authRef.signIn(withEmail: safeEmail, password: password) { (result, error) in
             guard result != nil, error == nil else {
@@ -52,10 +52,11 @@ final class SessionStore: ObservableObject {
         
                 return
             }
+            completion()
         }
     }
     
-    func signUp(email: String, password: String, displayName: String) {
+    func signUp(email: String, password: String, displayName: String, completion: @escaping () -> Void) {
         isLoading.toggle()
         let safeEmail = email.lowercased()
         authRef.createUser(withEmail: safeEmail, password: password) { (result, error) in
@@ -68,7 +69,8 @@ final class SessionStore: ObservableObject {
                 return
             }
             print("Signed up with \(email)")
-            
+            completion()
+
             // set display name
             if self.authRef.currentUser != nil {
                 self.updateProfile(displayName: displayName)
@@ -81,7 +83,7 @@ final class SessionStore: ObservableObject {
         do {
             try authRef.signOut()
             session = nil
-            isAnon = true
+            isSignedIn = false
         } catch {
             print("error signing out: \(error)")
         }

@@ -40,9 +40,3 @@ struct LoadingAnimation : UIViewRepresentable {
     func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<LoadingAnimation>) {
     }
 }
-
-//struct LoadingAnimation_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoadingAnimation()
-//    }
-//}

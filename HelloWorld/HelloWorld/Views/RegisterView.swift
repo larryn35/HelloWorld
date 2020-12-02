@@ -72,7 +72,9 @@ struct RegisterView: View {
                         email: registerVM.email,
                         password: registerVM.password,
                         displayName: "\(registerVM.firstName) \(registerVM.lastName)"
-                    )
+                    ) {
+                        registerVM.clearFields()
+                    }
                 }) {
                     Text("sign up")
                         .buttonStyle(condition: registerVM.isFormCompleted)

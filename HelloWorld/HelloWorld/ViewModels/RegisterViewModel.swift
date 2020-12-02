@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class RegisterViewModel: ObservableObject {    
+final class RegisterViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     @Published var firstName = ""
@@ -17,5 +17,13 @@ final class RegisterViewModel: ObservableObject {
     var isFormCompleted: Bool {
         // returns true if all fields are filled
         Helper.validateForm(for: [email, password, firstName, lastName])
+    }
+    
+    // MARK:  Clear fields
+    func clearFields() {
+        email = ""
+        password = ""
+        firstName = ""
+        lastName = ""
     }
 }

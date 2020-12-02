@@ -13,77 +13,75 @@ struct WelcomeView: View {
     @State var optionSelected = 0 // login = 0, register = 1
     
     var body: some View {
-        HomeView(tabSelection: 1)
-            .fullScreenCover(isPresented: $sessionStore.isAnon, onDismiss: sessionStore.fetchUser) {
-            // User is not logged in, present login/register views
-            ZStack {
-                Constants.gradientBackground.edgesIgnoringSafeArea(.all)
+        // User is not logged in, present login/register views
+        ZStack {
+            Constants.gradientBackground.edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 30) {
                 
-                VStack(spacing: 30) {
+                // MARK:  logo/title
+                if !keyboardDisplayed { // remove when keyboard appears for more space
+                    Image("Logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 150)
+                        .padding(.top, 20)
+                        .transition(.move(edge: .top))
                     
-                    // MARK:  logo/title
-                    if !keyboardDisplayed { // remove when keyboard appears for more space
-                        Image("Logo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                            .padding(.top, 20)
-                            .transition(.move(edge: .top))
-                        
-                        VStack(alignment: .leading) {
-                            Text("hello, world")
-                                .font(.largeTitle)
-                                .foregroundColor(Constants.title)
-                                .fontWeight(.bold)
-                        }
-                        .transition(.fade)
+                    VStack(alignment: .leading) {
+                        Text("hello, world")
+                            .font(.largeTitle)
+                            .foregroundColor(Constants.title)
+                            .fontWeight(.bold)
                     }
-                    
-                    // MARK:  login/register buttons
-                    HStack {
-                        Button(action: { optionSelected = 0}) {
-                            Text("login")
-                                .welcomeFormat(optionNumber: 0, optionSelected)
-                        }
-                        
-                        Button(action: { optionSelected = 1 }) {
-                            Text("register")
-                                .welcomeFormat(optionNumber: 1, optionSelected)
-                        }
-                    }
-                    .frame(width: Constants.contentWidth)
-                    .background(Color.black.opacity(0.1))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding(.top, keyboardDisplayed ? 10 : 25)
-                    
-                    // MARK:  Login/Register views
-                    if optionSelected == 0 {
-                        LoginView(keyboardDisplayed: $keyboardDisplayed)
-                            .transition(
-                                AnyTransition.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))
-                            .environmentObject(SessionStore())
-
-                    } else {
-                        RegisterView(keyboardDisplayed: $keyboardDisplayed)
-                            .transition(
-                                AnyTransition.asymmetric(
-                                    insertion: .move(edge: .leading),
-                                    removal: AnyTransition.move(edge: .trailing).combined(with: .opacity)))
-                            .environmentObject(SessionStore())
-                    }
-                    Spacer()
+                    .transition(.fade)
                 }
-                .animation(.easeInOut)
+                
+                // MARK:  login/register buttons
+                HStack {
+                    Button(action: { optionSelected = 0}) {
+                        Text("login")
+                            .welcomeFormat(optionNumber: 0, optionSelected)
+                    }
+                    
+                    Button(action: { optionSelected = 1 }) {
+                        Text("register")
+                            .welcomeFormat(optionNumber: 1, optionSelected)
+                    }
+                }
+                .frame(width: Constants.contentWidth)
+                .background(Color.black.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding(.top, keyboardDisplayed ? 10 : 25)
+                
+                // MARK:  Login/Register views
+                if optionSelected == 0 {
+                    LoginView(keyboardDisplayed: $keyboardDisplayed)
+                        .transition(
+                            AnyTransition.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: AnyTransition.move(edge: .leading).combined(with: .opacity)))
+                    
+                } else {
+                    RegisterView(keyboardDisplayed: $keyboardDisplayed)
+                        .transition(
+                            AnyTransition.asymmetric(
+                                insertion: .move(edge: .leading),
+                                removal: AnyTransition.move(edge: .trailing).combined(with: .opacity)))
+                }
+                Spacer()
             }
-            .onTapGesture {
-                self.keyboardDisplayed = false
-                self.hideKeyboard()
-            }
+            .animation(.easeInOut)
+        }
+        .onTapGesture {
+            self.keyboardDisplayed = false
+            self.hideKeyboard()
         }
         .onAppear {
             sessionStore.listen()
+        }        
+        .fullScreenCover(isPresented: $sessionStore.isSignedIn, onDismiss: sessionStore.fetchUser) {
+            HomeView(tabSelection: 1).environmentObject(SessionStore())
         }
     }
 }
@@ -105,6 +103,6 @@ private extension Text {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         WelcomeView().environmentObject(SessionStore())
-
+        
     }
 }

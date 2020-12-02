@@ -35,7 +35,7 @@ struct ChatList_Previews: PreviewProvider {
 }
 
 struct ChatListItem: View {
-    @StateObject var messagesViewModel = MessagesViewModel()
+    @StateObject var messagesVM = MessagesViewModel()
     @State private var showMessage = false
     
     var chatroom: Chatroom
@@ -48,29 +48,43 @@ struct ChatListItem: View {
                     Spacer()
                     
                     // display last message date
-                    if let lastMessage = messagesViewModel.lastMessage {
-                        Text(messagesViewModel.timeSinceMessage(message: lastMessage.date))
+                    if let lastMessage = messagesVM.lastMessage {
+                        Text(messagesVM.timeSinceMessage(message: lastMessage.date))
                             .font(.caption)
                     }
                 }
                 
-                // diplay other users in the chatroom
-                if chatroom.userNames.count >= 2,
-                   let ownName = Auth.auth().currentUser?.displayName {
-                    Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
-                        .font(.caption)
-                }
-                
-                // display most recent message
-                if let lastMessage = messagesViewModel.lastMessage {
-                    if lastMessage.name == Auth.auth().currentUser?.displayName {
-                        Text("You: " + lastMessage.content)
-                            .lineLimit(1)
-                            .font(.caption2)
-                    } else {
-                        Text(lastMessage.name + ": " + lastMessage.content)
-                            .lineLimit(1)
-                            .font(.caption2)
+                HStack {
+                    VStack(alignment: .leading) {
+                        // diplay other users in the chatroom
+                        if chatroom.userNames.count >= 2,
+                           let ownName = Auth.auth().currentUser?.displayName {
+                            Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
+                                .font(.caption)
+                        }
+                        
+                        // display most recent message
+                        if let lastMessage = messagesVM.lastMessage {
+                            if lastMessage.name == Auth.auth().currentUser?.displayName {
+                                Text("You: " + lastMessage.content)
+                                    .lineLimit(1)
+                                    .font(.caption2)
+                            } else {
+                                Text(lastMessage.name + ": " + lastMessage.content)
+                                    .lineLimit(1)
+                                    .font(.caption2)
+                            }
+                        }
+                    }
+                    Spacer()
+                    
+                    // display number of unread messages
+                    if (messagesVM.messageCount - messagesVM.readMessagesCount) > 0 {
+                        Text("\(messagesVM.messageCount - messagesVM.readMessagesCount)")
+                            .font(.caption)
+                            .padding(5)
+                            .background(Color.gray.opacity(0.3))
+                            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     }
                 }
             }
@@ -79,12 +93,15 @@ struct ChatListItem: View {
                 showMessage = true
             }
             .onAppear {
-                messagesViewModel.fetchMessages(docId: chatroom.id)
+                messagesVM.fetchMessages(docId: chatroom.id)
+                messagesVM.fetchNumberOfReadMessages(docId: chatroom.id)
             }
             .sheet(isPresented: $showMessage, content: {
                 Messages(for: chatroom)
+                    .onDisappear {
+                        messagesVM.openedMessage(docId: chatroom.id)
+                    }
             })
         }
     }
 }
-

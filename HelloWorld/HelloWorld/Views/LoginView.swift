@@ -41,7 +41,9 @@ struct LoginView: View {
             .padding([.horizontal, .top])
             
             Button(action: {
-                sessionStore.signIn(email: loginVM.email, password: loginVM.password)
+                sessionStore.signIn(email: loginVM.email, password: loginVM.password) {
+                    loginVM.clearFields()
+                }
             }) {
                 Text("sign in")
                     .buttonStyle(condition: loginVM.isFormCompleted)
