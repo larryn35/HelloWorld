@@ -97,7 +97,7 @@ struct ChatListItem: View {
                 messagesVM.fetchNumberOfReadMessages(docId: chatroom.id)
             }
             .sheet(isPresented: $showMessage, content: {
-                Messages(for: chatroom)
+                MessagesView(for: chatroom)
                     .onDisappear {
                         messagesVM.openedMessage(docId: chatroom.id)
                     }

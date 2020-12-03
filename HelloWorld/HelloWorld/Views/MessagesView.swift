@@ -1,5 +1,5 @@
 //
-//  Messages.swift
+//  MessagesView.swift
 //  HelloWorld
 //
 //  Created by Larry N on 11/4/20.
@@ -8,19 +8,13 @@
 import SwiftUI
 import FirebaseAuth
 
-struct Messages: View {
+struct MessagesView: View {
     @ObservedObject var messagesVM = MessagesViewModel()
     @StateObject var profileVM = ProfileViewModel()
     @StateObject var chatroomVM = ChatroomsViewModel()
     
-    @State var messageField = ""
-    @State var senderName = ""
-    @State var senderPicture: String? = ""
-    @State var showPopover = false
-    @State var showAlert = false
-    
-    let chatroom: Chatroom
-    var joinCode = ""
+    private let chatroom: Chatroom
+    private var joinCode = ""
         
     @Environment(\.presentationMode) var presentationMode
     
@@ -33,14 +27,8 @@ struct Messages: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .topLeading) {
-                Constants.gradientBackground
-                    .edgesIgnoringSafeArea(.top)
-                    .zIndex(-99)
-                
-                Constants.primary.opacity(0.8)
-                    .edgesIgnoringSafeArea(.top)
-                    .blur(radius: 3.0)
-                    .zIndex(-98)
+                Constants.gradientBackground.opacity(0.2)
+                    .edgesIgnoringSafeArea([.top, .bottom])
                 
                 VStack {
                     ScrollView {
@@ -69,17 +57,17 @@ struct Messages: View {
                     }
                     
                     HStack {
-                        TextField("Enter message...", text: $messageField)
+                        TextField("Enter message...", text: $messagesVM.messageField)
                         
                         Spacer()
                         
                         Button(action: {
                             if let user = Auth.auth().currentUser?.displayName {
-                                messagesVM.sendMessage(messageContent: messageField, docId: chatroom.id, senderName: user, profilePicture: profileVM.profilePicture)
+                                messagesVM.sendMessage(messageContent: messagesVM.messageField, docId: chatroom.id, senderName: user, profilePicture: profileVM.profilePicture)
                             } else {
                                 print("failed to send message")
                             }
-                            messageField = ""
+                            messagesVM.messageField = ""
                         }) {
                             Text("Send")
                         }
@@ -89,13 +77,16 @@ struct Messages: View {
                     }
                     .padding()
                     .background(Constants.primary)
+                    .cornerRadius(10)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.gray))
+                    .padding(.horizontal)
                 }
                 .navigationBarTitle(chatroom.title, displayMode: .inline)
                 .navigationBarItems(
                     leading:
                         Button(action: {
                             withAnimation{
-                                showPopover.toggle()
+                                messagesVM.showPopover.toggle()
                             }
                         }, label: {
                             Image(systemName: "info.circle")
@@ -110,28 +101,28 @@ struct Messages: View {
                         }
                 )
                 
-                if showPopover {
+                if messagesVM.showPopover {
                     Color(.black).opacity(0.6).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                         .onTapGesture {
                             withAnimation{
-                                showPopover.toggle()
+                                messagesVM.showPopover.toggle()
                             }
                         }
                         .transition(AnyTransition.opacity.animation(.easeOut(duration: 0.7)))
                     
-                    Popover(chatroom: chatroom, joinCode: joinCode, showAlert: $showAlert)
+                    Popover(chatroom: chatroom, joinCode: joinCode, showAlert: $messagesVM.showAlert)
                         .padding()
                         .transition(.move(edge: .leading))
                 }
             }
-            .alert(isPresented: $showAlert, content: {
+            .alert(isPresented: $messagesVM.showAlert, content: {
                 Alert(title: Text("Leave chatroom?"),
                       message: Text("Your messages will still be visible to others"),
                       primaryButton: .destructive(Text("Leave")) {
                         
                         if let userName = Auth.auth().currentUser?.displayName {
                             chatroomVM.leaveChatroom(code: joinCode, userName: userName) {
-                                showPopover.toggle()
+                                messagesVM.showPopover.toggle()
                             }
                             presentationMode.wrappedValue.dismiss()
                         }
@@ -145,7 +136,7 @@ struct Messages: View {
 
 struct Messages_Previews: PreviewProvider {
     static var previews: some View {
-        Messages(for: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
+        MessagesView(for: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
     }
 }
 

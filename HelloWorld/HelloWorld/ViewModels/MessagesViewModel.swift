@@ -23,6 +23,10 @@ final class MessagesViewModel: ObservableObject {
     @Published var lastMessage = [Message]().last
     @Published var messageCount = 0
     @Published var readMessagesCount = 0
+    @Published var messageField = ""
+    @Published var showPopover = false
+    @Published var showAlert = false
+    
     private let db = Firestore.firestore()
     private let user = Auth.auth().currentUser
     
@@ -157,7 +161,7 @@ final class MessagesViewModel: ObservableObject {
         
         switch user {
         case users[0]:
-            color = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
+            color = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         case users[1]:
             color = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
         case users[2]:
@@ -167,11 +171,9 @@ final class MessagesViewModel: ObservableObject {
         case users[4]:
             color = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
         default:
-            color = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+            color = #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1)
         }
         
         return Color(color)
     }
 }
-
-
