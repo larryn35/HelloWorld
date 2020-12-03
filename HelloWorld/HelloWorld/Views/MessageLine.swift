@@ -11,8 +11,8 @@ import FirebaseAuth
 
 struct MessageLine: View {
     
-    var messageDetails = Message(content: "", name: "", email: "")
-    var users = [String]()
+    var messageDetails: Message
+    var users: [String]
     
     @State var timestamp = false
     

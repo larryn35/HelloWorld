@@ -18,11 +18,31 @@ struct ChatListView: View {
                 .font(.title)
                 .fontWeight(.semibold)
             
-            List(chatroomsViewModel.chatrooms) { chatroom in
-                ChatListItem(chatroom: chatroom)
-                    .padding(.vertical)
+            if chatroomsViewModel.chatrooms.isEmpty {
+                List{
+                    HStack {
+                        Spacer()
+                        VStack(spacing: 20) {
+                            Image(systemName: "bubble.left.and.bubble.right")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 60)
+                            Text("chatrooms will appear here")
+                                .font(.title2)
+                            Text("create or join one below")
+                        }
+                        .padding(.top, 50)
+                        Spacer()
+                    }
+                }
+                .shadowStyle()
+            } else {
+                List(chatroomsViewModel.chatrooms) { chatroom in
+                    ChatListItem(chatroom: chatroom)
+                        .padding(.vertical)
+                }
+                .shadowStyle()
             }
-            .shadowStyle()
         }
         .padding()
     }
