@@ -77,9 +77,8 @@ struct RegisterView: View {
                     }
                 }) {
                     Text("sign up")
-                        .buttonStyle(condition: registerVM.isFormCompleted)
                 }
-                .offset(y: 20)
+                .buttonStyle(PrimaryButtonStyle(condition: registerVM.isFormCompleted))
                 .disabled(!registerVM.isFormCompleted)
             }
             .frame(width: Constants.contentWidth)

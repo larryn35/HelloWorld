@@ -41,11 +41,10 @@ struct CreateView: View {
                 
             }) {
                 Text("create")
-                    .buttonStyle(condition: chatroomsVM.isTitleValid)
             }
-            .offset(y: 20)
+            .buttonStyle(PrimaryButtonStyle(condition: chatroomsVM.isTitleValid))
             .disabled(!chatroomsVM.isTitleValid)
-            
+
         }
         .padding()
     }

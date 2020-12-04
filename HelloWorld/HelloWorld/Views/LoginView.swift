@@ -46,10 +46,10 @@ struct LoginView: View {
                 }
             }) {
                 Text("sign in")
-                    .buttonStyle(condition: loginVM.isFormCompleted)
             }
-            .offset(y: 20)
+            .buttonStyle(PrimaryButtonStyle(condition: loginVM.isFormCompleted))
             .disabled(!loginVM.isFormCompleted)
+            
         }
         .frame(width: Constants.contentWidth)
         .background(

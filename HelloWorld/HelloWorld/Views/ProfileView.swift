@@ -190,8 +190,9 @@ struct ProfileView: View {
                     sessionStore.signOut()
                 }) {
                     Text("sign out")
-                        .buttonStyle(condition: true)
                 }
+                .buttonStyle(PrimaryButtonStyle(condition: true))
+                
                 Spacer()
             }
         }

@@ -41,9 +41,8 @@ struct JoinView: View {
                 }
             }) {
                 Text("join")
-                    .buttonStyle(condition: chatroomsVM.isCodeValid)
             }
-            .offset(y: 20)
+            .buttonStyle(PrimaryButtonStyle(condition: chatroomsVM.isCodeValid))
             .disabled(!chatroomsVM.isCodeValid)
         }
         .padding()

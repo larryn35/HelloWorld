@@ -28,19 +28,6 @@ private struct Shadow: ViewModifier {
     }
 }
 
-private struct ButtonStyle: ViewModifier {
-    var condition: Bool
-    
-    func body(content: Content) -> some View {
-        content
-            .padding(8)
-            .frame(width: Constants.buttonWidth)
-            .foregroundColor(.white)
-            .background(condition ? Color.red : Color.gray)
-            .shadowStyle()
-    }
-}
-
 extension View {
     func imageStyle() -> some View {
         self.modifier(AvatarImage())
@@ -49,8 +36,27 @@ extension View {
     func shadowStyle() -> some View {
         self.modifier(Shadow())
     }
+}
+
+struct PrimaryButtonStyle: ButtonStyle {
+    var condition: Bool
     
-    func buttonStyle(condition: Bool) -> some View {
-        self.modifier(ButtonStyle(condition: condition))
+    func makeBody(configuration: Configuration) -> some View {
+        return PrimaryButton(configuration: configuration, condition: condition)
+    }
+    
+    struct PrimaryButton: View {
+        let configuration: Configuration
+        let condition: Bool
+        
+        var body: some View {
+            return configuration.label
+                .padding(8)
+                .frame(width: Constants.buttonWidth)
+                .foregroundColor(.white)
+                .background(condition ? Color.red : Color.gray)
+                .shadowStyle()
+                .offset(y: 20)
+        }
     }
 }
