@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseAuth
-import SDWebImageSwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var sessionStore: SessionStore
@@ -197,23 +196,7 @@ struct ProfileView: View {
             }
         }
         .actionSheet(isPresented: $profileVM.showActionSheet) {
-            ActionSheet(
-                title: Text("Change profile picture"),
-                message: Text("Your photo will appear next to your messages and will be visible to others"),
-                buttons: [
-                    .default(Text("Camera")) {  },
-                    .default(Text("Photo library")) {
-                        profileVM.showImagePicker.toggle()
-                        withAnimation {
-                            profileVM.showPictureConfirmation.toggle()
-                        }
-                    },
-                    .default(Text("Reset to default photo")) {
-                        newPhoto = nil
-                        profileVM.updateProfilePicture(imageData: nil)
-                    },
-                    .cancel()
-                ])
+            actionSheet
         }
         .sheet(isPresented: $profileVM.showImagePicker, onDismiss: { loadImage() }) {
             ImagePicker(image: $inputImage)
@@ -230,33 +213,24 @@ struct ProfileSettings_Previews: PreviewProvider {
     }
 }
 
-struct ProfilePictureView: View {
-    var image: Image?
-    var photoURL: String
-    
-    var body: some View {
-        Group {
-            // user changed image
-            if image != nil {
-                image?
-                    .resizable()
-                    .imageStyle()
-                
-            // user has profile picture
-            } else if photoURL != "" {
-                WebImage(url: URL(string: photoURL))
-                    .resizable()
-                    .placeholder {
-                        Circle().foregroundColor(Constants.primary)
+extension ProfileView {
+    var actionSheet: ActionSheet {
+        ActionSheet(
+            title: Text("Change profile picture"),
+            message: Text("Your photo will appear next to your messages and will be visible to others"),
+            buttons: [
+                .default(Text("Camera")) {  },
+                .default(Text("Photo library")) {
+                    profileVM.showImagePicker.toggle()
+                    withAnimation {
+                        profileVM.showPictureConfirmation.toggle()
                     }
-                    .imageStyle()
-                
-            // user has not set profile picture
-            } else {
-                Image("DefaultProfilePicture")
-                    .resizable()
-                    .imageStyle()
-            }
-        }
+                },
+                .default(Text("Reset to default photo")) {
+                    newPhoto = nil
+                    profileVM.updateProfilePicture(imageData: nil)
+                },
+                .cancel()
+            ])
     }
 }

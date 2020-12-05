@@ -34,6 +34,7 @@
 		5C962C5325738E9700C8B55F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C962C5225738E9700C8B55F /* ProfileViewModel.swift */; };
 		5CC7DCF1256CC067003D2C83 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7DCF0256CC067003D2C83 /* Constants.swift */; };
 		5CC7DCF4256CD014003D2C83 /* ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC7DCF3256CD013003D2C83 /* ViewModifiers.swift */; };
+		5CEFBAAD257AE94000B6E832 /* ProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEFBAAC257AE93F00B6E832 /* ProfilePictureView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		5C962C5225738E9700C8B55F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		5CC7DCF0256CC067003D2C83 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5CC7DCF3256CD013003D2C83 /* ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifiers.swift; sourceTree = "<group>"; };
+		5CEFBAAC257AE93F00B6E832 /* ProfilePictureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureView.swift; sourceTree = "<group>"; };
 		6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelloWorld.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A85178BF4B23F9E2D92DAB /* Pods-HelloWorld.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.debug.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.debug.xcconfig"; sourceTree = "<group>"; };
 		EF598B5F7548DAC41BE23EA0 /* Pods-HelloWorld.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelloWorld.release.xcconfig"; path = "Target Support Files/Pods-HelloWorld/Pods-HelloWorld.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				5C083AE025737C0B008440B6 /* JoinView.swift */,
 				5C6361A225535C7500E374B8 /* ChatListView.swift */,
 				5C42B3A22563682200727BB5 /* ProfileView.swift */,
+				5CEFBAAC257AE93F00B6E832 /* ProfilePictureView.swift */,
 				5C6361B42553960900E374B8 /* MessagesView.swift */,
 				5C5C6B632553DC5F0038B60B /* MessageLine.swift */,
 				5C72DA722556577700108E41 /* LoadingAnimation.swift */,
@@ -316,6 +319,7 @@
 				5C42B3A32563682200727BB5 /* ProfileView.swift in Sources */,
 				5C63616A25534EF100E374B8 /* SessionStore.swift in Sources */,
 				5C62342A256F911900333825 /* RegisterViewModel.swift in Sources */,
+				5CEFBAAD257AE94000B6E832 /* ProfilePictureView.swift in Sources */,
 				5C6361B2255392DB00E374B8 /* MessagesViewModel.swift in Sources */,
 				5C72DA732556577700108E41 /* LoadingAnimation.swift in Sources */,
 				5C6361AC25537B2700E374B8 /* ChatroomsViewModel.swift in Sources */,
@@ -461,7 +465,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.larrynguyen.HelloWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -484,7 +488,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.larrynguyen.HelloWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
