@@ -13,6 +13,7 @@ struct ProfileView: View {
     @StateObject var profileVM = ProfileViewModel()
     @State private var inputImage: UIImage?
     @State private var newPhoto: Image?
+    @State private var keyboardDisplayed = false
             
     func loadImage() {
         guard let inputImage = inputImage else { return }
@@ -24,18 +25,27 @@ struct ProfileView: View {
             Constants.gradientBackground
                 .edgesIgnoringSafeArea(.all)
                 .zIndex(-99)
+                .onTapGesture {
+                    withAnimation {
+                        hideKeyboard()
+                        keyboardDisplayed = false
+                    }
+                }
             
             VStack {
-                HStack {
-                    Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
-                        .foregroundColor(Constants.title)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                    Spacer()
-                }
-                .padding([.top, .horizontal])
-                .onAppear {
-                    sessionStore.fetchUser()
+                if !keyboardDisplayed {
+                    HStack {
+                        Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
+                            .foregroundColor(Constants.title)
+                            .font(.title)
+                            .fontWeight(.semibold)
+                        
+                        Spacer()
+                    }
+                    .padding([.top, .horizontal])
+                    .onAppear {
+                        sessionStore.fetchUser()
+                    }
                 }
                 
                 HStack(spacing: 50) {
@@ -114,6 +124,11 @@ struct ProfileView: View {
                             SecureField("password", text: $profileVM.newPassword)
                                 .textContentType(.newPassword)
                                 .keyboardType(.default)
+                                .onTapGesture {
+                                    withAnimation {
+                                        keyboardDisplayed = true
+                                    }
+                                }
                         }
                         
                         HStack(spacing: 15) {
@@ -122,6 +137,11 @@ struct ProfileView: View {
                             SecureField("retype password", text: $profileVM.passwordCheck)
                                 .textContentType(.newPassword)
                                 .keyboardType(.default)
+                                .onTapGesture {
+                                    withAnimation {
+                                        keyboardDisplayed = true
+                                    }
+                                }
                             
                             Text("apply")
                                 .foregroundColor(profileVM.areFieldsCompleted ? .green : Color(.gray).opacity(0.5))
@@ -159,6 +179,11 @@ struct ProfileView: View {
                         TextField("email", text: $profileVM.newEmail)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
+                            .onTapGesture {
+                                withAnimation {
+                                    keyboardDisplayed = true
+                                }
+                            }
                         
                         Text("apply")
                             .foregroundColor(!profileVM.newEmail.isEmpty ? .green : Color(.gray).opacity(0.5))

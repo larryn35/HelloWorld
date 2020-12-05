@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @State var tabSelection = 1
+    @State var keyboardDisplayed = false
 
     var body: some View {
         
@@ -30,12 +31,17 @@ struct HomeView: View {
                 Constants.gradientBackground
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        self.hideKeyboard()
+                        withAnimation {
+                            self.hideKeyboard()
+                            keyboardDisplayed = false
+                        }
                     }
-                VStack(spacing: 120) {
-                    CreateView(tabSelection: $tabSelection)
-                    JoinView(tabSelection: $tabSelection)
-                    Spacer()
+                HStack(alignment: .top){
+                    VStack(spacing: !keyboardDisplayed ? 120 : 30) {
+                        CreateView(tabSelection: $tabSelection, keyboardDisplayed: $keyboardDisplayed)
+                        JoinView(tabSelection: $tabSelection, keyboardDisplayed: $keyboardDisplayed)
+                        Spacer()
+                    }
                 }
             }
             .tabItem {

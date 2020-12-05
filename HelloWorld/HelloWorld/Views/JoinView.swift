@@ -11,6 +11,7 @@ import FirebaseAuth
 struct JoinView: View {
     @StateObject var chatroomsVM = ChatroomsViewModel()
     @Binding var tabSelection: Int
+    @Binding var keyboardDisplayed: Bool
     @State var showAlert = false
     
     var body: some View {
@@ -27,6 +28,11 @@ struct JoinView: View {
                     
                     TextField("4-digit join code", text: $chatroomsVM.joinCode)
                         .keyboardType(.numberPad)
+                        .onTapGesture {
+                            withAnimation {
+                                keyboardDisplayed = true
+                            }
+                        }
                 }
                 .padding()
                 .padding(.vertical)
@@ -51,6 +57,6 @@ struct JoinView: View {
 
 struct JoinView_Previews: PreviewProvider {
     static var previews: some View {
-        JoinView(tabSelection: .constant(1))
+        JoinView(tabSelection: .constant(1), keyboardDisplayed: .constant(false))
     }
 }

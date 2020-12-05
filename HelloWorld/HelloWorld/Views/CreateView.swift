@@ -11,6 +11,7 @@ import FirebaseAuth
 struct CreateView: View {
     @StateObject var chatroomsVM = ChatroomsViewModel()
     @Binding var tabSelection: Int
+    @Binding var keyboardDisplayed: Bool
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -26,6 +27,11 @@ struct CreateView: View {
                     
                     TextField("name your chatroom", text: $chatroomsVM.newTitle)
                         .autocapitalization(.none)
+                        .onTapGesture {
+                            withAnimation {
+                                keyboardDisplayed = true
+                            }
+                        }
                 }
                 .padding()
                 .padding(.vertical)
@@ -53,7 +59,7 @@ struct CreateView: View {
 struct CreateView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            CreateView(tabSelection: .constant(1))
+            CreateView(tabSelection: .constant(1), keyboardDisplayed: .constant(false))
         }
     }
 }
