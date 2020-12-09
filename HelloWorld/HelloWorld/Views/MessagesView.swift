@@ -119,13 +119,10 @@ struct MessagesView: View {
                 Alert(title: Text("Leave chatroom?"),
                       message: Text("Your messages will still be visible to others"),
                       primaryButton: .destructive(Text("Leave")) {
-                        
-                        if let userName = Auth.auth().currentUser?.displayName {
-                            chatroomVM.leaveChatroom(code: joinCode, userName: userName) {
+                            chatroomVM.leaveChatroom(code: joinCode) {
                                 messagesVM.showPopover.toggle()
                             }
                             presentationMode.wrappedValue.dismiss()
-                        }
                       },
                       secondaryButton: .cancel())
             })

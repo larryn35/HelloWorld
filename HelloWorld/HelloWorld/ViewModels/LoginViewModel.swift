@@ -8,17 +8,17 @@
 import Foundation
 
 final class LoginViewModel: ObservableObject {
-    @Published var email = ""
-    @Published var password = ""
-    
-    // MARK:  Validation
-    var isFormCompleted: Bool {
-        !email.isEmpty && password.count >= 6
-    }
-    
-    // MARK:  Clear fields
-    func clearFields() {
-        email = ""
-        password = ""
-    }
+  @Published var email = ""
+  @Published var password = ""
+  
+  // Checks if email and password fields are valid
+  var isFormCompleted: Bool {
+    !email.isEmpty && password.count >= 6
+  }
+  
+  // Clears email and password fields after logging in
+  func clearFields() {
+    email = ""
+    password = ""
+  }
 }

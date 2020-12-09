@@ -45,6 +45,9 @@ struct ChatListView: View {
             }
         }
         .padding()
+        .onAppear {
+          chatroomsViewModel.fetchChatRoomData()
+        }
     }
 }
 

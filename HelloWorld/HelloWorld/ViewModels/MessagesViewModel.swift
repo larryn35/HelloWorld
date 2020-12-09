@@ -31,7 +31,7 @@ final class MessagesViewModel: ObservableObject {
     private let user = Auth.auth().currentUser
     
     func sendMessage(messageContent: String, docId: String, senderName: String, profilePicture: String?) {
-        if (user != nil) {
+        if user != nil {
             // sender did not set profile picture
             if profilePicture != nil {
                 guard let user = user, let userEmail = user.email else { return }
@@ -42,7 +42,7 @@ final class MessagesViewModel: ObservableObject {
                         "email": userEmail,
                         "content": messageContent,
                         "sender": user.uid,
-                        "profilePicture": profilePicture!
+                        "profilePicture": profilePicture!,
                     ])
                 print("user with profile picture sent message")
                 
@@ -68,7 +68,7 @@ final class MessagesViewModel: ObservableObject {
     }
     
     func fetchMessages(docId: String) {
-        if (user != nil) {
+        if user != nil {
             db.collection("chatrooms").document(docId).collection("messages").order(by: "sentAt", descending: false)
                 .addSnapshotListener { (snapshot, error) in
                     guard let documents = snapshot?.documents else {
@@ -96,7 +96,7 @@ final class MessagesViewModel: ObservableObject {
     }
     
     func openedMessage(docId: String) {
-        if (user != nil) {
+        if user != nil {
             db.collection("chatrooms").document(docId).collection("unread").document(user!.uid)
                 .setData(["messagesRead": messageCount])
             
@@ -105,7 +105,7 @@ final class MessagesViewModel: ObservableObject {
     }
     
     func fetchNumberOfReadMessages(docId: String) {
-        if (user != nil) {
+        if user != nil {
             db.collection("chatrooms").document(docId).collection("unread").document(user!.uid)
                 .addSnapshotListener { [weak self] (snapshot, error) in
                     guard let document = snapshot else {
@@ -123,7 +123,7 @@ final class MessagesViewModel: ObservableObject {
         }
     }
         
-    func timeSinceMessage(message: Date) -> String  {
+    func timeSinceMessage(message: Date) -> String {
         let dateFormatter = DateFormatter()
         let relDateFormatter = RelativeDateTimeFormatter()
         relDateFormatter.unitsStyle = .short

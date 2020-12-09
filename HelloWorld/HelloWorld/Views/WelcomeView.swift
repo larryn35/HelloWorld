@@ -15,7 +15,7 @@ struct WelcomeView: View {
     var body: some View {
         // User is not logged in, present login/register views
         ZStack {
-            Constants.gradientBackground.edgesIgnoringSafeArea(.all)
+            Constants.primary.edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 30) {
                 

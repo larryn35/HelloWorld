@@ -22,7 +22,7 @@ struct ProfileView: View {
     
     var body: some View {
         ZStack {
-            Constants.gradientBackground
+            Constants.primary
                 .edgesIgnoringSafeArea(.all)
                 .zIndex(-99)
                 .onTapGesture {

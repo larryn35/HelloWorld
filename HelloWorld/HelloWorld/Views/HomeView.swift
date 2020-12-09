@@ -16,7 +16,7 @@ struct HomeView: View {
         TabView(selection: $tabSelection) {
             // MARK:  Chatroom List
             ZStack {
-                Constants.gradientBackground
+                Constants.primary
                     .edgesIgnoringSafeArea(.all)
                 ChatListView()
             }
@@ -28,7 +28,7 @@ struct HomeView: View {
             
             // MARK:  Create or join chatroom
             ZStack {
-                Constants.gradientBackground
+                Constants.primary
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
                         withAnimation {
@@ -52,7 +52,7 @@ struct HomeView: View {
 
             // MARK:  Settings
             ZStack {
-                Constants.gradientBackground
+                Constants.primary
                     .edgesIgnoringSafeArea(.all)
                 ProfileView()
             }

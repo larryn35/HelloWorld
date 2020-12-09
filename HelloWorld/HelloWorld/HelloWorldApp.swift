@@ -10,14 +10,13 @@ import Firebase
 
 @main
 struct HelloWorldApp: App {
-    
-    init () {
-        FirebaseApp.configure()
+  init () {
+    FirebaseApp.configure()
+  }
+  
+  var body: some Scene {
+    WindowGroup {
+      WelcomeView().environmentObject(SessionStore())
     }
-    
-    var body: some Scene {
-        WindowGroup {
-            WelcomeView().environmentObject(SessionStore())
-        }
-    }
+  }
 }
