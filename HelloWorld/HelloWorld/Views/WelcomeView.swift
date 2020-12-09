@@ -31,7 +31,7 @@ struct WelcomeView: View {
                     VStack(alignment: .leading) {
                         Text("hello, world")
                             .font(.largeTitle)
-                            .foregroundColor(Constants.title)
+                            .foregroundColor(Constants.textColor)
                             .fontWeight(.bold)
                     }
                     .transition(.fade)
@@ -50,9 +50,10 @@ struct WelcomeView: View {
                     }
                 }
                 .frame(width: Constants.contentWidth)
-                .background(Color.black.opacity(0.1))
+                .background(Constants.secondaryColor)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .padding(.top, keyboardDisplayed ? 10 : 25)
+                .shadowStyle()
                 
                 // MARK:  Login/Register views
                 if optionSelected == 0 {
@@ -92,10 +93,12 @@ private extension Text {
     func welcomeFormat(optionNumber: Int, _ optionSelected: Int) -> some View {
         self
             .fontWeight(.bold)
-            .foregroundColor(optionSelected == optionNumber ? Constants.title : .secondary)
+            .foregroundColor(optionSelected == optionNumber ? Constants.textColor : .secondary)
             .padding(.vertical, 10)
             .frame(width: (Constants.contentWidth) / 2)
-            .background(optionSelected == optionNumber ? Constants.fill : .clear)
+            .background(
+              optionSelected == optionNumber ? Constants.fillColor : Constants.secondaryColor
+            )
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

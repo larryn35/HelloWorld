@@ -12,7 +12,7 @@ import FirebaseAuth
 struct MessageLine: View {
     
     var messageDetails: Message
-    var users: [String]
+    var usersInChatroom: [String]
     
     @State var timestamp = false
     
@@ -85,14 +85,17 @@ struct MessageLine: View {
                     HStack {
                         Text(messageDetails.name)
                             .font(.caption)
-                            // TODO: rewrite code for color
-                            .foregroundColor(messagesVM.userColor(user: messageDetails.name, users: users))
+                            .foregroundColor(
+                              messagesVM.userColor(
+                                for: messageDetails.name,
+                                from: usersInChatroom)
+                            )
                         Spacer()
                     }
                     Text(messageDetails.content)
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
-                        .background(Constants.primary)
+                        .background(Constants.bubbleColor)
                         .cornerRadius(10)
                         .onTapGesture {
                             withAnimation {

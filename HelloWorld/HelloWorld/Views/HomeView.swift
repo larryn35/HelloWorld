@@ -62,7 +62,7 @@ struct HomeView: View {
             }
             .tag(3)
         }
-        .accentColor(Constants.title)
+        .accentColor(Constants.textColor)
     }
 }
 

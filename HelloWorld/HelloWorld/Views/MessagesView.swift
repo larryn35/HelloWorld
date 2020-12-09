@@ -27,7 +27,7 @@ struct MessagesView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .topLeading) {
-                Constants.gradientBackground.opacity(0.2)
+                Constants.primary.opacity(0.2)
                     .edgesIgnoringSafeArea([.top, .bottom])
                 
                 VStack {
@@ -35,7 +35,7 @@ struct MessagesView: View {
                         ScrollViewReader { scrollView in
                             LazyVStack {
                                 ForEach(messagesVM.messages, id: \.self) { i in
-                                    MessageLine(messageDetails: i, users: chatroom.userNames)
+                                    MessageLine(messageDetails: i, usersInChatroom: chatroom.userNames)
                                 }
                             }
                             .onAppear {
@@ -127,7 +127,7 @@ struct MessagesView: View {
                       secondaryButton: .cancel())
             })
         }
-        .accentColor(Constants.title)
+        .accentColor(Constants.textColor)
     }
 }
 

@@ -131,7 +131,7 @@ final class ChatroomsViewModel: ObservableObject {
             "users": FieldValue.arrayRemove([user.uid]),
             "userNames": FieldValue.arrayRemove([name]),
           ])
-
+          
           // Add user left message to chatroom
           MessagesViewModel().sendMessage(
             messageContent: "\(name) has left the chatroom",

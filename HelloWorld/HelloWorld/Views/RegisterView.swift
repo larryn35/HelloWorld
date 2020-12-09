@@ -76,14 +76,15 @@ struct RegisterView: View {
                         registerVM.clearFields()
                     }
                 }) {
-                    Text("sign up")
+                    Text("sign up").fontWeight(.bold)
+
                 }
                 .buttonStyle(PrimaryButtonStyle(condition: registerVM.isFormCompleted))
                 .disabled(!registerVM.isFormCompleted)
             }
             .frame(width: Constants.contentWidth)
             .background(
-                Constants.fill.shadowStyle()
+                Constants.fillColor.shadowStyle()
             )
             
             if sessionStore.showAlert {

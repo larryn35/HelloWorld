@@ -17,7 +17,7 @@ struct CreateView: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("create new chatroom")
-                    .foregroundColor(Constants.title)
+                    .foregroundColor(Constants.textColor)
                     .font(.title)
                     .fontWeight(.semibold)
                 
@@ -35,7 +35,7 @@ struct CreateView: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Constants.fill)
+                .background(Constants.fillColor)
                 .shadowStyle()
             }
             

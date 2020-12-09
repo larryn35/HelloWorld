@@ -18,7 +18,7 @@ struct JoinView: View {
         ZStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("join a chatroom")
-                    .foregroundColor(Constants.title)
+                    .foregroundColor(Constants.textColor)
                     .font(.title)
                     .fontWeight(.semibold)
                 
@@ -36,7 +36,7 @@ struct JoinView: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Constants.fill)
+                .background(Constants.fillColor)
                 .shadowStyle()
             }
             

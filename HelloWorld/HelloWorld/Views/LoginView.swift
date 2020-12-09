@@ -45,7 +45,7 @@ struct LoginView: View {
                     loginVM.clearFields()
                 }
             }) {
-                Text("sign in")
+                Text("sign in").fontWeight(.bold)
             }
             .buttonStyle(PrimaryButtonStyle(condition: loginVM.isFormCompleted))
             .disabled(!loginVM.isFormCompleted)
@@ -53,7 +53,7 @@ struct LoginView: View {
         }
         .frame(width: Constants.contentWidth)
         .background(
-            Constants.fill.shadowStyle()
+            Constants.fillColor.shadowStyle()
         )
         .alert(isPresented: $sessionStore.showAlert) {
             Alert(title: Text("Please try again"),

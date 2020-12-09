@@ -36,7 +36,7 @@ struct ProfileView: View {
                 if !keyboardDisplayed {
                     HStack {
                         Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
-                            .foregroundColor(Constants.title)
+                            .foregroundColor(Constants.textColor)
                             .font(.title)
                             .fontWeight(.semibold)
                         
@@ -62,7 +62,7 @@ struct ProfileView: View {
                             Image(systemName: "camera.circle.fill")
                                 .resizable()
                                 .frame(width: 40, height: 40)
-                                .foregroundColor(Constants.title)
+                                .foregroundColor(Constants.textColor)
                                 .background(Constants.primary)
                                 .clipShape(Circle())
                                 .offset(x: -4, y: -4)
@@ -85,7 +85,7 @@ struct ProfileView: View {
                                 Text("apply")
                                     .padding()
                                     .frame(width: 100)
-                                    .foregroundColor(Constants.title)
+                                    .foregroundColor(Constants.textColor)
                                     .background(Constants.primary)
                                     .shadowStyle()
                             }
@@ -101,7 +101,7 @@ struct ProfileView: View {
                                 Text("cancel")
                                     .padding()
                                     .frame(width: 100)
-                                    .foregroundColor(Constants.title)
+                                    .foregroundColor(Constants.textColor)
                                     .background(Constants.primary)
                                     .shadowStyle()
                             }
@@ -113,7 +113,7 @@ struct ProfileView: View {
                 // MARK:  change password
                 VStack(alignment: .leading, spacing: 10) {
                     Text("change password")
-                        .foregroundColor(Constants.title)
+                        .foregroundColor(Constants.textColor)
                         .font(.title)
                         .fontWeight(.semibold)
                     
@@ -163,12 +163,12 @@ struct ProfileView: View {
                         }
                     }
                     .padding()
-                    .background(Constants.fill)
+                    .background(Constants.fillColor)
                     .shadowStyle()
                     
                     // MARK:  change email
                     Text("change email")
-                        .foregroundColor(Constants.title)
+                        .foregroundColor(Constants.textColor)
                         .font(.title)
                         .fontWeight(.semibold)
                         .padding(.top, 10)
@@ -202,7 +202,7 @@ struct ProfileView: View {
                             .disabled(profileVM.newEmail.isEmpty)
                     }
                     .padding()
-                    .background(Constants.fill)
+                    .background(Constants.fillColor)
                     .shadowStyle()
                 }
                 .padding()
