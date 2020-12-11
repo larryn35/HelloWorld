@@ -41,18 +41,20 @@ final class ChatroomsViewModel: ObservableObject {
   func fetchChatRoomData() {
     guard let user = user else { return }
     db.collection("chatrooms").whereField("users", arrayContains: user.uid).addSnapshotListener { snapshot, error in
-      guard let documents = snapshot?.documents else {
-        print("no chatroom documents returned")
+      guard error == nil else {
+        print("error fetching chatrooms: ", error!.localizedDescription)
         return
       }
       
-      self.chatrooms = documents.map { docSnapshot -> Chatroom in
-        let data = docSnapshot.data()
-        let docId = docSnapshot.documentID
-        let title = data["title"] as? String ?? ""
-        let userNames = data["userNames"] as? [String] ?? [""]
-        let joinCode = data["joinCode"] as? Int ?? -1
-        return Chatroom(id: docId, title: title, joinCode: joinCode, userNames: userNames)
+      if let documents = snapshot?.documents {
+        self.chatrooms = documents.map { docSnapshot -> Chatroom in
+          let data = docSnapshot.data()
+          let docId = docSnapshot.documentID
+          let title = data["title"] as? String ?? ""
+          let userNames = data["userNames"] as? [String] ?? [""]
+          let joinCode = data["joinCode"] as? Int ?? -1
+          return Chatroom(id: docId, title: title, joinCode: joinCode, userNames: userNames)
+        }
       }
     }
   }
