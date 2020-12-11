@@ -10,21 +10,15 @@ import SwiftUI
 struct Loading: View {
   var body: some View {
     ZStack {
-      RoundedRectangle(cornerRadius: 25.0)
-        .background(Color.black.opacity(0.5))
+            
+      RoundedRectangle(cornerRadius: 10)
+        .fill(Color.black.opacity(0.3))
         .frame(width: 75, height: 75)
-      
+            
       LoadingAnimation()
     }
   }
 }
-
-struct Loading_Previews: PreviewProvider {
-  static var previews: some View {
-    Loading()
-  }
-}
-
 
 struct LoadingAnimation : UIViewRepresentable {
   

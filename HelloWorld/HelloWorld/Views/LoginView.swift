@@ -51,7 +51,7 @@ struct LoginView: View {
       
       // MARK:  Loading animation
       if sessionStore.isLoading {
-        LoadingAnimation()
+        Loading()
       }
     }
     .alert(isPresented: $sessionStore.showAlert) {
