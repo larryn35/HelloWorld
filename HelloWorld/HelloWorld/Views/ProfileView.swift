@@ -163,7 +163,7 @@ struct ProfileView: View {
                         }
                     }
                     .padding()
-                    .background(Constants.fillColor)
+                    .background(Constants.textFieldColor)
                     .shadowStyle()
                     
                     // MARK:  change email
@@ -202,7 +202,7 @@ struct ProfileView: View {
                             .disabled(profileVM.newEmail.isEmpty)
                     }
                     .padding()
-                    .background(Constants.fillColor)
+                    .background(Constants.textFieldColor)
                     .shadowStyle()
                 }
                 .padding()

@@ -65,7 +65,6 @@ struct PrimaryButtonStyle: ButtonStyle {
             endPoint: .bottomTrailing)
         )
         .shadowStyle()
-        .offset(y: 20)
     }
   }
 }

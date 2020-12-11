@@ -36,7 +36,7 @@ struct JoinView: View {
                 }
                 .padding()
                 .padding(.vertical)
-                .background(Constants.fillColor)
+                .background(Constants.textFieldColor)
                 .shadowStyle()
             }
             

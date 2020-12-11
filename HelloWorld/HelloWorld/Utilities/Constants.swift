@@ -9,7 +9,7 @@ import SwiftUI
 
 enum Constants {
   static let textColor = Color("TextColor")
-  static let fillColor = Color("FillColor")
+  static let textFieldColor = Color("TextFieldColor")
   static let primary = Color("Primary")
   static let secondaryColor = Color("SecondaryColor")
   static let bubbleColor = Color("MessageBubbleColor")

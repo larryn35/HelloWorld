@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		168486E52CD55DA53B3D34B8 /* Pods_HelloWorld.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AB378442218A124FA5B8563 /* Pods_HelloWorld.framework */; };
 		5C083AE125737C0B008440B6 /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C083AE025737C0B008440B6 /* JoinView.swift */; };
+		5C1B249A258317B700E83EB7 /* TextfieldViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C1B2499258317B700E83EB7 /* TextfieldViews.swift */; };
 		5C42B39F25635A2800727BB5 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42B39E25635A2800727BB5 /* CreateView.swift */; };
 		5C42B3A32563682200727BB5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C42B3A22563682200727BB5 /* ProfileView.swift */; };
 		5C5C6B642553DC5F0038B60B /* MessageLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5C6B632553DC5F0038B60B /* MessageLine.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		5C083AE025737C0B008440B6 /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
+		5C1B2499258317B700E83EB7 /* TextfieldViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldViews.swift; sourceTree = "<group>"; };
 		5C42B39E25635A2800727BB5 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 		5C42B3A22563682200727BB5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		5C5C6B632553DC5F0038B60B /* MessageLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLine.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				5C6361B42553960900E374B8 /* MessagesView.swift */,
 				5C5C6B632553DC5F0038B60B /* MessageLine.swift */,
 				5C72DA722556577700108E41 /* LoadingAnimation.swift */,
+				5C1B2499258317B700E83EB7 /* TextfieldViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				5C6361A725535C8300E374B8 /* LoginView.swift in Sources */,
 				5C62342D256F995800333825 /* Helper.swift in Sources */,
 				5C728B102554D8A40020B70D /* RegisterView.swift in Sources */,
+				5C1B249A258317B700E83EB7 /* TextfieldViews.swift in Sources */,
 				5C6361A325535C7500E374B8 /* ChatListView.swift in Sources */,
 				5C63614525534A0C00E374B8 /* HelloWorldApp.swift in Sources */,
 				5C42B3A32563682200727BB5 /* ProfileView.swift in Sources */,
