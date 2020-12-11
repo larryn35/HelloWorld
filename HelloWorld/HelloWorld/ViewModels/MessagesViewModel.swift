@@ -15,6 +15,7 @@ struct Message: Codable, Identifiable, Hashable {
   var name: String
   var email: String
   var profilePicture: String?
+  var senderID: String
   var date = Date()
 }
 
@@ -51,6 +52,7 @@ final class MessagesViewModel: ObservableObject {
           let email = data["email"] as? String ?? ""
           let safeEmail = email.lowercased()
           let picture = data["profilePicture"] as? String
+          let senderID = data["sender"] as? String  ?? ""
           let timestamp = data["sentAt"] as? Timestamp ?? Timestamp()
           
           return Message(
@@ -59,6 +61,7 @@ final class MessagesViewModel: ObservableObject {
             name: displayName,
             email: safeEmail,
             profilePicture: picture,
+            senderID: senderID,
             date: timestamp.dateValue())
         }
         

@@ -40,7 +40,7 @@ struct MessageLine: View {
                 }
             }
             
-        } else if Auth.auth().currentUser?.email == messageDetails.email  {
+        } else if messageDetails.senderID == Auth.auth().currentUser?.uid {
             HStack {
                 Spacer()
                 VStack(alignment: .trailing) {
