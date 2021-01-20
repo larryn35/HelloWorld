@@ -42,5 +42,7 @@ struct TextFieldView: View {
       }
     }
     .padding()
+    .background(Constants.textFieldColor)
+    .shadowStyle()
   }
 }

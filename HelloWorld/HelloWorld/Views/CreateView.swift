@@ -19,18 +19,24 @@ struct CreateView: View {
         .font(.title)
         .fontWeight(.semibold)
       
-      TextFieldView(placeholder: "name your chatroom", image: "textformat.abc", binding: $chatroomsVM.newTitle)
+      TextFieldView(placeholder: "name your chatroom",
+                    image: "textformat.abc",
+                    binding: $chatroomsVM.newTitle)
       
-      Button(action: {
-        chatroomsVM.createChatroom() {
-          self.hideKeyboard()
-          tabSelection = 1
+      HStack {
+        Spacer()
+        Button(action: {
+          chatroomsVM.createChatroom() {
+            tabSelection = 1
+          }
+        }) {
+          Text("create")
         }
-      }) {
-        Text("create")
+        .buttonStyle(PrimaryButtonStyle(condition: chatroomsVM.isTitleValid))
+        .disabled(!chatroomsVM.isTitleValid)
+        Spacer()
       }
-      .buttonStyle(PrimaryButtonStyle(condition: chatroomsVM.isTitleValid))
-      .disabled(!chatroomsVM.isTitleValid)
+      .padding(.vertical)
     }
     .padding()
   }
