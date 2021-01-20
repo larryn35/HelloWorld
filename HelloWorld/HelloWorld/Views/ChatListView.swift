@@ -39,7 +39,7 @@ struct ChatListView: View {
       } else {
         List(chatroomsViewModel.chatrooms) { chatroom in
           ChatListItem(chatroom: chatroom)
-            .padding(.vertical)
+            .padding(.vertical, 3)
         }
         .shadowStyle()
       }
@@ -85,6 +85,7 @@ struct ChatListItem: View {
               Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
                 .lineLimit(1)
                 .font(.caption)
+                .padding(.bottom, 1)
             }
             
             // display most recent message
@@ -92,10 +93,12 @@ struct ChatListItem: View {
               if lastMessage.name == Auth.auth().currentUser?.displayName {
                 Text("You: " + lastMessage.content)
                   .lineLimit(1)
+                  .foregroundColor(.secondary)
                   .font(.caption2)
               } else {
                 Text(lastMessage.name + ": " + lastMessage.content)
                   .lineLimit(1)
+                  .foregroundColor((messagesVM.messageCount - messagesVM.readMessagesCount) > 0 ? .primary : .secondary)
                   .font(.caption2)
               }
             }

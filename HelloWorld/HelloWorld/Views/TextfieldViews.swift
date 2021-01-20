@@ -13,6 +13,7 @@ struct TextFieldView: View {
     case name
     case email
     case password
+    case number
   }
   
   var type = FieldType.name
@@ -31,12 +32,13 @@ struct TextFieldView: View {
           .keyboardType(.emailAddress)
           .autocapitalization(.none)
           .disableAutocorrection(true)
-
       case .name:
         TextField(placeholder, text: binding)
-
       case .password:
         SecureField(placeholder, text: binding)
+      case .number:
+        TextField(placeholder, text: binding)
+          .keyboardType(.numberPad)
       }
     }
     .padding()

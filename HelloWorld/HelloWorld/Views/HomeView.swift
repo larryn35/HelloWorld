@@ -38,8 +38,8 @@ struct HomeView: View {
                     }
                 HStack(alignment: .top){
                     VStack(spacing: !keyboardDisplayed ? 120 : 30) {
-                        CreateView(tabSelection: $tabSelection, keyboardDisplayed: $keyboardDisplayed)
-                        JoinView(tabSelection: $tabSelection, keyboardDisplayed: $keyboardDisplayed)
+                        CreateView(tabSelection: $tabSelection)
+                        JoinView(tabSelection: $tabSelection)
                         Spacer()
                     }
                 }

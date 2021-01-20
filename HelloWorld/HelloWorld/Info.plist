@@ -22,6 +22,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select a photo from your library to change your profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a profile picture using your camera.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
