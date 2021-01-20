@@ -38,7 +38,7 @@ final class MessagesViewModel: ObservableObject {
     guard user != nil else { return }
     db.collection("chatrooms").document(docId).collection("messages")
       .order(by: "sentAt", descending: false)
-      .addSnapshotListener { [weak self] (snapshot, error) in
+      .addSnapshotListener { [weak self] snapshot, error in
         guard let self = self, let documents = snapshot?.documents else {
           print("no message documents returned")
           return
@@ -93,6 +93,9 @@ final class MessagesViewModel: ObservableObject {
         "sender": user.uid,
       ])
     }
+    // Update most recent message timestamp in chatrooms collection
+    db.collection("chatrooms").document(docId).updateData(["lastMessage": Date()])
+    
     // Update number of messages in chatroom after sending message
     messageCount = messages.count
   }

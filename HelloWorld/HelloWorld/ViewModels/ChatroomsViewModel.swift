@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 
-struct Chatroom: Codable, Identifiable {
+struct Chatroom: Codable, Identifiable, Hashable {
   var id: String
   var title: String
   var joinCode: Int
@@ -40,8 +40,10 @@ final class ChatroomsViewModel: ObservableObject {
   // Fetch chatrooms that contain user's UID from Firestore
   func fetchChatRoomData() {
     guard let user = user else { return }
-    db.collection("chatrooms").whereField("users", arrayContains: user.uid).addSnapshotListener { snapshot, error in
-      guard error == nil else {
+    db.collection("chatrooms").whereField("users", arrayContains: user.uid)
+      .order(by: "lastMessage", descending: true)
+      .addSnapshotListener { [weak self] snapshot, error in
+      guard let self = self, error == nil else {
         print("error fetching chatrooms: ", error!.localizedDescription)
         return
       }
@@ -67,6 +69,7 @@ final class ChatroomsViewModel: ObservableObject {
       "joinCode": Int.random(in: 1000..<9999),
       "users": [user.uid],
       "userNames": [user.displayName],
+      "lastMessage": Date()
     ]) { [weak self] error in
       guard let self = self, error == nil else {
         print("error creating chatroom document")
@@ -133,7 +136,6 @@ final class ChatroomsViewModel: ObservableObject {
             "users": FieldValue.arrayRemove([user.uid]),
             "userNames": FieldValue.arrayRemove([name]),
           ])
-          
           // Add user left message to chatroom
           MessagesViewModel().sendMessage(
             messageContent: "\(name) has left the chatroom",
