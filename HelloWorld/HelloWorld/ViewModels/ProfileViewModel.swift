@@ -36,8 +36,6 @@ final class ProfileViewModel: ObservableObject {
       alert = .passwordMismatch
       showAlert = true
     } else {
-      newPassword = ""
-      passwordCheck = ""
       completion()
     }
   }
@@ -105,6 +103,7 @@ final class ProfileViewModel: ObservableObject {
     case .emailChanged:
       return Alert(
         title: Text("Email has been successfuly changed"),
+        message: Text(errorMessage),
         dismissButton: .default(Text("OK")))
     case .passwordError:
       return Alert(

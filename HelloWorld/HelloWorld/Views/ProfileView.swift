@@ -49,6 +49,8 @@ struct ProfileView: View {
           }
         }
         
+        // MARK:  - Display/change profile picture
+        
         HStack(spacing: 50) {
           ZStack(alignment: .bottomTrailing) {
             ProfilePictureView(image: newPhoto, photoURL: profileVM.profilePicture)
@@ -97,7 +99,6 @@ struct ProfileView: View {
                   profileVM.showPictureConfirmation.toggle()
                 }
                 newPhoto = nil
-                
               }) {
                 Text("cancel")
                   .padding()
@@ -111,47 +112,29 @@ struct ProfileView: View {
           }
         }
         
-        // MARK:  change password
+        // MARK:  - Change password
+        
         VStack(alignment: .leading, spacing: 10) {
           Text("change password")
             .foregroundColor(Constants.textColor)
             .font(.title)
             .fontWeight(.semibold)
           
-          Group {
-            HStack(spacing: 15) {
-              Image(systemName: "lock.fill")
-                .frame(width:20)
-              SecureField("password", text: $profileVM.newPassword)
-                .textContentType(.newPassword)
-                .keyboardType(.default)
-                .onTapGesture {
-                  withAnimation {
-                    keyboardDisplayed = true
-                  }
-                }
-            }
+          TextFieldView(type: .password, placeholder: "new password", image: "lock.fill", binding: $profileVM.newPassword)
+          
+          HStack {
+            TextFieldView(type: .password, placeholder: "retype password", image: "lock.fill", binding: $profileVM.passwordCheck)
             
-            HStack(spacing: 15) {
-              Image(systemName: "lock.fill")
-                .frame(width:20)
-              SecureField("retype password", text: $profileVM.passwordCheck)
-                .textContentType(.newPassword)
-                .keyboardType(.default)
-                .onTapGesture {
-                  withAnimation {
-                    keyboardDisplayed = true
-                  }
-                }
-              
+            if profileVM.areFieldsCompleted {
               Text("apply")
-                .foregroundColor(profileVM.areFieldsCompleted ? .green : Color(.gray).opacity(0.5))
                 .onTapGesture {
                   profileVM.checkPasswords {
                     sessionStore.updatePassword(to: profileVM.newPassword) { (error) in
                       if error == nil {
                         profileVM.alert = .passwordChanged
                         profileVM.showAlert.toggle()
+                        profileVM.newPassword = ""
+                        profileVM.passwordCheck = ""
                       } else {
                         profileVM.errorMessage = error?.localizedDescription ?? "Please try again"
                         profileVM.alert = .passwordError
@@ -160,57 +143,53 @@ struct ProfileView: View {
                     }
                   }
                 }
-                .disabled(!profileVM.areFieldsCompleted)
+                .padding()
+                .foregroundColor(.red)
+                .background(Constants.textFieldColor)
+                .shadowStyle()
             }
           }
-          .padding()
-          .background(Constants.textFieldColor)
-          .shadowStyle()
           
-          // MARK:  change email
+          // MARK: - Change email
+          
           Text("change email")
             .foregroundColor(Constants.textColor)
             .font(.title)
             .fontWeight(.semibold)
             .padding(.top, 10)
           
-          HStack(spacing: 15) {
-            Image(systemName: "envelope.fill")
-              .frame(width:20)
-            TextField("email", text: $profileVM.newEmail)
-              .keyboardType(.emailAddress)
-              .autocapitalization(.none)
-              .onTapGesture {
-                withAnimation {
-                  keyboardDisplayed = true
-                }
-              }
+          HStack {
+            TextFieldView(type: .email, placeholder: "email", image: "envelope.fill", binding: $profileVM.newEmail)
             
-            Text("apply")
-              .foregroundColor(!profileVM.newEmail.isEmpty ? .green : Color(.gray).opacity(0.5))
-              .onTapGesture {
-                sessionStore.updateEmail(to: profileVM.newEmail) { (error) in
-                  if error == nil {
-                    profileVM.alert = .emailChanged
-                    profileVM.showAlert.toggle()
-                  } else {
-                    profileVM.errorMessage = error?.localizedDescription ?? "Please try again"
-                    profileVM.alert = .emailError
-                    profileVM.showAlert.toggle()
+            if !profileVM.newEmail.isEmpty {
+              Text("apply")
+                .onTapGesture {
+                  sessionStore.updateEmail(to: profileVM.newEmail) { (error) in
+                    if error == nil {
+                      profileVM.errorMessage = "Email updated to \(profileVM.newEmail)"
+                      profileVM.alert = .emailChanged
+                      profileVM.showAlert.toggle()
+                      profileVM.newEmail = ""
+                    } else {
+                      profileVM.errorMessage = error?.localizedDescription ?? "Please try again"
+                      profileVM.alert = .emailError
+                      profileVM.showAlert.toggle()
+                    }
                   }
                 }
-              }
-              .disabled(profileVM.newEmail.isEmpty)
+                .padding()
+                .foregroundColor(.red)
+                .background(Constants.textFieldColor)
+                .shadowStyle()
+            }
           }
-          .padding()
-          .background(Constants.textFieldColor)
-          .shadowStyle()
         }
         .padding()
         
         Spacer()
         
-        // MARK:  sign out
+        // MARK: - Sign out
+        
         Button(action: {
           sessionStore.signOut()
         }) {

@@ -19,7 +19,14 @@ struct Chatroom: Codable, Identifiable, Hashable {
 final class ChatroomsViewModel: ObservableObject {
   @Published var chatrooms = [Chatroom]()
   @Published var newTitle = ""
-  @Published var joinCode = ""
+  @Published var joinCode = "" {
+    // restricts input to 4 characters
+    didSet {
+      if joinCode.count > 4 {
+        joinCode = String(oldValue.prefix(4))
+      }
+    }
+  }
   @Published var errorMessage = ""
   
   private let db = Firestore.firestore()

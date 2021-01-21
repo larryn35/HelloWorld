@@ -15,26 +15,18 @@ struct LoginView: View {
     ZStack {
       // MARK:  Fields
       VStack {
-        VStack(spacing: 0) {
-          TextFieldView(
-            type: .email,
-            placeholder: "email",
-            image: "envelope",
-            binding: $loginVM.email
-          )
-          
-          Divider()
-          
-          TextFieldView(
-            type: .password,
-            placeholder: "password",
-            image: "lock",
-            binding: $loginVM.password
-          )
+        VStack(spacing: 6) {
+          TextFieldView(type: .email,
+                        placeholder: "email",
+                        image: "envelope",
+                        binding: $loginVM.email)
+                    
+          TextFieldView(type: .password,
+                        placeholder: "password",
+                        image: "lock",
+                        binding: $loginVM.password)
         }
-        .frame(width: Constants.contentWidth)
-        .background(Constants.textFieldColor.shadowStyle())
-        .padding(.bottom)
+        .padding()
         
         // MARK:  Sign-in button
         Button(action: {

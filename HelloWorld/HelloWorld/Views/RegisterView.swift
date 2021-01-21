@@ -15,44 +15,28 @@ struct RegisterView: View {
     ZStack {
       // MARK:  Fields
       VStack {
-        VStack(spacing: 0) {
-          TextFieldView(
-            type: .name,
-            placeholder: "first name",
-            image: "person",
-            binding: $registerVM.firstName
-          )
+        VStack(spacing: 6) {
+          TextFieldView(type: .name,
+                        placeholder: "first name",
+                        image: "person",
+                        binding: $registerVM.firstName)
+
+          TextFieldView(type: .name,
+                        placeholder: "last name",
+                        image: "person",
+                        binding: $registerVM.lastName)
           
-          Divider()
+          TextFieldView(type: .email,
+                        placeholder: "email",
+                        image: "envelope",
+                        binding: $registerVM.email)
           
-          TextFieldView(
-            type: .name,
-            placeholder: "last name",
-            image: "person",
-            binding: $registerVM.lastName
-          )
-          
-          Divider()
-          
-          TextFieldView(
-            type: .email,
-            placeholder: "email",
-            image: "envelope",
-            binding: $registerVM.email
-          )
-          
-          Divider()
-          
-          TextFieldView(
-            type: .password,
-            placeholder: "password (min 6 characters)",
-            image: "lock",
-            binding: $registerVM.password
-          )
+          TextFieldView(type: .password,
+                        placeholder: "password (min 6 characters)",
+                        image: "lock",
+                        binding: $registerVM.password)
         }
-        .frame(width: Constants.contentWidth)
-        .background(Constants.textFieldColor.shadowStyle())
-        .padding(.bottom)
+        .padding()
         
         // MARK:  Register button
         Button(action: {
@@ -71,7 +55,7 @@ struct RegisterView: View {
         .disabled(!registerVM.isFormCompleted)
       }
       .padding(.vertical)
-
+      
       // MARK:  Loading animation
       if sessionStore.isLoading {
         Loading()
