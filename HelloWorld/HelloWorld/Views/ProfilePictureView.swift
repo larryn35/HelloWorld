@@ -14,13 +14,13 @@ struct ProfilePictureView: View {
     
     var body: some View {
         Group {
-            // user changed image
+            // User changed image
             if image != nil {
                 image?
                     .resizable()
                     .imageStyle()
                 
-                // user has profile picture
+                // User has profile picture
             } else if photoURL != "" {
                 WebImage(url: URL(string: photoURL))
                     .resizable()
@@ -29,7 +29,7 @@ struct ProfilePictureView: View {
                     }
                     .imageStyle()
                 
-                // user has not set profile picture
+                // User has not set profile picture
             } else {
                 Image("DefaultProfilePicture")
                     .resizable()
@@ -39,9 +39,8 @@ struct ProfilePictureView: View {
     }
 }
 
-
-//struct ProfilePictureView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfilePictureView(photoURL: <#String#>)
-//    }
-//}
+struct ProfilePictureView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfilePictureView(photoURL: "")
+    }
+}

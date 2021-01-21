@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+  @StateObject var chatroomsVM = ChatroomsViewModel()
   @State var tabSelection = 1
   
   var body: some View {
@@ -17,7 +18,7 @@ struct HomeView: View {
       ZStack {
         Constants.primary
           .edgesIgnoringSafeArea(.all)
-        ChatListView()
+        ChatListView(chatroomsVM: chatroomsVM)
       }
       .tabItem {
         Image(systemName: "list.dash")
@@ -34,9 +35,9 @@ struct HomeView: View {
           }
         HStack(alignment: .top){
           VStack() {
-            CreateView(tabSelection: $tabSelection)
+            CreateView(chatroomsVM: chatroomsVM, tabSelection: $tabSelection)
             Spacer()
-            JoinView(tabSelection: $tabSelection)
+            JoinView(chatroomsVM: chatroomsVM, tabSelection: $tabSelection)
             Spacer()
           }
         }

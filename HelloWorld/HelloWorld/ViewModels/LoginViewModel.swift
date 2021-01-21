@@ -21,4 +21,8 @@ final class LoginViewModel: ObservableObject {
     email = ""
     password = ""
   }
+  
+  deinit {
+    print("deint loginVM")
+  }
 }

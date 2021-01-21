@@ -27,6 +27,7 @@ enum Constants {
   static let teal = Color("Teal")
   static let purple = Color("Purple")
   static let gray = Color("Gray")
+  static let randomColor = [red, orange, green, blue, teal, purple, gray].randomElement()
 
   static let contentWidth = UIScreen.main.bounds.width - 50
   static let buttonWidth = UIScreen.main.bounds.width - 150

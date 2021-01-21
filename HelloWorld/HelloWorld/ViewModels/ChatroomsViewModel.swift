@@ -51,7 +51,7 @@ final class ChatroomsViewModel: ObservableObject {
       .order(by: "lastMessage", descending: true)
       .addSnapshotListener { [weak self] snapshot, error in
       guard let self = self, error == nil else {
-        print("error fetching chatrooms: ", error!.localizedDescription)
+        print("error fetching chatrooms: ", error?.localizedDescription ?? "")
         return
       }
       
@@ -155,5 +155,9 @@ final class ChatroomsViewModel: ObservableObject {
         }
       }
     }
+  }
+  
+  deinit {
+    print("deint chatroomVM")
   }
 }

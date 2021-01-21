@@ -13,3 +13,18 @@ extension View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
+
+// Text format for WelcomeView
+extension Text {
+  func welcomeFormat(optionNumber: Int, _ optionSelected: Int) -> some View {
+    self
+      .fontWeight(.bold)
+      .foregroundColor(optionSelected == optionNumber ? Constants.textColor : .secondary)
+      .padding(.vertical, 10)
+      .frame(width: (Constants.contentWidth) / 2)
+      .background(
+        optionSelected == optionNumber ? Constants.textFieldColor : Constants.secondaryColor
+      )
+      .clipShape(RoundedRectangle(cornerRadius: 10))
+  }
+}

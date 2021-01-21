@@ -40,13 +40,42 @@ final class ProfileViewModel: ObservableObject {
     }
   }
   
+  // MARK: - Email/Password Change
+
+  enum changeResult {
+    case emailChangeSuccess
+    case emailChangeFailed(message: String)
+    case passwordChangeSuccess
+    case passwordChangeFailed(message: String)
+  }
+  
+  func updateInfo(result: changeResult) {
+    switch result {
+    case .emailChangeSuccess:
+      errorMessage = "Email updated to \(newEmail)"
+      alert = .emailChanged
+      newEmail = ""
+    case .passwordChangeSuccess:
+      alert = .passwordChanged
+      newPassword = ""
+      passwordCheck = ""
+    case .emailChangeFailed(let message):
+      errorMessage = message
+      alert = .passwordError
+    case .passwordChangeFailed(let message):
+      errorMessage = message
+      alert = .emailError
+    }
+    showAlert.toggle()
+  }
+  
   // MARK: - Profile picture
   
   func fetchProfilePicture() {
     guard let uid = Auth.auth().currentUser?.uid else { return }
     db.collection("userprofiles").document(uid).addSnapshotListener { [weak self] (snapshot, error) in
       guard let self = self, error == nil else {
-        print("error fetching profile picture: ", error!.localizedDescription)
+        print("error fetching profile picture: ", error?.localizedDescription ?? "")
         return
       }
       if let document = snapshot, let data = document.data() {
@@ -88,7 +117,14 @@ final class ProfileViewModel: ObservableObject {
     }
   }
   
-  // MARK: - Alert Management
+  deinit {
+    print("deint profileVM")
+  }
+}
+
+// MARK: - Alert Management
+
+extension ProfileViewModel {
   
   enum AlertMessage {
     case passwordChanged, passwordMismatch ,emailChanged, passwordError, emailError
@@ -98,11 +134,11 @@ final class ProfileViewModel: ObservableObject {
     switch alert {
     case .passwordChanged:
       return Alert(
-        title: Text("Password has been successfuly changed"),
+        title: Text("Password has been successfully changed"),
         dismissButton: .default(Text("OK")))
     case .emailChanged:
       return Alert(
-        title: Text("Email has been successfuly changed"),
+        title: Text("Email has been successfully changed"),
         message: Text(errorMessage),
         dismissButton: .default(Text("OK")))
     case .passwordError:

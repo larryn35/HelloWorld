@@ -9,8 +9,8 @@ import SwiftUI
 import FirebaseAuth
 
 struct ChatListView: View {
-  @StateObject var chatroomsViewModel = ChatroomsViewModel()
-  
+  @ObservedObject var chatroomsVM: ChatroomsViewModel
+
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       Text("chatrooms")
@@ -18,7 +18,7 @@ struct ChatListView: View {
         .font(.title)
         .fontWeight(.semibold)
       
-      if chatroomsViewModel.chatrooms.isEmpty {
+      if chatroomsVM.chatrooms.isEmpty {
         List{
           HStack {
             Spacer()
@@ -37,8 +37,8 @@ struct ChatListView: View {
         }
         .shadowStyle()
       } else {
-        List(chatroomsViewModel.chatrooms) { chatroom in
-          ChatListItem(chatroom: chatroom)
+        List(chatroomsVM.chatrooms) { chatroom in
+          ChatListItem(chatroomsVM: chatroomsVM, chatroom: chatroom)
             .padding(.vertical, 3)
         }
         .shadowStyle()
@@ -46,19 +46,20 @@ struct ChatListView: View {
     }
     .padding()
     .onAppear {
-      chatroomsViewModel.fetchChatRoomData()
+      chatroomsVM.fetchChatRoomData()
     }
   }
 }
 
 struct ChatList_Previews: PreviewProvider {
   static var previews: some View {
-    ChatListView()
+    ChatListView(chatroomsVM: ChatroomsViewModel())
   }
 }
 
 struct ChatListItem: View {
   @StateObject var messagesVM = MessagesViewModel()
+  @ObservedObject var chatroomsVM: ChatroomsViewModel
   @State private var showMessage = false
   
   var chatroom: Chatroom
@@ -70,7 +71,7 @@ struct ChatListItem: View {
           Text(chatroom.title).fontWeight(.semibold)
           Spacer()
           
-          // display last message date
+          // Display last message date
           if let lastMessage = messagesVM.lastMessage {
             Text(messagesVM.timeSinceMessage(message: lastMessage.date))
               .font(.caption)
@@ -79,7 +80,7 @@ struct ChatListItem: View {
         
         HStack {
           VStack(alignment: .leading) {
-            // diplay other users in the chatroom
+            // Display other users in the chatroom
             if chatroom.userNames.count >= 2,
                let ownName = Auth.auth().currentUser?.displayName {
               Text(chatroom.userNames.filter { $0 != ownName }.joined(separator: ", "))
@@ -88,7 +89,7 @@ struct ChatListItem: View {
                 .padding(.bottom, 1)
             }
             
-            // display most recent message
+            // Display most recent message
             if let lastMessage = messagesVM.lastMessage {
               if lastMessage.name == Auth.auth().currentUser?.displayName {
                 Text("You: " + lastMessage.content)
@@ -105,7 +106,7 @@ struct ChatListItem: View {
           }
           Spacer()
           
-          // display number of unread messages
+          // Display number of unread messages
           if (messagesVM.messageCount - messagesVM.readMessagesCount) > 0 {
             Text("\(messagesVM.messageCount - messagesVM.readMessagesCount)")
               .font(.caption)
@@ -124,7 +125,7 @@ struct ChatListItem: View {
         messagesVM.fetchNumberOfReadMessages(docId: chatroom.id)
       }
       .sheet(isPresented: $showMessage, content: {
-        MessagesView(for: chatroom)
+        MessagesView(chatroomVM: chatroomsVM, chatroom: chatroom)
           .onDisappear {
             messagesVM.openedMessage(docId: chatroom.id)
           }

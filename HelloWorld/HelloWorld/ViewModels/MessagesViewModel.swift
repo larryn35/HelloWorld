@@ -27,6 +27,7 @@ final class MessagesViewModel: ObservableObject {
   @Published var messageField = ""
   @Published var showPopover = false
   @Published var showAlert = false
+  @Published var profilePicture = ""
   
   private let db = Firestore.firestore()
   private let user = Auth.auth().currentUser
@@ -119,6 +120,20 @@ final class MessagesViewModel: ObservableObject {
       }
   }
   
+  // Fetch profile picture for sending picture
+  func fetchProfilePicture() {
+    guard let uid = Auth.auth().currentUser?.uid else { return }
+    db.collection("userprofiles").document(uid).addSnapshotListener { [weak self] (snapshot, error) in
+      guard let self = self, error == nil else {
+        print("error fetching profile picture: ", error?.localizedDescription ?? "")
+        return
+      }
+      if let document = snapshot, let data = document.data() {
+        self.profilePicture = data["profilePicture"] as? String ?? ""
+      }
+    }
+  }
+  
   // MARK:  - Date formatter for messages
   
   func timeSinceMessage(message: Date) -> String {
@@ -170,9 +185,13 @@ final class MessagesViewModel: ObservableObject {
     case users[5]:
       color = Constants.purple
     default:
-      color = Constants.gray
+      color = Constants.randomColor ?? Constants.gray
     }
     
     return color
+  }
+  
+  deinit {
+    print("deint messagesVM")
   }
 }

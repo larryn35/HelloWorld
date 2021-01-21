@@ -7,15 +7,15 @@
 
 import Foundation
 
-class Helper {
+struct Helper {
     static func validateForm(for strings: [String]) -> Bool {
         var results = [Bool]()
         for string in strings {
-            // field does not pass validation (false) if is empty / contains just spaces
+            // Field fails validation (false) if is empty / contains just spaces
             results.append(!string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
         
-        // if any of the fields fail, return false, otherwise true
+        // If any field fails, return false, otherwise true
         if results.contains(false) {
             return false
         } else {

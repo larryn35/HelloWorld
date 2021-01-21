@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct JoinView: View {
-  @StateObject var chatroomsVM = ChatroomsViewModel()
+  @ObservedObject var chatroomsVM: ChatroomsViewModel
   @Binding var tabSelection: Int
   
   var body: some View {
@@ -45,6 +45,6 @@ struct JoinView: View {
 
 struct JoinView_Previews: PreviewProvider {
   static var previews: some View {
-    JoinView(tabSelection: .constant(1))
+    JoinView(chatroomsVM: ChatroomsViewModel(), tabSelection: .constant(1))
   }
 }

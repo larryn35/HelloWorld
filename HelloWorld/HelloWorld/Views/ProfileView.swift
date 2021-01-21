@@ -13,7 +13,6 @@ struct ProfileView: View {
   @StateObject var profileVM = ProfileViewModel()
   @State private var inputImage: UIImage?
   @State private var newPhoto: Image?
-  @State private var keyboardDisplayed = false
   @State private var shouldShowCamera = false
   
   func loadImage() {
@@ -29,25 +28,23 @@ struct ProfileView: View {
         .onTapGesture {
           withAnimation {
             hideKeyboard()
-            keyboardDisplayed = false
           }
         }
       
       VStack {
-        if !keyboardDisplayed {
-          HStack {
-            Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
-              .foregroundColor(Constants.textColor)
-              .font(.title)
-              .fontWeight(.semibold)
-            
-            Spacer()
-          }
-          .padding([.top, .horizontal])
-          .onAppear {
-            sessionStore.fetchUser()
-          }
+        HStack {
+          Text("hello, \(sessionStore.userName?.lowercased() ?? "there")")
+            .foregroundColor(Constants.textColor)
+            .font(.title)
+            .fontWeight(.semibold)
+          
+          Spacer()
         }
+        .padding([.top, .horizontal])
+        .onAppear {
+          sessionStore.fetchUser()
+        }
+        
         
         // MARK:  - Display/change profile picture
         
@@ -72,11 +69,11 @@ struct ProfileView: View {
             }
           }
           
-          // allow user to apply/cancel picture change
+          // Allow user to apply/cancel picture change
           if profileVM.showPictureConfirmation {
             VStack {
               
-              // apply changes
+              // Apply changes
               Button(action: {
                 withAnimation {
                   profileVM.showPictureConfirmation.toggle()
@@ -93,7 +90,7 @@ struct ProfileView: View {
                   .shadowStyle()
               }
               
-              // discard changes
+              // Discard changes
               Button(action: {
                 withAnimation {
                   profileVM.showPictureConfirmation.toggle()
@@ -130,15 +127,10 @@ struct ProfileView: View {
                 .onTapGesture {
                   profileVM.checkPasswords {
                     sessionStore.updatePassword(to: profileVM.newPassword) { (error) in
-                      if error == nil {
-                        profileVM.alert = .passwordChanged
-                        profileVM.showAlert.toggle()
-                        profileVM.newPassword = ""
-                        profileVM.passwordCheck = ""
+                      if let error = error {
+                        profileVM.updateInfo(result: .emailChangeFailed(message: "\(error.localizedDescription)"))
                       } else {
-                        profileVM.errorMessage = error?.localizedDescription ?? "Please try again"
-                        profileVM.alert = .passwordError
-                        profileVM.showAlert.toggle()
+                        profileVM.updateInfo(result: .emailChangeSuccess)
                       }
                     }
                   }
@@ -165,15 +157,10 @@ struct ProfileView: View {
               Text("apply")
                 .onTapGesture {
                   sessionStore.updateEmail(to: profileVM.newEmail) { (error) in
-                    if error == nil {
-                      profileVM.errorMessage = "Email updated to \(profileVM.newEmail)"
-                      profileVM.alert = .emailChanged
-                      profileVM.showAlert.toggle()
-                      profileVM.newEmail = ""
+                    if let error = error {
+                      profileVM.updateInfo(result: .passwordChangeFailed(message: "\(error.localizedDescription)"))
                     } else {
-                      profileVM.errorMessage = error?.localizedDescription ?? "Please try again"
-                      profileVM.alert = .emailError
-                      profileVM.showAlert.toggle()
+                      profileVM.updateInfo(result: .passwordChangeSuccess)
                     }
                   }
                 }

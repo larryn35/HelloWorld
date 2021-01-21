@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct CreateView: View {
-  @StateObject var chatroomsVM = ChatroomsViewModel()
+  @ObservedObject var chatroomsVM: ChatroomsViewModel
   @Binding var tabSelection: Int
   
   var body: some View {
@@ -45,7 +45,7 @@ struct CreateView: View {
 struct CreateView_Previews: PreviewProvider {
   static var previews: some View {
     VStack {
-      CreateView(tabSelection: .constant(1))
+      CreateView(chatroomsVM: ChatroomsViewModel(), tabSelection: .constant(1))
     }
   }
 }

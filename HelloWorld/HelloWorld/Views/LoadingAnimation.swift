@@ -10,7 +10,6 @@ import SwiftUI
 struct Loading: View {
   var body: some View {
     ZStack {
-            
       RoundedRectangle(cornerRadius: 10)
         .fill(Color.black.opacity(0.3))
         .frame(width: 75, height: 75)
@@ -23,7 +22,6 @@ struct Loading: View {
 struct LoadingAnimation : UIViewRepresentable {
   
   func makeUIView(context: UIViewRepresentableContext<LoadingAnimation>) -> UIActivityIndicatorView {
-    
     let loadingAnimation = UIActivityIndicatorView(style: .large)
     loadingAnimation.startAnimating()
     return loadingAnimation

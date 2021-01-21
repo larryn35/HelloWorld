@@ -9,20 +9,17 @@ import SwiftUI
 import FirebaseAuth
 
 struct MessagesView: View {
-  @ObservedObject var messagesVM = MessagesViewModel()
-  @StateObject var profileVM = ProfileViewModel()
-  @StateObject var chatroomVM = ChatroomsViewModel()
+  @ObservedObject var chatroomVM: ChatroomsViewModel
+  @StateObject var messagesVM = MessagesViewModel()
   
-  private let chatroom: Chatroom
-  private var joinCode = ""
+  let chatroom: Chatroom
+  var joinCode: String {
+    get {
+      return String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
+    }
+  }
   
   @Environment(\.presentationMode) var presentationMode
-  
-  init(for chatroom: Chatroom) {
-    self.chatroom = chatroom
-    self.joinCode = String(chatroom.joinCode).replacingOccurrences(of: ",", with: "")
-    messagesVM.fetchMessages(docId: chatroom.id)
-  }
   
   var body: some View {
     NavigationView {
@@ -63,7 +60,7 @@ struct MessagesView: View {
             
             Button(action: {
               if let user = Auth.auth().currentUser?.displayName {
-                messagesVM.sendMessage(messageContent: messagesVM.messageField, docId: chatroom.id, senderName: user, profilePicture: profileVM.profilePicture)
+                messagesVM.sendMessage(messageContent: messagesVM.messageField, docId: chatroom.id, senderName: user, profilePicture: messagesVM.profilePicture)
               } else {
                 print("failed to send message")
               }
@@ -72,7 +69,7 @@ struct MessagesView: View {
               Text("Send")
             }
             .onAppear {
-              profileVM.fetchProfilePicture()
+              messagesVM.fetchProfilePicture()
             }
           }
           .padding()
@@ -127,13 +124,10 @@ struct MessagesView: View {
               secondaryButton: .cancel())
       })
     }
+    .onAppear {
+      messagesVM.fetchMessages(docId: chatroom.id)
+    }
     .accentColor(Constants.textColor)
-  }
-}
-
-struct Messages_Previews: PreviewProvider {
-  static var previews: some View {
-    MessagesView(for: Chatroom(id: "1000", title: "Hello!", joinCode: 10, userNames: ["John"]))
   }
 }
 
