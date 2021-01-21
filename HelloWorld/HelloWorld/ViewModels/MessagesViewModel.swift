@@ -170,22 +170,26 @@ final class MessagesViewModel: ObservableObject {
   
   func userColor(for user: String, from users: [String]) -> Color {
     var color = Color.red
+    let indexOfUser = users.firstIndex(of: user) ?? 0
     
-    switch user {
-    case users[0]:
+    // Place user into one of 6 color groups based on their index
+    let assignedGroup = indexOfUser % 6
+    
+    switch assignedGroup {
+    case 0:
       color = Constants.red
-    case users[1]:
-      color = Constants.orange
-    case users[2]:
+    case 1:
       color = Constants.green
-    case users[3]:
-      color = Constants.teal
-    case users[4]:
+    case 2:
       color = Constants.blue
-    case users[5]:
+    case 3:
+      color = Constants.teal
+    case 4:
+      color = Constants.orange
+    case 5:
       color = Constants.purple
     default:
-      color = Constants.randomColor ?? Constants.gray
+      color = Constants.gray
     }
     
     return color
