@@ -98,6 +98,7 @@ struct ChatListItem: View {
                   .font(.caption2)
               } else {
                 Text(lastMessage.name + ": " + lastMessage.content)
+                  .fontWeight((messagesVM.messageCount - messagesVM.readMessagesCount) > 0 ? .semibold : .regular)
                   .lineLimit(1)
                   .foregroundColor((messagesVM.messageCount - messagesVM.readMessagesCount) > 0 ? .primary : .secondary)
                   .font(.caption2)

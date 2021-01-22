@@ -86,7 +86,7 @@ struct ProfileView: View {
                   .padding()
                   .frame(width: 100)
                   .foregroundColor(Constants.textColor)
-                  .background(Constants.primary)
+                  .background(Constants.textFieldColor)
                   .shadowStyle()
               }
               
@@ -101,7 +101,7 @@ struct ProfileView: View {
                   .padding()
                   .frame(width: 100)
                   .foregroundColor(Constants.textColor)
-                  .background(Constants.primary)
+                  .background(Constants.textFieldColor)
                   .shadowStyle()
               }
             }
