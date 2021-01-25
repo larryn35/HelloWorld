@@ -10,22 +10,13 @@ import Firebase
 
 @main
 struct HelloWorldApp: App {
-    
-    init () {
-        FirebaseApp.configure()
+  init () {
+    FirebaseApp.configure()
+  }
+  
+  var body: some Scene {
+    WindowGroup {
+      WelcomeView().environmentObject(SessionStore())
     }
-    
-    var body: some Scene {
-        WindowGroup {
-            WelcomeScreen()
-        }
-    }
+  }
 }
-
-#if canImport(UIKit)
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-#endif
