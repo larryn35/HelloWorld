@@ -24,9 +24,8 @@ struct ProfilePictureView: View {
             } else if photoURL != "" {
                 WebImage(url: URL(string: photoURL))
                     .resizable()
-                    .placeholder {
-                        Circle().foregroundColor(Constants.primary)
-                    }
+                  .placeholder(Image("Logo"))
+                  .indicator(.activity)
                     .imageStyle()
                 
                 // User has not set profile picture

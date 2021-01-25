@@ -68,6 +68,7 @@ struct MessagesView: View {
             }) {
               Text("Send")
             }
+            .disabled(messagesVM.messageField.count == 0)
             .onAppear {
               messagesVM.fetchProfilePicture()
             }

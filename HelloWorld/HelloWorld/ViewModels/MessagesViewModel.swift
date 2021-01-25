@@ -195,7 +195,7 @@ final class MessagesViewModel: ObservableObject {
     return color
   }
   
-  deinit {
-    print("deint messagesVM")
-  }
+//  deinit {
+//    print("deint messagesVM")
+//  }
 }

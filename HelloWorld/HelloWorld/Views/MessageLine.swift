@@ -72,6 +72,9 @@ struct MessageLine: View {
           if let url = messageDetails.profilePicture {
             WebImage(url: URL(string: url))
               .resizable()
+              .placeholder(Image("Logo"))
+              .indicator(.activity)
+              .transition(.fade(duration: 0.5))
               .aspectRatio(contentMode: .fill)
               .clipShape(Circle())
               .frame(width: 40.5, height: 40.5)

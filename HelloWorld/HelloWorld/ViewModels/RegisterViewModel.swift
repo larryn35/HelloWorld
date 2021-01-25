@@ -26,7 +26,7 @@ final class RegisterViewModel: ObservableObject {
     lastName = ""
   }
   
-  deinit {
-    print("deint registerVM")
-  }
+//  deinit {
+//    print("deint registerVM")
+//  }
 }

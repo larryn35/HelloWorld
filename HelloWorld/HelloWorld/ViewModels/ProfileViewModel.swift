@@ -75,7 +75,7 @@ final class ProfileViewModel: ObservableObject {
     guard let uid = Auth.auth().currentUser?.uid else { return }
     db.collection("userprofiles").document(uid).addSnapshotListener { [weak self] (snapshot, error) in
       guard let self = self, error == nil else {
-        print("error fetching profile picture: ", error?.localizedDescription ?? "")
+        print("error fetching profile picture")
         return
       }
       if let document = snapshot, let data = document.data() {
@@ -117,9 +117,9 @@ final class ProfileViewModel: ObservableObject {
     }
   }
   
-  deinit {
-    print("deint profileVM")
-  }
+//  deinit {
+//    print("deint profileVM")
+//  }
 }
 
 // MARK: - Alert Management

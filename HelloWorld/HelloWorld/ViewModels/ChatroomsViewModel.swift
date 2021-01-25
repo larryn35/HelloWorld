@@ -157,7 +157,7 @@ final class ChatroomsViewModel: ObservableObject {
     }
   }
   
-  deinit {
-    print("deint chatroomVM")
-  }
+//  deinit {
+//    print("deint chatroomVM")
+//  }
 }
