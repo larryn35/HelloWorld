@@ -1,5 +1,5 @@
 
-<a align="center"><img src="https://github.com/larryn35/HelloWorld/blob/main/Screenshots/Title.png" width="500">
+<a><img src="https://github.com/larryn35/HelloWorld/blob/main/Screenshots/Title.png" width="500">
 
 ## About the app
 
